@@ -32,11 +32,13 @@ body {
     padding: 0 2rem;
 }
 
-.logo {
-    font-size: 1.8rem;
+.logo img {
+    /* font-size: 1.8rem;
     font-weight: 700;
     color: #7c3aed;
-    text-decoration: none;
+    text-decoration: none; */
+    width: 100px;
+    height: 40px;
     display: flex;
     align-items: center;
     gap: 0.5rem;
