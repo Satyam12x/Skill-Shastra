@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skillshastra - Admin Panel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #7c3aed, #a855f7, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient-shift 3s ease-in-out infinite;
+        }
+
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .hover-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50"><path d="M0 25H50M25 0V50" stroke="rgba(0,0,0,0.05)" stroke-width="1"/></svg>');
+            opacity: 0.3;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .admin-container {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            z-index: 2;
+            animation: slideIn 0.5s ease-out forwards;
+        }
+
+        @keyframes slideIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: #666;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 3;
+        }
+
+        .close-btn:hover {
+            background: linear-gradient(135deg, #7c3aed, #a855f7, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transform: rotate(90deg);
+        }
+
+        .admin-content, .admin-visual {
+            width: 50%;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .admin-visual {
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3a 50%, #2d1b69 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .admin-visual .code-window {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+
+        .admin-visual .window-header {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .window-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot-red { background: #ff5f56; }
+        .dot-yellow { background: #ffbd2e; }
+        .dot-green { background: #27c93f; }
+
+        .code-line { color: #e0e0e0; margin-bottom: 5px; }
+        .code-line span { color: #ff79c6; }
+
+        .admin-content h2 { color: #333; font-size: 28px; margin-bottom: 10px; }
+        .admin-content p { color: #666; font-size: 14px; margin-bottom: 20px; }
+
+        .logout-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.3);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(124, 58, 237, 0.4);
+        }
+
+        .logout-btn i { margin-right: 8px; }
+
+        .users-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .users-table th, .users-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            color: #333;
+        }
+
+        .users-table th {
+            background: rgba(124, 58, 237, 0.1);
+            color: #7c3aed;
+            font-weight: 600;
+        }
+
+        .users-table tr:hover {
+            background: rgba(124, 58, 237, 0.05);
+        }
+
+        .error-message, .success-message {
+            font-size: 13px;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .error-message { background: #fee2e2; color: #dc2626; }
+        .success-message { background: #d1fae5; color: #059669; }
+
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .float-element {
+            position: absolute;
+            color: rgba(0, 0, 0, 0.1);
+            font-size: 24px;
+            animation: float 10s infinite ease-in-out;
+        }
+
+        .float-element:nth-child(1) { top: 10%; left: 20%; }
+        .float-element:nth-child(2) { top: 60%; right: 15%; }
+        .float-element:nth-child(3) { bottom: 20%; left: 30%; }
+        .float-element:nth-child(4) { top: 30%; right: 25%; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @media (max-width: 768px) {
+            .admin-container {
+                flex-direction: column;
+                max-width: 90%;
+                margin: 20px;
+            }
+
+            .admin-content, .admin-visual {
+                width: 100%;
+                padding: 20px;
+            }
+
+            .admin-visual { display: none; }
+
+            .users-table {
+                font-size: 12px;
+            }
+
+            .users-table th, .users-table td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hover-grid"></div>
+    <div class="admin-container">
+        <button class="close-btn" onclick="logout()"><i class="fas fa-times"></i></button>
+        <div class="admin-content">
+            <h2>Admin Panel - <span class="gradient-text">Skillshastra</span></h2>
+            <p>Manage users and oversee platform activities.</p>
+            <div id="errorMessage" class="error-message" style="display: none;"></div>
+            <div id="successMessage" class="success-message" style="display: none;"></div>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+            <table class="users-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                    </tr>
+                </thead>
+                <tbody id="usersTableBody"></tbody>
+            </table>
+        </div>
+        <div class="admin-visual">
+            <h2 class="gradient-text">Manage with Precision</h2>
+            <p>Control user access and monitor platform growth with ease.</p>
+            <div class="code-window">
+                <div class="window-header">
+                    <div class="window-dot dot-red"></div>
+                    <div class="window-dot dot-yellow"></div>
+                    <div class="window-dot dot-green"></div>
+                </div>
+                <div class="code-content">
+                    <div class="code-line"><span>const</span> admin = {</div>
+                    <div class="code-line">  role: <span>'Admin'</span>,</div>
+                    <div class="code-line">  access: <span>['Users', 'Courses', 'Analytics']</span></div>
+                    <div class="code-line">};</div>
+                    <div class="code-line">console.log(<span>'Admin panel ready! 🚀'</span>);</div>
+                </div>
+            </div>
+            <div class="floating-elements">
+                <div class="float-element code-bracket">{</div>
+                <div class="float-element code-bracket">}</div>
+                <div class="float-element code-symbol"></></div>
+                <div class="float-element code-word">Admin</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        
+        const API_URL = 'http://localhost:5000/api/auth';
+
+        async function loadUsers() {
+            try {
+                const response = await fetch(`${API_URL}/admin-panel`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    const tbody = document.getElementById('usersTableBody');
+                    tbody.innerHTML = '';
+                    data.users.forEach(user => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${user.name}</td>
+                            <td>${user.email}</td>
+                            <td>${user.role}</td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                    showSuccess(data.message);
+                } else {
+                    showError(data.message);
+                    setTimeout(() => {
+                        window.location.href = 'signup.html';
+                    }, 1000);
+                }
+            } catch (error) {
+                showError('Failed to load users');
+                console.error('Error:', error);
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.href = 'signup.html';
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            document.getElementById('successMessage').style.display = 'none';
+        }
+
+        function showSuccess(message) {
+            const successDiv = document.getElementById('successMessage');
+            successDiv.textContent = message;
+            successDiv.style.display = 'block';
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+
+        window.onload = loadUsers;
+    </script>
+</body>
+</html>

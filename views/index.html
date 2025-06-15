@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skillshastra - Empowering Future skills</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body>
+<!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo"><img src="images/Logo.png" alt=""></a>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="/" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#coursesSection" class="nav-link">Courses <i class="fas fa-chevron-down"></i></a>
+                    <div class="dropdown">
+                        <a href="Programming.html" class="dropdown-item"><i class="fas fa-laptop-code"></i> Programming Languages</a>
+                        <a href="webdev.html" class="dropdown-item"><i class="fas fa-globe"></i> Web Development</a>
+                        <a href="digitalMarketing.html" class="dropdown-item"><i class="fas fa-bullhorn"></i> Digital Marketing</a>
+                        <a href="genai.html" class="dropdown-item"><i class="fas fa-robot"></i> Generative AI</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a href="about.html" class="nav-link">About</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#mentorsSection" class="nav-link">Instructors <i class="fas fa-chevron-down"></i></a>
+                    <div class="dropdown">
+                        <a href="MeetOurTeam.html" class="dropdown-item"><i class="fas fa-users"></i> Meet Our Team</a>
+                        <a href="ExpertProfile.html" class="dropdown-item"><i class="fas fa-user-tie"></i> Expert Profiles</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Resources <i class="fas fa-chevron-down"></i></a>
+                    <div class="dropdown">
+                        <a href="StudyMaterials.html" class="dropdown-item"><i class="fas fa-file-alt"></i> Study Materials</a>
+                        <a href="PracticeProject.html" class="dropdown-item"><i class="fas fa-project-diagram"></i> Practice Projects</a>
+                        <a href="CodingChallenges.html" class="dropdown-item"><i class="fas fa-trophy"></i> Coding Challenges</a>
+                        <a href="#" class="dropdown-item"><i class="fas fa-route"></i> Career Guidance</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a href="contact.html" class="nav-link">Contact</a>
+                </li>
+                <li>
+                    <a href="/signup" class="btm btm-primary">
+                        <i class="fas fa-search"></i> Login
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hover-grid" id="hoverGrid"></div>
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1>Master <span class="highlight">Future-Ready</span> Tech Skills</h1>
+                <p>Transform your career with comprehensive courses in Programming, Web Development, Digital Marketing,
+                    and Generative AI. Learn from industry experts and build real-world projects.</p>
+
+                <div class="hero-buttons">
+                    <a href="#" class="btn btn-primary">
+                        <i class="fas fa-search"></i> Explore More
+                    </a>
+                    <a href="#" class="btn btn-secondary">
+                        <i class="fas fa-user-plus"></i> Enroll Now
+                    </a>
+                </div>
+
+                <div class="stats">
+                    <div class="stat-item">
+                        <span class="stat-number">500+</span>
+                        <span class="stat-label">Students Trained</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">15+</span>
+                        <span class="stat-label">Expert Instructors</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">95%</span>
+                        <span class="stat-label">Job Placement</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-visual">
+                <div class="code-window">
+                    <div class="window-header">
+                        <div class="window-dot dot-red"></div>
+                        <div class="window-dot dot-yellow"></div>
+                        <div class="window-dot dot-green"></div>
+                    </div>
+                    <div class="code-content">
+                        <div class="code-line">const skills = ['Programming', 'WebDev'];</div>
+                        <div class="code-line">const marketing = 'Digital Marketing';</div>
+                        <div class="code-line">const ai = 'Generative AI';</div>
+                        <div class="code-line">console.log('Ready to code! 🚀');</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Courses Section -->
+    <section class="featured-courses" id="coursesSection">
+        <div class="courses-container">
+            <div class="section-header">
+                <div class="header-content">
+                    <span class="section-tag">Popular Choice</span>
+                    <h2 class="section-title">Featured <span class="gradient-text">Courses</span></h2>
+                    <p class="section-description">Master cutting-edge technologies with our comprehensive,
+                        industry-focused curriculum designed by experts</p>
+                </div>
+                <div class="floating-elements">
+                    <div class="float-element code-bracket">{</div>
+                    <div class="float-element code-bracket">}</div>
+                    <div class="float-element code-symbol">
+                        </>
+                    </div>
+                    <div class="float-element code-symbol">AI</div>
+                </div>
+            </div>
+
+            <div class="courses-grid">
+                <div class="course-card" data-course="programming">
+                    <div class="card-background">
+                        <div class="bg-pattern"></div>
+                        <div class="bg-glow"></div>
+                    </div>
+                    <div class="card-content">
+                        <div class="course-icon">
+                            <i class="fas fa-code"></i>
+                            <div class="icon-particles"></div>
+                        </div>
+                        <h3 class="course-title">Programming Languages</h3>
+                        <p class="course-description">Master Python, JavaScript, Java, and C++ with hands-on projects
+                            and real-world applications</p>
+                        <div class="course-stats">
+                            <div class="stat">
+                                <span class="stat-number">150+</span>
+                                <span class="stat-label">Students</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">4.9</span>
+                                <span class="stat-label">Rating</span>
+                            </div>
+                        </div>
+                        <div class="course-tech-stack">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">JavaScript</span>
+                            <span class="tech-tag">Java</span>
+                        </div>
+                    </div>
+                    <div class="card-hover-overlay">
+                        <div class="overlay-content">
+                            <button class="explore-btn">
+                                <span>Explore Course</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="course-card" data-course="webdev">
+                    <div class="card-background">
+                        <div class="bg-pattern"></div>
+                        <div class="bg-glow"></div>
+                    </div>
+                    <div class="card-content">
+                        <div class="course-icon">
+                            <i class="fas fa-globe"></i>
+                            <div class="icon-particles"></div>
+                        </div>
+                        <h3 class="course-title">Web Development</h3>
+                        <p class="course-description">Build modern, responsive websites with React, Node.js, and
+                            cutting-edge frameworks</p>
+                        <div class="course-stats">
+                            <div class="stat">
+                                <span class="stat-number">200+</span>
+                                <span class="stat-label">Students</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">4.8</span>
+                                <span class="stat-label">Rating</span>
+                            </div>
+                        </div>
+                        <div class="course-tech-stack">
+                            <span class="tech-tag">React</span>
+                            <span class="tech-tag">Node.js</span>
+                            <span class="tech-tag">MongoDB</span>
+                        </div>
+                    </div>
+                    <div class="card-hover-overlay">
+                        <div class="overlay-content">
+                            <button class="explore-btn">
+                                <span>Explore Course</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="course-card" data-course="marketing">
+                    <div class="card-background">
+                        <div class="bg-pattern"></div>
+                        <div class="bg-glow"></div>
+                    </div>
+                    <div class="card-content">
+                        <div class="course-icon">
+                            <i class="fas fa-bullhorn"></i>
+                            <div class="icon-particles"></div>
+                        </div>
+                        <h3 class="course-title">Digital Marketing</h3>
+                        <p class="course-description">Drive growth with SEO, social media, content marketing, and
+                            data-driven strategies</p>
+                        <div class="course-stats">
+                            <div class="stat">
+                                <span class="stat-number">120+</span>
+                                <span class="stat-label">Students</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">4.7</span>
+                                <span class="stat-label">Rating</span>
+                            </div>
+                        </div>
+                        <div class="course-tech-stack">
+                            <span class="tech-tag">SEO</span>
+                            <span class="tech-tag">Analytics</span>
+                            <span class="tech-tag">Ads</span>
+                        </div>
+                    </div>
+                    <div class="card-hover-overlay">
+                        <div class="overlay-content">
+                            <button class="explore-btn">
+                                <span>Explore Course</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="course-card" data-course="ai">
+                    <div class="card-background">
+                        <div class="bg-pattern"></div>
+                        <div class="bg-glow"></div>
+                    </div>
+                    <div class="card-content">
+                        <div class="course-icon">
+                            <i class="fas fa-robot"></i>
+                            <div class="icon-particles"></div>
+                        </div>
+                        <h3 class="course-title">Generative AI</h3>
+                        <p class="course-description">Harness the power of AI with GPT, machine learning, and prompt
+                            engineering</p>
+                        <div class="course-stats">
+                            <div class="stat">
+                                <span class="stat-number">80+</span>
+                                <span class="stat-label">Students</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">5.0</span>
+                                <span class="stat-label">Rating</span>
+                            </div>
+                        </div>
+                        <div class="course-tech-stack">
+                            <span class="tech-tag">ChatGPT</span>
+                            <span class="tech-tag">ML</span>
+                            <span class="tech-tag">Prompts</span>
+                        </div>
+                    </div>
+                    <div class="card-hover-overlay">
+                        <div class="overlay-content">
+                            <button class="explore-btn">
+                                <span>Explore Course</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="course-card" data-course="ai">
+                    <div class="card-background">
+                        <div class="bg-pattern"></div>
+                        <div class="bg-glow"></div>
+                    </div>
+                    <div class="card-content">
+                        <div class="course-icon">
+                            <i class="fas fa-code"></i>
+                            <div class="icon-particles"></div>
+                        </div>
+                        <h3 class="course-title">Fundamentals of Computers</h3>
+                        <p class="course-description">Computer course: hardware, software, programming, data,
+                            networking, cybersecurity, and practical applications.</p>
+                        <div class="course-stats">
+                            <div class="stat">
+                                <span class="stat-number">80+</span>
+                                <span class="stat-label">Students</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">5.0</span>
+                                <span class="stat-label">Rating</span>
+                            </div>
+                        </div>
+                        <div class="course-tech-stack">
+                            <span class="tech-tag">Basics</span>
+                            <span class="tech-tag">Hardware</span>
+                            <span class="tech-tag">Software</span>
+                        </div>
+                    </div>
+                    <div class="card-hover-overlay">
+                        <div class="overlay-content">
+                            <button class="explore-btn">
+                                <span>Explore Course</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="course-card" data-course="ai">
+                    <div class="card-background">
+                        <div class="bg-pattern"></div>
+                        <div class="bg-glow"></div>
+                    </div>
+                    <div class="card-content">
+                        <div class="course-icon">
+                            <i class="fas fa-tree"></i>
+                            <div class="icon-particles"></div>
+                        </div>
+                        <h3 class="course-title">Data Structures and Algorithms</h3>
+                        <p class="course-description">DSA course: algorithms, data structures, sorting, searching,
+                            graphs, complexity, problem-solving.</p>
+                        <div class="course-stats">
+                            <div class="stat">
+                                <span class="stat-number">80+</span>
+                                <span class="stat-label">Students</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">5.0</span>
+                                <span class="stat-label">Rating</span>
+                            </div>
+                        </div>
+                        <div class="course-tech-stack">
+                            <span class="tech-tag">Basics</span>
+                            <span class="tech-tag">Programming</span>
+                            <span class="tech-tag">Advanced</span>
+                        </div>
+                    </div>
+                    <div class="card-hover-overlay">
+                        <div class="overlay-content">
+                            <button class="explore-btn">
+                                <span>Explore Course</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="section-footer">
+                <a href="#" class="view-all-btn">
+                    <span>View All Courses</span>
+                    <div class="btn-particles"></div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="mentors-section" id="mentorsSection">
+        <div class="mentors-container">
+            <div class="section-header">
+                <span class="section-tag">Our Experts</span>
+                <h2 class="section-title">Meet Our <span class="gradient-text">Mentors</span></h2>
+                <p class="section-description">Learn from industry leaders with years of experience in tech and
+                    innovation.</p>
+                <div class="floating-elements">
+                    <div class="float-element code-bracket">{</div>
+                    <div class="float-element code-bracket">}</div>
+                    <div class="float-element code-symbol">/</div>
+                    <div class="float-element code-symbol">AI</div>
+                </div>
+            </div>
+
+            <div class="mentors-grid">
+                <div class="mentor-card">
+                    <div class="card-background">
+                        <div class="bg-pattern"></div>
+                        <div class="bg-glow"></div>
+                    </div>
+                    <div class="card-content">
+                        <div class="mentor-image">
+                            <img src="images/satyam.png" alt="Mentor 1">
+                            <div class="image-overlay"></div>
+                        </div>
+                        <h3 class="mentor-name">Satyam Pandey</h3>
+                        <p class="mentor-expertise">Expirenced java developer & Programmer</p>
+                        <p class="mentor-description">
+                            Passionate about teaching programming languages and helping students build a strong foundation in
+                            coding.</p>
+                        </p>
+                        <div class="mentor-socials">
+                            <a href="#" class="social-icon"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
+                            <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                    <div class="card-hover-overlay">
+                        <div class="overlay-content">
+                            <button class="explore-btn">
+                                <span>View Profile</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mentor-card">
+                    <div class="card-background">
+                        <div class="bg-pattern"></div>
+                        <div class="bg-glow"></div>
+                    </div>
+                    <div class="card-content">
+                        <div class="mentor-image">
+                            <img src="images/aryan.png" alt="Mentor 2">
+                            <div class="image-overlay"></div>
+                        </div>
+                        <h3 class="mentor-name">Aryan Kumar</h3>
+                        <p class="mentor-expertise">Web Development & Digital Marketing Specialist</p>
+                        <p class="mentor-description">
+                            Experienced in building scalable web applications and driving online marketing strategies for
+                            startups and enterprises.
+                        </p>
+                        <div class="mentor-socials">
+                            <a href="#" class="social-icon"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
+                            <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                    <div class="card-hover-overlay">
+                        <div class="overlay-content">
+                            <button class="explore-btn">
+                                <span>View Profile</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mentor-card">
+                    <div class="card-background">
+                        <div class="bg-pattern"></div>
+                        <div class="bg-glow"></div>
+                    </div>
+                    <div class="card-content">
+                        <div class="mentor-image">
+                            <img src="images/sunil.png" alt="Mentor 3">
+                            <div class="image-overlay"></div>
+                        </div>
+                        <h3 class="mentor-name">Sunil Bhagel</h3>
+                        <p class="mentor-expertise">Full stack developer & Experienced in UI/UX Designer </p>
+                        <p class="mentor-description">
+                            A creative UI/UX designer with a passion for building user-friendly interfaces and enhancing user
+                            experiences across web and mobile platforms.
+                        </p>
+                        <div class="mentor-socials">
+                            <a href="#" class="social-icon"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
+                            <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                    <div class="card-hover-overlay">
+                        <div class="overlay-content">
+                            <button class="explore-btn">
+                                <span>View Profile</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- <div class="section-footer">
+                <a href="#" class="view-all-btn">
+                    <span>Meet More Mentors</span>
+                    <div class="btn-particles"></div>
+                </a>
+            </div> -->
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section footer-brand">
+                    <a href="#" class="footer-logo"><i class="fas fa-code"></i> Skillshastra</a>
+                    <p class="footer-description">Empowering the future with cutting-edge tech skills and
+                        industry-focused learning.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-section footer-links">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <ul class="footer-menu">
+                        <li><a href="#" class="footer-link">Home</a></li>
+                        <li><a href="#" class="footer-link">Courses</a></li>
+                        <li><a href="#" class="footer-link">About</a></li>
+                        <li><a href="#" class="footer-link">Instructors</a></li>
+                        <li><a href="#" class="footer-link">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section footer-contact">
+                    <h4 class="footer-title">Contact Us</h4>
+                    <p><i class="fas fa-envelope"></i>skillshastra001@gmail.com</p>
+                    <p><i class="fas fa-phone"></i>+91 8510882886 , +91 8851020767</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Ballabgarh, Faridabad, Haryana</p>
+                </div>
+
+                <div class="footer-section footer-newsletter">
+                    <h4 class="footer-title">Stay Updated</h4>
+                    <p>Subscribe to our newsletter for the latest courses and updates.</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Enter your email" class="newsletter-input">
+                        <button type="submit" class="newsletter-btn"><i class="fas fa-paper-plane"></i>
+                            Subscribe</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 Skillshastra. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/script.js"></script>
+</body>
+
+</html>

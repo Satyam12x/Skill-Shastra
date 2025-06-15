@@ -1,0 +1,1691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skillshastra - Empowering Future Skills</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8f0ff 100%);
+            overflow-x: hidden;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(147, 51, 234, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #7c3aed;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo i {
+            font-size: 1.5rem;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #4b5563;
+            font-weight: 500;
+            font-size: 1rem;
+            padding: 0.75rem 1.25rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .nav-link:hover {
+            color: #7c3aed;
+            background: rgba(124, 58, 237, 0.1);
+        }
+
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            min-width: 220px;
+            padding: 1rem 0;
+            border: 1px solid rgba(124, 58, 237, 0.1);
+            z-index: 1000;
+        }
+
+        .nav-item:hover .dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            padding: 0.75rem 1.5rem;
+            color: #4b5563;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(124, 58, 237, 0.05);
+            color: #7c3aed;
+            border-left-color: #7c3aed;
+            padding-left: 2rem;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 4px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: #7c3aed;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        /* Hero Section with Block Wave Effect */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding: 8rem 2rem 4rem;
+            overflow: hidden;
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8f0ff 100%);
+        }
+
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            z-index: 2;
+            position: relative;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: #1f2937;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .highlight {
+            color: #7c3aed;
+            position: relative;
+            display: inline-block;
+        }
+
+        .wave-blocks {
+            position: absolute;
+            top: 50%;
+            left: -20px;
+            right: -20px;
+            height: 60px;
+            display: flex;
+            gap: 8px;
+            transform: translateY(-50%);
+            z-index: -1;
+        }
+
+        .wave-block {
+            width: 12px;
+            height: 12px;
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            border-radius: 3px;
+            transform: translateY(0);
+            animation: wave-motion 2s ease-in-out infinite;
+        }
+
+        @keyframes wave-motion {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .wave-block:nth-child(1) { animation-delay: 0s; }
+        .wave-block:nth-child(2) { animation-delay: 0.1s; }
+        .wave-block:nth-child(3) { animation-delay: 0.2s; }
+        .wave-block:nth-child(4) { animation-delay: 0.3s; }
+        .wave-block:nth-child(5) { animation-delay: 0.4s; }
+        .wave-block:nth-child(6) { animation-delay: 0.5s; }
+        .wave-block:nth-child(7) { animation-delay: 0.6s; }
+        .wave-block:nth-child(8) { animation-delay: 0.7s; }
+        .wave-block:nth-child(9) { animation-delay: 0.8s; }
+        .wave-block:nth-child(10) { animation-delay: 0.9s; }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 2.5rem;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 5;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            color: white;
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(124, 58, 237, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(124, 58, 237, 0.1);
+            color: #7c3aed;
+            border: 2px solid rgba(124, 58, 237, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(124, 58, 237, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: left;
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #7c3aed;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+
+        .hero-visual {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .code-window {
+            background: #1f2937;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .window-header {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .window-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot-red { background: #ef4444; }
+        .dot-yellow { background: #f59e0b; }
+        .dot-green { background: #10b981; }
+
+        .code-content {
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: white;
+        }
+
+        .code-line {
+            margin-bottom: 0.5rem;
+            opacity: 0;
+            animation: typewriter 0.5s ease forwards;
+        }
+
+        .code-line:nth-child(1) { animation-delay: 0.5s; color: #60a5fa; }
+        .code-line:nth-child(2) { animation-delay: 1s; color: #34d399; }
+        .code-line:nth-child(3) { animation-delay: 1.5s; color: #fbbf24; }
+        .code-line:nth-child(4) { animation-delay: 2s; color: #f87171; }
+
+        @keyframes typewriter {
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Featured Courses Section */
+        .featured-courses {
+            padding: 8rem 2rem;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3a 50%, #2d1b69 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .courses-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 6rem;
+            position: relative;
+        }
+
+        .section-tag {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: rgba(124, 58, 237, 0.2);
+            color: #a855f7;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            animation: pulse-glow 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 10px rgba(124, 58, 237, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(124, 58, 237, 0.6); }
+        }
+
+        .section-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #7c3aed, #a855f7, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient-shift 3s ease-in-out infinite;
+        }
+
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .section-description {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .course-card {
+            position: relative;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 2.5rem;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            z-index: 1;
+        }
+
+        .course-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(168, 85, 247, 0.1));
+            opacity: 0;
+            transition: opacity 0.6s ease;
+            border-radius: 24px;
+        }
+
+        .card-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 24px;
+            overflow: hidden;
+        }
+
+        .bg-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 80%, rgba(124, 58, 237, 0.2) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(168, 85, 247, 0.2) 0%, transparent 50%);
+            transform: translateZ(-1px) scale(1.1);
+            transition: transform 0.8s ease;
+        }
+
+        .bg-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(124, 58, 237, 0.4) 0%, transparent 70%);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 2;
+            transition: transform 0.6s ease;
+        }
+
+        .course-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        .course-icon i {
+            font-size: 2rem;
+            color: white;
+            transition: transform 0.6s ease;
+        }
+
+        .icon-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 40%, rgba(255, 255, 255, 0.3) 2px, transparent 2px),
+                        radial-gradient(circle at 70% 60%, rgba(255, 255, 255, 0.3) 1px, transparent 1px);
+            background-size: 20px 20px, 15px 15px;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+        .course-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1rem;
+            transition: color 0.6s ease;
+        }
+
+        .course-description {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            transition: color 0.6s ease;
+        }
+
+        .course-stats {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .course-stats .stat {
+            text-align: left;
+        }
+
+        .course-stats .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #a855f7;
+            display: block;
+        }
+
+        .course-stats .stat-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 0.25rem;
+        }
+
+        .course-tech-stack {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .tech-tag {
+            padding: 0.5rem 1rem;
+            background: rgba(124, 58, 237, 0.2);
+            color: #a855f7;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            transition: all 0.4s ease;
+        }
+
+        .card-hover-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.7), rgba(168, 85, 247, 0.7));
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .course-card:hover .card-hover-overlay {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .overlay-content {
+            text-align: center;
+            padding: 2rem;
+            color: white;
+            z-index: 4;
+        }
+
+        .overlay-content h4 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .overlay-content p {
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .explore-btn {
+            padding: 0.75rem 1.5rem;
+            background: white;
+            color: #7c3aed;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            z-index: 5;
+            pointer-events: auto;
+        }
+
+        .explore-btn:hover {
+            background: #f3f4f6;
+            transform: translateY(-2px);
+        }
+
+        .course-card:hover {
+            transform: translateY(-10px) rotateX(5deg) rotateY(5deg);
+            box-shadow: 0 30px 80px rgba(124, 58, 237, 0.3);
+        }
+
+        .course-card:hover::before {
+            opacity: 1;
+        }
+
+        .course-card:hover .bg-pattern {
+            transform: translateZ(-1px) scale(1.2) rotate(5deg);
+        }
+
+        .course-card:hover .bg-glow {
+            transform: translate(-50%, -50%) scale(1.5);
+        }
+
+        .course-card:hover .course-icon {
+            transform: translateY(-5px) rotateY(15deg);
+            box-shadow: 0 15px 40px rgba(124, 58, 237, 0.4);
+        }
+
+        .course-card:hover .icon-particles {
+            opacity: 1;
+            animation: particle-float 2s ease-in-out infinite;
+        }
+
+        @keyframes particle-float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        /* Mentors Section */
+        .mentors-section {
+            padding: 8rem 2rem;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3a 50%, #2d1b69 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mentors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .mentor-card {
+            position: relative;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 2rem;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            z-index: 1;
+        }
+
+        .mentor-image {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 1.5rem;
+            border-radius: 50%;
+            overflow: hidden;
+            transition: all 0.6s ease;
+        }
+
+        .mentor-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .mentor-name {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.5rem;
+            transition: color 0.6s ease;
+        }
+
+        .mentor-expertise {
+            font-size: 1.1rem;
+            color: #a855f7;
+            margin-bottom: 1rem;
+        }
+
+        .mentor-description {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .mentor-socials {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            position: relative;
+            z-index: 5;
+        }
+
+        .social-icon {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            pointer-events: auto;
+        }
+
+        .social-icon:hover {
+            color: #a855f7;
+            transform: translateY(-3px);
+        }
+
+        .mentor-card:hover .card-hover-overlay {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .mentor-card:hover .mentor-image {
+            transform: scale(1.1);
+        }
+
+        .mentor-card:hover .mentor-name {
+            color: #a855f7;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8f0ff 100%);
+        }
+
+        .contact-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .contact-form {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-form h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #4b5563;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid rgba(124, 58, 237, 0.2);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #1f2937;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #7c3aed;
+            box-shadow: 0 0 10px rgba(124, 58, 237, 0.2);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-btn {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.3);
+        }
+
+        .form-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(124, 58, 237, 0.4);
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .info-icon {
+            font-size: 1.5rem;
+            color: #7c3aed;
+            margin-top: 0.2rem;
+        }
+
+        .info-content h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-content p {
+            font-size: 0.9rem;
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        .info-content a {
+            color: #7c3aed;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .info-content a:hover {
+            text-decoration: underline;
+        }
+
+        /* Map Section */
+        .map-section {
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3a 50%, #2d1b69 100%);
+        }
+
+        .map-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .map-container h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .map-container p {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .map-iframe {
+            width: 100%;
+            height: 400px;
+            border-radius: 16px;
+            border: none;
+        }
+
+        /* Footer Styles */
+        .footer {
+            background: linear-gradient(135deg, #0a0a1a 0%, #14142b 50%, #1f1247 100%);
+            padding: 5rem 2rem 2rem;
+            position: relative;
+            overflow: hidden;
+            color: rgba(255, 255, 255, 0.8);
+            border-top: 1px solid rgba(88, 28, 135, 0.3);
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section {
+            padding: 1rem;
+        }
+
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #9333ea;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-logo i {
+            font-size: 1.5rem;
+        }
+
+        .footer-description {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .footer-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #9333ea;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .footer-title::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: linear-gradient(90deg, #581c87, #9333ea);
+            border-radius: 2px;
+        }
+
+        .footer-menu {
+            list-style: none;
+        }
+
+        .footer-link {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: block;
+            margin-bottom: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: #9333ea;
+            transform: translateX(5px);
+        }
+
+        .footer-contact p {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .newsletter-footer {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .newsletter-input {
+            padding: 0.75rem;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            font-size: 0.9rem;
+            width: 100%;
+            max-width: 200px;
+            transition: all 0.3s ease;
+        }
+
+        .newsletter-input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .newsletter-btn {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #581c87, #9333ea);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .newsletter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(88, 28, 135, 0.4);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(88, 28, 135, 0.3);
+        }
+
+        .footer-bottom p {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-menu {
+                position: fixed;
+                top: 80px;
+                left: 0;
+                width: 100%;
+                background: white;
+                flex-direction: column;
+                gap: 0;
+                padding: 2rem;
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+                border-top: 1px solid rgba(124, 58, 237, 0.1);
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            }
+
+            .nav-menu.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .hero-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 2rem;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .courses-grid, .mentors-grid, .contact-container {
+                grid-template-columns: 1fr;
+            }
+
+            .map-iframe {
+                height: 300px;
+            }
+
+            .wave-blocks {
+                height: 40px;
+            }
+
+            .wave-block {
+                width: 8px;
+                height: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo"><i class="fas fa-code"></i> Skillshastra</a>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="#home" class="nav-link">Home</a></li>
+                <li class="nav-item">
+                    <a href="#coursesSection" class="nav-link">Courses <i class="fas fa-chevron-down"></i></a>
+                    <div class="dropdown">
+                        <a href="Programming.html" class="dropdown-item"><i class="fas fa-laptop-code"></i> Programming Languages</a>
+                        <a href="webdev.html" class="dropdown-item"><i class="fas fa-globe"></i> Web Development</a>
+                        <a href="digitalMarketing.html" class="dropdown-item"><i class="fas fa-bullhorn"></i> Digital Marketing</a>
+                        <a href="genai.html" class="dropdown-item"><i class="fas fa-robot"></i> Generative AI</a>
+                    </div>
+                </li>
+                <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
+                <li class="nav-item">
+                    <a href="#mentorsSection" class="nav-link">Instructors <i class="fas fa-chevron-down"></i></a>
+                    <div class="dropdown">
+                        <a href="MeetOurTeam.html" class="dropdown-item"><i class="fas fa-users"></i> Meet Our Team</a>
+                        <a href="ExpertProfile.html" class="dropdown-item"><i class="fas fa-user-tie"></i> Expert Profiles</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Resources <i class="fas fa-chevron-down"></i></a>
+                    <div class="dropdown">
+                        <a href="StudyMaterials.html" class="dropdown-item"><i class="fas fa-file-alt"></i> Study Materials</a>
+                        <a href="PracticeProject.html" class="dropdown-item"><i class="fas fa-project-diagram"></i> Practice Projects</a>
+                        <a href="CodingChallenges.html" class="dropdown-item"><i class="fas fa-trophy"></i> Coding Challenges</a>
+                        <a href="#" class="dropdown-item"><i class="fas fa-route"></i> Career Guidance</a>
+                    </div>
+                </li>
+                <li class="nav-item"><a href="#contactSection" class="nav-link">Contact</a></li>
+                <li><a href="signup.html" class="btn btn-primary"><i class="fas fa-user"></i> Login</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1>Master <span class="highlight">Future-Ready
+                    <div class="wave-links">
+                        <span class="wave-block"></span>
+                        <span class="wave-block"></span>
+                        <span class="wave-block"></span>
+                        <span class="wave-block"></span>
+                        <span class="wave-block"></span>
+                        <span class="wave-block"></span>
+                        <span class="wave-block"></span>
+                        <span class="wave-block"></span>
+                        <span class="wave-block"></span>
+                        <span class="wave-block"></span>
+                    </div>
+                </span> Tech Skills</h1>
+                <p>Transform your career with comprehensive courses in Programming, Web Development, Digital Marketing, and Generative AI. Learn from industry experts and build real-world projects.</p>
+                <div class="hero-buttons">
+                    <a href="#coursesSection" class="btn btn-primary"><i class="fas fa-search"></i> Explore More</a>
+                    <a href="signup.html" class="btn btn-secondary"><i class="fas fa-user-plus"></i> Enroll Now</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">500+</span>
+                        <span class="stat-label">Students Trained</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">15+</span>
+                        <span class="stat-label">Expert Instructors</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">95%</span>
+                        <span class="stat-label">Job Placement</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="code-window">
+                    <div class="window-header">
+                        <div class="window-dot dot-red"></div>
+                        <div class="window-dot dot-yellow"></div>
+                        <div class="window-dot dot-green"></div>
+                    </div>
+                    <div class="code-content">
+                        <div class="code-line">const skills = ['Programming', 'WebDev'];</div>
+                        <div class="code-line">const marketing = 'Digital Marketing';</div>
+                        <div class="code-line">const ai = 'Generative AI';</div>
+                        <div class="code-line">console.log('Ready to code! 🚀');</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Courses Section -->
+    <section class="featured-courses" id="coursesSection">
+        <div class="courses-container">
+            <div class="section-header">
+                <span class="section-tag">Popular Choice</span>
+                <h2 class="section-title">Featured <span class="gradient-text">Courses</span></h2>
+                <p class="section-description">Master cutting-edge technologies with our comprehensive, industry-focused curriculum designed by experts</p>
+            </div>
+            <div class="courses-grid">
+                <div class="course-card" data-course="programming">
+                    <div class="card-background">
+                        <div class="bg-pattern"></div>
+                        <div class="bg-glow"></div>
+                    </div>
+                    <div class="card-content">
+                        <div class="course-icon">
+                            <i class="fas fa-code"></i>
+                            <div>
+                        <h3 class="course-title">Programming Languages</h3>
+                        <p class="course-description">Master Python, JavaScript, Java, and C++ with hands-on projects and real-world applications</p>
+                        <div class="course-stats">
+                            <div class="stat">
+                                <span class="stat-number">150+</span>
+                                <span class="stat-label">Students</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">4.9</span>
+                                <span class="stat-label">Rating</span>
+                            </div>
+                        </div>
+                        <div class="course-tech-stack">
+                            <span class="tech-stack">Python</span>
+                            <span class="tech-stack">JavaScript</span>
+                            <span class="tech-stack">Java</span>
+                        </div>
+                    </div>
+                    <div class="card-hover-overlay">
+                        <div class="overlay-content">
+                            <h4>Programming Languages</h4>
+                            <p>Learn from scratch to advanced levels with expert guidance.</p>
+                            <a href="Programming.html" class="explore-btn">Explore Course <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="course-card" data-course="web-dev">
+                    <div class="card-background">
+                        <div class="bg-pattern"></div>
+                        <div class="bg-glow"></div>
+                    </div>
+                    <div class="card-content">
+                        <div class="course-icon">
+                            <i class="fas fa-globe"></i>
+                            <div class="icon-particles"></div>
+                        </div>
+                        <h3 class="course-title">Web Development</h3>
+                        <p class="course-description">Build modern, responsive websites using HTML, CSS, JavaScript, and React.</p>
+                        <div class="course-stats">
+                            <div class="stat">
+                                <span class="stat-number">200+</span>
+                                <span class="stat-label">Students</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">4.8</span>
+                                <span class="stat-label">Rating</span>
+                            </div>
+                        </div>
+                        <div class="course-tech-stack">
+                            <span class="tech-tag">HTML</span>
+                            <span class="tech-tag">CSS</span>
+                            <span class="tech-tag">React</span>
+                        </div>
+                    </div>
+                    <div class="card-hover-overlay">
+                        <div class="overlay-content">
+                            <h4>Web Development</h4>
+                            <p>Create stunning websites with hands-on projects.</p>
+                            <a href="webdev.html" class="explore-btn">Explore Course <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="course-card" data-course="digital-marketing">
+                    <div class="card-background">
+                        <div class="bg-pattern"></div>
+                        <div class="bg-glow"></div>
+                    </div>
+                    <div class="card-content">
+                        <div class="course-icon">
+                            <i class="fas fa-bullhorn"></i>
+                            <div class="icon-particles"></div>
+                        </div>
+                        <h3 class="course-title">Digital Marketing</h3>
+                        <p class="course-description">Master SEO, PPC, and social media strategies to boost brands online.</p>
+                        <div class="course-stats">
+                            <div class="stat">
+                                <span class="stat-number">180+</span>
+                                <span class="stat-label">Students</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">4.7</span>
+                                <span class="stat-label">Rating</span>
+                            </div>
+                        </div>
+                        <div class="course-tech-stack">
+                            <span class="tech-tag">SEO</span>
+                            <span class="tech-tag">PPC</span>
+                            <span class="tech-tag">Social Media</span>
+                        </div>
+                    </div>
+                    <div class="card-hover-overlay">
+                        <div class="overlay-content">
+                            <h4>Digital Marketing</h4>
+                            <p>Learn cutting-edge marketing techniques.</p>
+                            <a href="digitalMarketing.html" class="explore-btn">Explore Course <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="course-card" data-course="gen-ai">
+                    <div class="card-background">
+                        <div class="bg-pattern"></div>
+                        <div class="bg-glow"></div>
+                    </div>
+                    <div class="card-content">
+                        <div class="course-icon">
+                            <i class="fas fa-robot"></i>
+                            <div class="icon-particles"></div>
+                        </div>
+                        <h3 class="course-title">Generative AI</h3>
+                        <p class="course-description">Explore AI tools and frameworks for creating innovative content.</p>
+                        <div class="course-stats">
+                            <div class="stat">
+                                <span class="stat-number">100+</span>
+                                <span class="stat-label">Students</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">5.0</span>
+                                <span class="stat-label">Rating</span>
+                            </div>
+                        </div>
+                        <div class="course-tech-stack">
+                            <span class="tech-tag">AI Tools</span>
+                            <span class="tech-tag">TensorFlow</span>
+                            <span class="tech-tag">PyTorch</span>
+                        </div>
+                    </div>
+                    <div class="card-hover-overlay">
+                        <div class="overlay-content">
+                            <h4>Generative AI</h4>
+                            <p>Dive into the future of AI innovation.</p>
+                            <a href="genai.html" class="explore-btn">Explore Course <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section-footer">
+                <a href="#" class="btn btn-primary">View All Courses</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mentors Section -->
+    <section class="mentors-section" id="mentorsSection">
+        <div class="mentors-container">
+            <div class="section-header">
+                <span class="section-tag">Our Experts</span>
+                <h2 class="section-title">Meet Our <span class="gradient-text">Mentors</span></h2>
+                <p class="section-description">Learn from industry leaders with years of experience in tech and innovation.</p>
+            </div>
+            <div class="mentors-grid">
+                <div class="mentor-card">
+                    <div class="card-background">
+                        <div class="bg-pattern"></div>
+                        <div class="bg-glow"></div>
+                    </div>
+                    <div class="card-content">
+                        <div class="mentor-image">
+                            <img src="images/satyam.jpg" alt="Satyam Pandey">
+                        </div>
+                        <h3 class="mentor-name">Satyam Pandey</h3>
+                        <p class="mentor-expertise">Experienced Java Developer & Educator</p>
+                        <p class="mentor-description">Passionate about teaching programming fundamentals and advanced Java concepts.</p>
+                        <div class="mentor-socials">
+                            <a href="#" class="social-icon"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
+                            <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                    <div class="card-hover-overlay">
+                        <div class="overlay-content">
+                            <h4>Satyam Pandey</h4>
+                            <p>Expert in Java and programming fundamentals.</p>
+                            <a href="ExpertProfile.html" class="explore-btn">View Profile <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="mentor-card">
+                    <div class="card-background">
+                        <div class="bg-pattern"></div>
+                        <div class="bg-glow"></div>
+                    </div>
+                    <div class="card-content">
+                        <div class="mentor-image">
+                            <img src="images/mentor2.jpg" alt="Anita Sharma">
+                        </div>
+                        <h3 class="mentor-name">Anita Sharma</h3>
+                        <p class="mentor-expertise">Web Development Specialist</p>
+                        <p class="mentor-description">Over 8 years of experience in building responsive web applications.</p>
+                        <div class="mentor-socials">
+                            <a href="#" class="social-icon"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
+                            <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                    <div class="card-hover-overlay">
+                        <div class="overlay-content">
+                            <h4>Anita Sharma</h4>
+                            <p>Expert in React and modern web technologies.</p>
+                            <a href="ExpertProfile.html" class="explore-btn">View Profile <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="mentor-card">
+                    <div class="card-background">
+                        <div class="bg-pattern"></div>
+                        <div class="bg-glow"></div>
+                    </div>
+                    <div class="card-content">
+                        <div class="mentor-image">
+                            <img src="images/mentor3.jpg" alt="Rahul Verma">
+                        </div>
+                        <h3 class="mentor-name">Rahul Verma</h3>
+                        <p class="mentor-expertise">Digital Marketing Guru</p>
+                        <p class="mentor-description">Specializes in SEO and social media strategies for brand growth.</p>
+                        <div class="mentor-socials">
+                            <a href="#" class="social-icon"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                    <div class="card-hover-overlay">
+                        <div class="overlay-content">
+                            <h4>Rahul Verma</h4>
+                            <p>Master of digital marketing strategies.</p>
+                            <a href="ExpertProfile.html" class="explore-btn">View Profile <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="mentor-card">
+                    <div class="card-background">
+                        <div class="bg-pattern"></div>
+                        <div class="bg-glow"></div>
+                    </div>
+                    <div class="card-content">
+                        <div class="mentor-image">
+                            <img src="images/mentor4.jpg" alt="Priya Gupta">
+                        </div>
+                        <h3 class="mentor-name">Priya Gupta</h3>
+                        <p class="mentor-expertise">AI & ML Expert</p>
+                        <p class="mentor-description">Guides students in exploring generative AI and machine learning.</p>
+                        <div class="mentor-socials">
+                            <a href="#" class="social-icon"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
+                            <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                    <div class="card-hover-overlay">
+                        <div class="overlay-content">
+                            <h4>Priya Gupta</h4>
+                            <p>Leader in AI and machine learning innovation.</p>
+                            <a href="ExpertProfile.html" class="explore-btn">View Profile <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section" id="contactSection">
+        <div class="contact-container">
+            <div class="contact-form">
+                <h2>Send Us a Message</h2>
+                <form id="contact-form">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" name="subject" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" required></textarea>
+                    </div>
+                    <button type="submit" class="form-btn"><i class="fas fa-paper-plane"></i> Send Message</button>
+                </form>
+            </div>
+            <div class="contact-info">
+                <div class="info-item">
+                    <i class="fas fa-envelope info-icon"></i>
+                    <div class="info-content">
+                        <h3>Email Us</h3>
+                        <p><a href="mailto:skillshastra001@gmail.com">skillshastra001@gmail.com</a></p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-phone info-icon"></i>
+                    <div class="info-content">
+                        <h3>Call Us</h3>
+                        <p><a href="tel:+918510882886">+91 8510882886</a>, <a href="tel:+918851020767">+91 8851020767</a></p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-map-marker-alt info-icon"></i>
+                    <div class="info-content">
+                        <h3>Visit Us</h3>
+                        <p>Ballabgarh, Faridabad, Haryana, India</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Map Section -->
+    <section class="map-section">
+        <div class="map-container">
+            <h2>Find Us Here</h2>
+            <p>Visit our center in Ballabgarh, Faridabad, Haryana, India.</p>
+            <iframe class="map-iframe" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3510.5472952896976!2d77.30514531512487!3d28.42490498250246!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce714bfffffff%3A0x7f7b8b8c8b8c8b8c!2sBallabgarh%2C%20Faridabad%2C%20Haryana%2C%20India!5e0!3m2!1sen!2sin!4v1635748491234!5m2!1sen!2sin" allowfullscreen="" loading="lazy"></iframe>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section footer-brand">
+                    <a href="#home" class="footer-logo"><i class="fas fa-code"></i> Skillshastra</a>
+                    <p class="footer-description">Empowering the future with cutting-edge tech skills and industry-focused learning.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section footer-links">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <ul class="footer-menu">
+                        <li><a href="#home" class="footer-link">Home</a></li>
+                        <li><a href="#coursesSection" class="footer-link">Courses</a></li>
+                        <li><a href="about.html" class="footer-link">About</a></li>
+                        <li><a href="#mentorsSection" class="footer-link">Instructors</a></li>
+                        <li><a href="#contactSection" class="footer-link">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section footer-contact">
+                    <h4 class="footer-title">Contact Us</h4>
+                    <p><i class="fas fa-envelope"></i> skillshastra001@gmail.com</p>
+                    <p><i class="fas fa-phone"></i> +91 8510882886, +91 8851020767</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Ballabgarh, Faridabad, Haryana</p>
+                </div>
+                <div class="footer-section footer-newsletter">
+                    <h4 class="footer-title">Stay Updated</h4>
+                    <p>Subscribe to our newsletter for the latest courses and updates.</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Enter your email" class="newsletter-input" required>
+                        <button type="submit" class="newsletter-btn"><i class="fas fa-paper-plane"></i> Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 Skillshastra. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navigation Toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                if (navMenu.classList.contains('active')) {
+                    navMenu.classList.remove('active');
+                    hamburger.classList.remove('active');
+                }
+            });
+        });
+
+        // Contact Form Validation
+        const contactForm = document.querySelector('#contact-form');
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = contactForm.querySelector('#name').value.trim();
+            const email = contactForm.querySelector('#email').value.trim();
+            const subject = contactForm.querySelector('#subject').value.trim();
+            const message = contactForm.querySelector('#message').value.trim();
+
+            if (name && email && subject && message && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                alert('Thank you for your message! We will get back to you soon.');
+                contactForm.reset();
+            } else {
+                alert('Please fill out all fields correctly.');
+            }
+        });
+
+        // Newsletter Form Validation
+        const newsletterForm = document.querySelector('.newsletter-form');
+        newsletterForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const emailInput = newsletterForm.querySelector('.newsletter-input');
+            const email = emailInput.value.trim();
+            if (email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                alert('Thank you for subscribing to Skillshastra!');
+                emailInput.value = '';
+            } else {
+                alert('Please enter a valid email address.');
+            }
+        });
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
