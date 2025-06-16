@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web Development Courses - Skillshastra</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -26,7 +24,6 @@
             padding: 1rem 2rem;
             border: none;
             border-radius: 12px;
-            /* font-size: 1.1rem; */
             font-weight: 500;
             cursor: pointer;
             text-decoration: none;
@@ -49,8 +46,20 @@
             box-shadow: 0 8px 30px rgba(124, 58, 237, 0.4);
         }
 
+        .btm-secondary {
+            background: #fff;
+            color: #7c3aed;
+            border: 2px solid #7c3aed;
+        }
+
+        .btm-secondary:hover {
+            background: #7c3aed;
+            color: #fff;
+            box-shadow: 0 8px 20px rgba(124, 58, 237, 0.3);
+        }
+
         .navbar {
-            position: fixed;
+            position: sticky;
             top: 0;
             width: 100%;
             background: rgba(255, 255, 255, 0.95);
@@ -109,7 +118,7 @@
             white-space: nowrap;
         }
 
-        .nav-link:hover {
+        .nav-link:hover, .nav-link:focus {
             color: #7c3aed;
             background: rgba(124, 58, 237, 0.1);
         }
@@ -131,7 +140,7 @@
             z-index: 1000;
         }
 
-        .nav-item:hover .dropdown {
+        .nav-item:hover .dropdown, .nav-item:focus-within .dropdown {
             opacity: 1;
             visibility: visible;
             transform: translateY(0);
@@ -148,7 +157,7 @@
             border-left: 3px solid transparent;
         }
 
-        .dropdown-item:hover {
+        .dropdown-item:hover, .dropdown-item:focus {
             background: rgba(124, 58, 237, 0.05);
             color: #7c3aed;
             border-left-color: #7c3aed;
@@ -170,9 +179,21 @@
             transition: all 0.3s ease;
         }
 
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
         /* Hero Section */
         .courses-hero {
-            min-height: 60vh;
+            min-height: 70vh;
             display: flex;
             align-items: center;
             position: relative;
@@ -188,8 +209,9 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: radial-gradient(circle at 30% 20%, rgba(124, 58, 237, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 70% 80%, rgba(168, 85, 247, 0.1) 0%, transparent 50%);
+            background: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"%3E%3Cpath fill="%23a855f7" fill-opacity="0.1" d="M0,128L48,144C96,160,192,192,288,186.7C384,181,480,139,576,122.7C672,107,768,117,864,138.7C960,160,1056,192,1152,197.3C1248,203,1344,181,1392,170.7L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"%3E%3C/path%3E%3C/svg%3E') no-repeat bottom center/cover,
+                        radial-gradient(circle at 30% 20%, rgba(124, 58, 237, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 80%, rgba(168, 85, 247, 0.1) 0%, transparent 50%);
             pointer-events: none;
         }
 
@@ -212,7 +234,7 @@
         }
 
         .courses-hero h1 {
-            font-size: 3rem;
+            font-size: 3.5rem;
             font-weight: 700;
             color: white;
             line-height: 1.2;
@@ -228,25 +250,30 @@
         }
 
         @keyframes gradient-shift {
-
-            0%,
-            100% {
+            0%, 100% {
                 background-position: 0% 50%;
             }
-
             50% {
                 background-position: 100% 50%;
             }
         }
 
         .courses-hero p {
-            font-size: 1.1rem;
-            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
             line-height: 1.6;
-            max-width: 600px;
+            max-width: 700px;
             margin: 0 auto 2rem;
             opacity: 0;
             animation: fadeIn 1.5s ease forwards 0.5s;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            opacity: 0;
+            animation: fadeIn 1.5s ease forwards 0.7s;
         }
 
         @keyframes fadeIn {
@@ -255,10 +282,101 @@
             }
         }
 
+        /* Benefits Section */
+        .benefits-section {
+            padding: 6rem 2rem;
+            background: #fff;
+            text-align: center;
+        }
+
+        .benefits-section h2 {
+            font-size: 2.5rem;
+            color: #7c3aed;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .benefits-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, #7c3aed, #a855f7);
+            border-radius: 2px;
+        }
+
+        .benefits-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .benefit-card {
+            background: #f8f9ff;
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: cardFadeIn 1s ease forwards;
+        }
+
+        .benefit-card:nth-child(1) { --delay: 1; }
+        .benefit-card:nth-child(2) { --delay: 2; }
+        .benefit-card:nth-child(3) { --delay: 3; }
+
+        .benefit-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(124, 58, 237, 0.2);
+        }
+
+        .benefit-icon {
+            font-size: 2.5rem;
+            color: #7c3aed;
+            margin-bottom: 1rem;
+        }
+
+        .benefit-card h3 {
+            font-size: 1.5rem;
+            color: #1f2937;
+            margin-bottom: 0.75rem;
+        }
+
+        .benefit-card p {
+            font-size: 0.9rem;
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
         /* Courses Section */
         .courses-section {
             padding: 6rem 2rem;
             background: linear-gradient(135deg, #f8f9ff 0%, #e8f0ff 100%);
+        }
+
+        .courses-section h2 {
+            font-size: 2.5rem;
+            color: #7c3aed;
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .courses-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, #7c3aed, #a855f7);
+            border-radius: 2px;
         }
 
         .courses-container {
@@ -284,17 +402,9 @@
             animation-delay: calc(var(--delay) * 0.2s);
         }
 
-        .course-card:nth-child(1) {
-            --delay: 1;
-        }
-
-        .course-card:nth-child(2) {
-            --delay: 2;
-        }
-
-        .course-card:nth-child(3) {
-            --delay: 3;
-        }
+        .course-card:nth-child(1) { --delay: 1; }
+        .course-card:nth-child(2) { --delay: 2; }
+        .course-card:nth-child(3) { --delay: 3; }
 
         @keyframes cardFadeIn {
             to {
@@ -306,21 +416,9 @@
         .course-card:hover {
             transform: translateY(-10px);
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-        }
-
-        .course-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(124, 58, 237, 0.1), transparent);
-            transition: all 0.5s ease;
-        }
-
-        .course-card:hover::before {
-            left: 100%;
+            border: 2px solid transparent;
+            background: linear-gradient(white, white) padding-box,
+                        linear-gradient(135deg, #7c3aed, #a855f7) border-box;
         }
 
         .course-icon {
@@ -338,7 +436,16 @@
             font-size: 1.5rem;
             font-weight: 600;
             color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .course-card .course-meta {
+            font-size: 0.8rem;
+            color: #6b7280;
             margin-bottom: 1rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
         }
 
         .course-card p {
@@ -385,6 +492,74 @@
             box-shadow: 0 8px 20px rgba(124, 58, 237, 0.3);
         }
 
+        /* Why Us Section */
+        .why-us-section {
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            color: white;
+            text-align: center;
+        }
+
+        .why-us-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .why-us-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: #fff;
+            border-radius: 2px;
+        }
+
+        .why-us-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .why-us-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: cardFadeIn 1s ease forwards;
+        }
+
+        .why-us-card:nth-child(1) { --delay: 1; }
+        .why-us-card:nth-child(2) { --delay: 2; }
+        .why-us-card:nth-child(3) { --delay: 3; }
+
+        .why-us-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .why-us-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .why-us-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .why-us-card p {
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
         /* Footer Styles */
         .footer {
             background: linear-gradient(135deg, #0a0a1a 0%, #14142b 50%, #1f1247 100%);
@@ -402,7 +577,7 @@
             right: 0;
             bottom: 0;
             background: radial-gradient(circle at 20% 20%, rgba(88, 28, 135, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(147, 51, 234, 0.15) 0%, transparent 50%);
+                        radial-gradient(circle at 80% 80%, rgba(147, 51, 234, 0.15) 0%, transparent 50%);
             pointer-events: none;
         }
 
@@ -521,6 +696,7 @@
             display: flex;
             gap: 0.5rem;
             margin-top: 1rem;
+            position: relative;
         }
 
         .newsletter-input {
@@ -539,6 +715,10 @@
             outline: none;
             background: rgba(255, 255, 255, 0.1);
             transform: scale(1.02);
+        }
+
+        .newsletter-input:invalid:not(:placeholder-shown) {
+            border: 2px solid #ef4444;
         }
 
         .newsletter-btn {
@@ -582,11 +762,102 @@
             text-align: center;
             padding-top: 2rem;
             border-top: 1px solid rgba(88, 28, 135, 0.3);
+            position: relative;
         }
 
         .footer-bottom p {
             font-size: 0.8rem;
             color: rgba(255, 255, 255, 0.5);
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            color: white;
+            padding: 0.75rem;
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            display: none;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            transform: scale(0.7);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #4b5563;
+        }
+
+        .modal-content h3 {
+            font-size: 1.5rem;
+            color: #7c3aed;
+            margin-bottom: 1rem;
+        }
+
+        .modal-content p {
+            font-size: 0.9rem;
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .modal-content ul {
+            list-style: none;
+            margin-bottom: 1rem;
+        }
+
+        .modal-content ul li {
+            font-size: 0.9rem;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .modal-content ul li i {
+            color: #7c3aed;
         }
 
         /* Responsive Design */
@@ -614,6 +885,13 @@
                 visibility: visible;
             }
 
+            .dropdown {
+                position: static;
+                box-shadow: none;
+                border: none;
+                padding: 0.5rem 0;
+            }
+
             .hamburger {
                 display: flex;
             }
@@ -623,14 +901,23 @@
             }
 
             .courses-hero h1 {
-                font-size: 2.5rem;
+                font-size: 2rem;
             }
 
-            .courses-container {
+            .courses-hero p {
+                font-size: 1rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .courses-container, .benefits-container, .why-us-container {
                 grid-template-columns: 1fr;
             }
 
-            .course-card {
+            .course-card, .benefit-card, .why-us-card {
                 padding: 1.5rem;
             }
 
@@ -639,11 +926,7 @@
                 text-align: center;
             }
 
-            .social-links {
-                justify-content: center;
-            }
-
-            .footer-logo {
+            .social-links, .footer-logo {
                 justify-content: center;
             }
 
@@ -658,7 +941,6 @@
         }
     </style>
 </head>
-
 <body>
     <!-- Navigation -->
     <nav class="navbar">
@@ -667,46 +949,33 @@
             <ul class="nav-menu">
                 <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Courses <i class="fas fa-chevron-down"
-                            style="font-size: 0.8rem;"></i></a>
+                    <a href="#" class="nav-link" tabindex="0">Courses <i class="fas fa-chevron-down" style="font-size: 0.8rem;"></i></a>
                     <div class="dropdown">
-                        <a href="Programming.html" class="dropdown-item"><i class="fas fa-laptop-code"></i> Programming
-                            Languages</a>
-                        <a href="webdev.html" class="dropdown-item"><i class="fas fa-globe"></i> Web Development</a>
-                        <a href="digitalMarketing.html" class="dropdown-item"><i class="fas fa-bullhorn"></i> Digital
-                            Marketing</a>
-                        <a href="genai.html" class="dropdown-item"><i class="fas fa-robot"></i> Generative AI</a>
+                        <a href="Programming.html" class="dropdown-item">Programming Languages</a>
+                        <a href="webdev.html" class="dropdown-item">Web Development</a>
+                        <a href="digitalMarketing.html" class="dropdown-item">Digital Marketing</a>
+                        <a href="genai.html" class="dropdown-item">Generative AI</a>
                     </div>
                 </li>
                 <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Instructors <i class="fas fa-chevron-down"
-                            style="font-size: 0.8rem;"></i></a>
+                    <a href="#" class="nav-link" tabindex="0">Instructors <i class="fas fa-chevron-down" style="font-size: 0.8rem;"></i></a>
                     <div class="dropdown">
                         <a href="MeetOurTeam.html" class="dropdown-item"><i class="fas fa-users"></i> Meet Our Team</a>
-                        <a href="ExpertProfile.html" class="dropdown-item"><i class="fas fa-user-tie"></i> Expert
-                            Profiles</a>
+                        <a href="ExpertProfile.html" class="dropdown-item"><i class="fas fa-user-tie"></i> Expert Profiles</a>
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Resources <i class="fas fa-chevron-down"
-                            style="font-size: 0.8rem;"></i></a>
+                    <a href="#" class="nav-link" tabindex="0">Resources <i class="fas fa-chevron-down" style="font-size: 0.8rem;"></i></a>
                     <div class="dropdown">
-                        <a href="StudyMaterials.html" class="dropdown-item"><i class="fas fa-file-alt"></i> Study
-                            Materials</a>
-                        <a href="PracticeProject.html" class="dropdown-item"><i class="fas fa-project-diagram"></i>
-                            Practice Projects</a>
-                        <a href="CodingChallenge.html" class="dropdown-item"><i class="fas fa-trophy"></i> Coding
-                            Challenges</a>
+                        <a href="StudyMaterials.html" class="dropdown-item"><i class="fas fa-file-alt"></i> Study Materials</a>
+                        <a href="PracticeProject.html" class="dropdown-item"><i class="fas fa-project-diagram"></i> Practice Projects</a>
+                        <a href="CodingChallenge.html" class="dropdown-item"><i class="fas fa-trophy"></i> Coding Challenges</a>
                         <a href="#" class="dropdown-item"><i class="fas fa-route"></i> Career Guidance</a>
                     </div>
                 </li>
                 <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
-                <li>
-                    <a href="signup.html" class="btm btm-primary">
-                        <i class="fas fa-search"></i> Login
-                    </a>
-                </li>
+                <li><a href="signup.html" class="btm btm-primary"><i class="fas fa-user"></i> Login</a></li>
             </ul>
             <div class="hamburger">
                 <span></span>
@@ -719,34 +988,92 @@
     <!-- Courses Hero Section -->
     <section class="courses-hero">
         <div class="courses-hero-container">
-            <h1>Become a <span class="gradient-text">Web Development</span> Expert</h1>
-            <p>Master Frontend, Backend, and Full Stack development with our hands-on MERN Stack courses.</p>
+            <h1>Become a <span class="gradient-text" id="typing-text">Web Development</span></h1>
+            <p>Master Frontend, Backend, and Full Stack development with our hands-on, industry-focused MERN Stack courses designed to make you job-ready.</p>
+            <div class="hero-buttons">
+                <a href="#courses" class="btm btm-primary"><i class="fas fa-arrow-right"></i> Explore Courses</a>
+                <a href="contact.html" class="btm btm-secondary"><i class="fas fa-info-circle"></i> Learn More</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="benefits-section">
+        <h2>Why Learn Web Development?</h2>
+        <div class="benefits-container">
+            <div class="benefit-card">
+                <i class="fas fa-briefcase benefit-icon"></i>
+                <h3>High-Demand Careers</h3>
+                <p>Web developers are sought after globally, with opportunities in tech giants and startups alike.</p>
+            </div>
+            <div class="benefit-card">
+                <i class="fas fa-paint-brush benefit-icon"></i>
+                <h3>Creative Freedom</h3>
+                <p>Design and build innovative, user-friendly websites and applications that stand out.</p>
+            </div>
+            <div class="benefit-card">
+                <i class="fas fa-globe benefit-icon"></i>
+                <h3>Global Opportunities</h3>
+                <p>Work remotely or freelance, connecting with clients and teams worldwide.</p>
+            </div>
         </div>
     </section>
 
     <!-- Courses Section -->
-    <section class="courses-section">
+    <section class="courses-section" id="courses">
+        <h2>Our Web Development Courses</h2>
         <div class="courses-container">
-            <div class="course-card">
+            <div class="course-card" data-course="frontend">
                 <i class="fas fa-desktop course-icon"></i>
                 <h3>Frontend Development</h3>
-                <p>Learn HTML, CSS, and JavaScript to create stunning, interactive user interfaces for modern websites.
-                </p>
-                <button class="course-btn"><i class="fas fa-arrow-right"></i> Explore Course</button>
+                <div class="course-meta">
+                    <span><i class="fas fa-clock"></i> 8 Weeks</span>
+                    <span><i class="fas fa-level-up-alt"></i> Beginner</span>
+                </div>
+                <p>Learn HTML, CSS, and JavaScript to create stunning, interactive user interfaces for modern websites.</p>
+                <button class="course-btn" onclick="openModal('frontend')"><i class="fas fa-arrow-right"></i> Explore Course</button>
             </div>
-            <div class="course-card">
+            <div class="course-card" data-course="backend">
                 <i class="fas fa-server course-icon"></i>
                 <h3>Backend Development</h3>
-                <p>Master server-side technologies like Node.js and Express to build robust APIs and manage databases.
-                </p>
-                <button class="course-btn"><i class="fas fa-arrow-right"></i> Explore Course</button>
+                <div class="course-meta">
+                    <span><i class="fas fa-clock"></i> 10 Weeks</span>
+                    <span><i class="fas fa-level-up-alt"></i> Intermediate</span>
+                </div>
+                <p>Master server-side technologies like Node.js and Express to build robust APIs and manage databases.</p>
+                <button class="course-btn" onclick="openModal('backend')"><i class="fas fa-arrow-right"></i> Explore Course</button>
             </div>
-            <div class="course-card">
+            <div class="course-card" data-course="fullstack">
                 <i class="fas fa-laptop-code course-icon"></i>
                 <h3>Full Stack (MERN)</h3>
-                <p>Become a full-stack developer with MongoDB, Express, React, and Node.js to build complete web
-                    applications.</p>
-                <button class="course-btn"><i class="fas fa-arrow-right"></i> Explore Course</button>
+                <div class="course-meta">
+                    <span><i class="fas fa-clock"></i> 12 Weeks</span>
+                    <span><i class="fas fa-level-up-alt"></i> Advanced</span>
+                </div>
+                <p>Become a full-stack developer with MongoDB, Express, React, and Node.js to build complete web applications.</p>
+                <button class="course-btn" onclick="openModal('fullstack')"><i class="fas fa-arrow-right"></i> Explore Course</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Us Section -->
+    <section class="why-us-section">
+        <h2>Why Choose Skillshastra?</h2>
+        <div class="why-us-container">
+            <div class="why-us-card">
+                <i class="fas fa-chalkboard-teacher why-us-icon"></i>
+                <h3>Expert Instructors</h3>
+                <p>Learn from industry professionals with years of real-world experience.</p>
+            </div>
+            <div class="why-us-card">
+                <i class="fas fa-project-diagram why-us-icon"></i>
+                <h3>Hands-On Projects</h3>
+                <p>Build real-world applications to showcase in your portfolio.</p>
+            </div>
+            <div class="why-us-card">
+                <i class="fas fa-user-shield why-us-icon"></i>
+                <h3>Career Support</h3>
+                <p>Get personalized mentorship and job placement assistance.</p>
             </div>
         </div>
     </section>
@@ -757,8 +1084,7 @@
             <div class="footer-content">
                 <div class="footer-section footer-brand">
                     <a href="#" class="footer-logo"><i class="fas fa-code"></i> Skillshastra</a>
-                    <p class="footer-description">Empowering the future with cutting-edge tech skills and
-                        industry-focused learning.</p>
+                    <p class="footer-description">Empowering the future with cutting-edge tech skills and industry-focused learning.</p>
                     <div class="social-links">
                         <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
                         <a href="#" class="social-icon"><i class="fab fa-linkedin"></i></a>
@@ -766,7 +1092,6 @@
                         <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
-
                 <div class="footer-section footer-links">
                     <h4 class="footer-title">Quick Links</h4>
                     <ul class="footer-menu">
@@ -777,30 +1102,40 @@
                         <li><a href="#" class="footer-link">Contact</a></li>
                     </ul>
                 </div>
-
                 <div class="footer-section footer-contact">
                     <h4 class="footer-title">Contact Us</h4>
-                    <p><i class="fas fa-envelope"></i>skillshastra001@gmail.com</p>
-                    <p><i class="fas fa-phone"></i>+91 8510882886 , +91 8851020767</p>
+                    <p><i class="fas fa-envelope"></i> skillshastra001@gmail.com</p>
+                    <p><i class="fas fa-phone"></i> +91 8510882886, +91 8851020767</p>
                     <p><i class="fas fa-map-marker-alt"></i> Ballabgarh, Faridabad, Haryana</p>
                 </div>
-
                 <div class="footer-section footer-newsletter">
                     <h4 class="footer-title">Stay Updated</h4>
                     <p>Subscribe to our newsletter for the latest courses and updates.</p>
                     <form class="newsletter-form">
-                        <input type="email" placeholder="Enter your email" class="newsletter-input">
-                        <button type="submit" class="newsletter-btn"><i class="fas fa-paper-plane"></i>
-                            Subscribe</button>
+                        <input type="email" placeholder="Enter your email" class="newsletter-input" required>
+                        <button type="submit" class="newsletter-btn"><i class="fas fa-paper-plane"></i> Subscribe</button>
                     </form>
                 </div>
             </div>
-
             <div class="footer-bottom">
                 <p>© 2025 Skillshastra. All Rights Reserved.</p>
             </div>
         </div>
     </footer>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top"><i class="fas fa-arrow-up"></i></button>
+
+    <!-- Modal -->
+    <div class="modal" id="course-modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <h3 id="modal-title"></h3>
+            <p id="modal-description"></p>
+            <ul id="modal-details"></ul>
+            <a href="#" class="btm btm-primary">Enroll Now</a>
+        </div>
+    </div>
 
     <script>
         // Mobile Menu Toggle
@@ -815,7 +1150,7 @@
         }
 
         // Smooth Scroll for Buttons and Links
-        document.querySelectorAll('.course-btn, .footer-link, .nav-link').forEach(link => {
+        document.querySelectorAll('.course-btn, .footer-link, .nav-link, .btm').forEach(link => {
             link.addEventListener('click', (e) => {
                 const href = link.getAttribute('href');
                 if (href && href.startsWith('#')) {
@@ -830,8 +1165,9 @@
                         ripple.style.transform = 'scale(0)';
                         ripple.style.animation = 'ripple 0.6s linear';
                         const rect = link.getBoundingClientRect();
-                        ripple.style.left = `${e.clientX - rect.left}px`;
-                        ripple.style.top = `${e.clientY - rect.top}px`;
+                        ripple.style.width = ripple.style.height = `${Math.max(rect.width, rect.height) * 2}px`;
+                        ripple.style.left = `${e.clientX - rect.left - rect.width / 2}px`;
+                        ripple.style.top = `${e.clientY - rect.top - rect.height / 2}px`;
                         link.appendChild(ripple);
                         setTimeout(() => ripple.remove(), 600);
                     }
@@ -853,6 +1189,50 @@
             }
         });
 
+        // Typing Animation for Hero
+        const typingText = document.getElementById('typing-text');
+        const words = ['Web Development Master', 'Frontend Expert', 'Backend Guru', 'Full Stack Master'];
+        let wordIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+
+        function type() {
+            const currentWord = words[wordIndex];
+            if (!isDeleting && charIndex < currentWord.length) {
+                typingText.textContent = currentWord.substring(0, charIndex + 1);
+                charIndex++;
+                setTimeout(type, 100);
+            } else if (isDeleting && charIndex > 0) {
+                typingText.textContent = currentWord.substring(0, charIndex - 1);
+                charIndex--;
+                setTimeout(type, 50);
+            } else if (!isDeleting && charIndex === currentWord.length) {
+                setTimeout(() => { isDeleting = true; type(); }, 1000);
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                wordIndex = (wordIndex + 1) % words.length;
+                setTimeout(type, 200);
+            }
+        }
+        type();
+
+        // Scroll Animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.2 });
+
+        document.querySelectorAll('.benefits-section, .courses-section, .why-us-section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(30px)';
+            section.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(section);
+        });
+
         // Footer Newsletter Form Submission
         const newsletterForm = document.querySelector('.newsletter-form');
         if (newsletterForm) {
@@ -863,19 +1243,106 @@
                 if (email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
                     alert('Thank you for subscribing to Skillshastra!');
                     emailInput.value = '';
+                    emailInput.style.border = 'none';
                 } else {
-                    alert('Please enter a valid email address.');
+                    emailInput.style.border = '2px solid #ef4444';
+                    emailInput.focus();
                 }
             });
         }
 
-        // Footer Social and Link Hover Animation
-        document.querySelectorAll('.footer-link, .social-icon').forEach(link => {
-            link.addEventListener('mouseenter', () => {
-                link.style.transition = 'all 0.3s ease';
+        // Back to Top Button
+        const backToTop = document.querySelector('.back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTop.style.display = 'block';
+            } else {
+                backToTop.style.display = 'none';
+            }
+        });
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Modal Functionality
+        const modal = document.getElementById('course-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalDescription = document.getElementById('modal-description');
+        const modalDetails = document.getElementById('modal-details');
+        const modalClose = document.querySelector('.modal-close');
+
+        const courseData = {
+            frontend: {
+                title: 'Frontend Development',
+                description: 'Master the art of creating responsive and interactive user interfaces.',
+                details: [
+                    'HTML5, CSS3, JavaScript',
+                    'React and Tailwind CSS',
+                    'Responsive Design Principles',
+                    'UI/UX Fundamentals'
+                ]
+            },
+            backend: {
+                title: 'Backend Development',
+                description: 'Build powerful server-side applications and APIs.',
+                details: [
+                    'Node.js and Express',
+                    'MongoDB and SQL',
+                    'RESTful API Development',
+                    'Authentication & Security'
+                ]
+            },
+            fullstack: {
+                title: 'Full Stack (MERN)',
+                description: 'Become a versatile developer by mastering both frontend and backend.',
+                details: [
+                    'MongoDB, Express, React, Node.js',
+                    'End-to-End Project Development',
+                    'DevOps Basics',
+                    'Portfolio Building'
+                ]
+            }
+        };
+
+        function openModal(course) {
+            const data = courseData[course];
+            modalTitle.textContent = data.title;
+            modalDescription.textContent = data.description;
+            modalDetails.innerHTML = data.details.map(item => `<li><i class="fas fa-check-circle"></i> ${item}</li>`).join('');
+            modal.style.display = 'flex';
+            modal.classList.add('active');
+        }
+
+        modalClose.addEventListener('click', () => {
+            modal.classList.remove('active');
+            setTimeout(() => { modal.style.display = 'none'; }, 300);
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+                setTimeout(() => { modal.style.display = 'none'; }, 300);
+            }
+        });
+
+        // Accessibility: Close mobile menu on link click
+        document.querySelectorAll('.nav-link, .dropdown-item').forEach(link => {
+            link.addEventListener('click', () => {
+                if (navMenu.classList.contains('active')) {
+                    navMenu.classList.remove('active');
+                    hamburger.classList.remove('active');
+                }
             });
-            link.addEventListener('mouseleave', () => {
-                link.style.transform = '';
+        });
+
+        // Accessibility: Keyboard navigation for dropdowns
+        document.querySelectorAll('.nav-link[tabindex="0"]').forEach(link => {
+            link.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    link.parentElement.querySelector('.dropdown').focus();
+                }
             });
         });
 
@@ -890,17 +1357,6 @@
             }
         `;
         document.head.appendChild(style);
-
-        // Accessibility: Close mobile menu on link click
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', () => {
-                if (navMenu.classList.contains('active')) {
-                    navMenu.classList.remove('active');
-                    hamburger.classList.remove('active');
-                }
-            });
-        });
     </script>
 </body>
-
 </html>
