@@ -331,6 +331,30 @@ app.get("/dashboard", (req, res) => {
 app.get("/about", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "about.html"));
 });
+app.get("/digital-marketing", (req, res) => {
+  res.sendFile(path.join(__dirname, "views/courses", "digitalMarketing.html"));
+});
+app.get("/details-digital-marketing", (req, res) => {
+  res.sendFile(path.join(__dirname, "views/courses/course-details", "digital-marketing.html"));
+});
+app.get("/web-dev", (req, res) => {
+  res.sendFile(path.join(__dirname, "views/courses", "webdev.html"));
+});
+app.get("/frontend", (req, res) => {
+  res.sendFile(path.join(__dirname, "views/courses/course-details", "frontend.html"));
+});
+app.get("/backend", (req, res) => {
+  res.sendFile(path.join(__dirname, "views/courses/course-details", "backend.html"));
+});
+app.get("/fullstack", (req, res) => {
+  res.sendFile(path.join(__dirname, "views/courses/course-details", "fullstack.html"));
+});
+app.get("/programming", (req, res) => {
+  res.sendFile(path.join(__dirname, "views/courses", "Programming.html"));
+});
+app.get("/genai", (req, res) => {
+  res.sendFile(path.join(__dirname, "views/courses", "genai.html"));
+});
 
 // Start Server
 connectDB().then(() => {
