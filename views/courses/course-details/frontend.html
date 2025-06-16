@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Frontend Development Courses - Skillshastra</title>
+    <title>Frontend Development Course Details - Skillshastra</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -278,19 +278,6 @@
             opacity: 0;
             transform: translateY(20px);
             animation: cardFadeIn 1s ease forwards;
-            animation-delay: calc(var(--delay) * 0.2s);
-        }
-
-        .course-details:nth-child(1) {
-            --delay: 1;
-        }
-
-        .course-details:nth-child(2) {
-            --delay: 2;
-        }
-
-        .course-details:nth-child(3) {
-            --delay: 3;
         }
 
         @keyframes cardFadeIn {
@@ -348,12 +335,14 @@
         }
 
         .instructors,
-        .syllabus {
+        .syllabus,
+        .benefits {
             margin-bottom: 2rem;
         }
 
         .instructors h3,
-        .syllabus h3 {
+        .syllabus h3,
+        .benefits h3 {
             font-size: 1.5rem;
             color: #1f2937;
             margin-bottom: 1rem;
@@ -385,11 +374,13 @@
             color: #6b7280;
         }
 
-        .syllabus ul {
+        .syllabus ul,
+        .benefits ul {
             list-style: none;
         }
 
-        .syllabus ul li {
+        .syllabus ul li,
+        .benefits ul li {
             font-size: 0.9rem;
             color: #1f2937;
             margin-bottom: 0.5rem;
@@ -398,7 +389,8 @@
             gap: 0.5rem;
         }
 
-        .syllabus ul li i {
+        .syllabus ul li i,
+        .benefits ul li i {
             color: #7c3aed;
         }
 
@@ -756,7 +748,8 @@
             }
 
             .instructors h3,
-            .syllabus h3 {
+            .syllabus h3,
+            .benefits h3 {
                 font-size: 1.2rem;
             }
         }
@@ -822,26 +815,27 @@
     <!-- Courses Hero Section -->
     <section class="courses-hero">
         <div class="courses-hero-container">
-            <h1>Frontend Development Courses</h1>
-            <p>Master the art of creating stunning, responsive websites with our comprehensive frontend development
-                courses designed for all skill levels.</p>
+            <h1>Frontend Development Course Details</h1>
+            <p>Dive deep into our comprehensive Frontend Development course, designed to transform you into a proficient
+                frontend developer with hands-on projects and expert guidance.</p>
         </div>
     </section>
 
     <!-- Course Details Section -->
     <section class="course-details-section">
         <div class="course-details-container">
-            <div class="course-details" id="frontend-beginner">
-                <h2>Frontend Development - Beginner</h2>
+            <div class="course-details">
+                <h2>Frontend Development</h2>
                 <div class="course-meta">
-                    <span><i class="fas fa-clock"></i> Duration: 6 Weeks</span>
-                    <span><i class="fas fa-rupee-sign"></i> Fees: ₹12,000</span>
-                    <span><i class="fas fa-level-up-alt"></i> Level: Beginner</span>
-                    <span class="rating"><i class="fas fa-star"></i> 4.8 (1,200 reviews)</span>
+                    <span><i class="fas fa-clock"></i> Duration: 18 Weeks</span>
+                    <span><i class="fas fa-rupee-sign"></i> Fees: ₹35,000</span>
+                    <span><i class="fas fa-level-up-alt"></i> Level: Beginner to Advanced</span>
+                    <span class="rating"><i class="fas fa-star"></i> 4.8 (1,500 reviews)</span>
                 </div>
                 <div class="course-description">
-                    <p>Start your journey in web development by learning the fundamentals of HTML, CSS, and JavaScript.
-                        Build responsive websites and create a strong foundation for frontend development.</p>
+                    <p>This course is meticulously crafted to take you from the basics of web development to building
+                        complex, interactive, and accessible web interfaces. You'll master modern frontend technologies
+                        and best practices through real-world projects and mentorship from industry experts.</p>
                 </div>
                 <div class="instructors">
                     <h3>Instructors</h3>
@@ -851,73 +845,11 @@
                             <h4>Anita Sharma</h4>
                             <p>Senior Frontend Developer, 8+ years experience</p>
                         </div>
-                    </div>
-                </div>
-                <div class="syllabus">
-                    <h3>Course Syllabus</h3>
-                    <ul>
-                        <li><i class="fas fa-check-circle"></i> Introduction to Web Development</li>
-                        <li><i class="fas fa-check-circle"></i> HTML5: Structure and Semantics</li>
-                        <li><i class="fas fa-check-circle"></i> CSS3: Styling and Layouts</li>
-                        <li><i class="fas fa-check-circle"></i> JavaScript Basics: Variables, Functions, Events</li>
-                        <li><i class="fas fa-check-circle"></i> Responsive Design with Media Queries</li>
-                        <li><i class="fas fa-check-circle"></i> Project: Personal Portfolio Website</li>
-                    </ul>
-                </div>
-                <a href="signup.html" class="enroll-btn"><i class="fas fa-arrow-right"></i> Enroll Now</a>
-            </div>
-
-            <div class="course-details" id="frontend-intermediate">
-                <h2>Frontend Development - Intermediate</h2>
-                <div class="course-meta">
-                    <span><i class="fas fa-clock"></i> Duration: 8 Weeks</span>
-                    <span><i class="fas fa-rupee-sign"></i> Fees: ₹18,000</span>
-                    <span><i class="fas fa-level-up-alt"></i> Level: Intermediate</span>
-                    <span class="rating"><i class="fas fa-star"></i> 4.9 (900 reviews)</span>
-                </div>
-                <div class="course-description">
-                    <p>Take your frontend skills to the next level with React and Tailwind CSS. Learn to build dynamic
-                        user interfaces and modern web applications.</p>
-                </div>
-                <div class="instructors">
-                    <h3>Instructors</h3>
-                    <div class="instructor-list">
                         <div class="instructor">
                             <img src="https://via.placeholder.com/80" alt="Instructor">
                             <h4>Rahul Verma</h4>
                             <p>React Expert, 10+ years experience</p>
                         </div>
-                    </div>
-                </div>
-                <div class="syllabus">
-                    <h3>Course Syllabus</h3>
-                    <ul>
-                        <li><i class="fas fa-check-circle"></i> Advanced CSS: Flexbox and Grid</li>
-                        <li><i class="fas fa-check-circle"></i> JavaScript ES6+: Modules, Promises, Async/Await</li>
-                        <li><i class="fas fa-check-circle"></i> React: Components, Props, State</li>
-                        <li><i class="fas fa-check-circle"></i> Tailwind CSS for Rapid Styling</li>
-                        <li><i class="fas fa-check-circle"></i> State Management with Context API</li>
-                        <li><i class="fas fa-check-circle"></i> Project: E-Commerce Website</li>
-                    </ul>
-                </div>
-                <a href="signup.html" class="enroll-btn"><i class="fas fa-arrow-right"></i> Enroll Now</a>
-            </div>
-
-            <div class="course-details" id="frontend-advanced">
-                <h2>Frontend Development - Advanced</h2>
-                <div class="course-meta">
-                    <span><i class="fas fa-clock"></i> Duration: 10 Weeks</span>
-                    <span><i class="fas fa-rupee-sign"></i> Fees: ₹25,000</span>
-                    <span><i class="fas fa-level-up-alt"></i> Level: Advanced</span>
-                    <span class="rating"><i class="fas fa-star"></i> 4.7 (600 reviews)</span>
-                </div>
-                <div class="course-description">
-                    <p>Master advanced frontend frameworks and UI/UX principles. Learn to optimize performance and build
-                        complex web applications.</p>
-                </div>
-                <div class="instructors">
-                    <h3>Instructors</h3>
-                    <div class="instructor-list">
                         <div class="instructor">
                             <img src="https://via.placeholder.com/80" alt="Instructor">
                             <h4>Priya Gupta</h4>
@@ -926,14 +858,39 @@
                     </div>
                 </div>
                 <div class="syllabus">
-                    <h3>Course Syllabus</h3>
+                    <h3>Detailed Course Syllabus</h3>
                     <ul>
-                        <li><i class="fas fa-check-circle"></i> Advanced React: Hooks, Suspense, Lazy Loading</li>
-                        <li><i class="fas fa-check-circle"></i> Next.js for Server-Side Rendering</li>
+                        <li><i class="fas fa-check-circle"></i> Module 1: Web Fundamentals</li>
+                        <li><i class="fas fa-check-circle"></i> HTML5: Structure and Semantics</li>
+                        <li><i class="fas fa-check-circle"></i> CSS3: Styling, Flexbox, and Grid</li>
+                        <li><i class="fas fa-check-circle"></i> JavaScript: ES6+, DOM Manipulation</li>
+                        <li><i class="fas fa-check-circle"></i> Module 2: Intermediate Frontend</li>
+                        <li><i class="fas fa-check-circle"></i> Advanced CSS: Animations and Transitions</li>
+                        <li><i class="fas fa-check-circle"></i> JavaScript: Promises, Async/Await, Modules</li>
+                        <li><i class="fas fa-check-circle"></i> React: Components, Hooks, State Management</li>
+                        <li><i class="fas fa-check-circle"></i> Tailwind CSS for Rapid Styling</li>
+                        <li><i class="fas fa-check-circle"></i> Module 3: Advanced Frontend</li>
+                        <li><i class="fas fa-check-circle"></i> Next.js: Server-Side Rendering, Static Site Generation
+                        </li>
+                        <li><i class="fas fa-check-circle"></i> TypeScript for Type-Safe Development</li>
+                        <li><i class="fas fa-check-circle"></i> Redux for Advanced State Management</li>
                         <li><i class="fas fa-check-circle"></i> UI/UX Design Principles</li>
-                        <li><i class="fas fa-check-circle"></i> Performance Optimization Techniques</li>
                         <li><i class="fas fa-check-circle"></i> Accessibility (a11y) Best Practices</li>
-                        <li><i class="fas fa-check-circle"></i> Project: Admin Dashboard</li>
+                        <li><i class="fas fa-check-circle"></i> Performance Optimization Techniques</li>
+                        <li><i class="fas fa-check-circle"></i> Module 4: Projects and Portfolio</li>
+                        <li><i class="fas fa-check-circle"></i> Project 1: Personal Portfolio Website</li>
+                        <li><i class="fas fa-check-circle"></i> Project 2: E-Commerce Website</li>
+                        <li><i class="fas fa-check-circle"></i> Capstone Project: Admin Dashboard</li>
+                    </ul>
+                </div>
+                <div class="benefits">
+                    <h3>Course Benefits</h3>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Hands-on projects to build a strong portfolio</li>
+                        <li><i class="fas fa-check-circle"></i> 1:1 mentorship from industry experts</li>
+                        <li><i class="fas fa-check-circle"></i> Lifetime access to course materials</li>
+                        <li><i class="fas fa-check-circle"></i> Career guidance and job placement support</li>
+                        <li><i class="fas fa-check-circle"></i> Certificate of completion</li>
                     </ul>
                 </div>
                 <a href="signup.html" class="enroll-btn"><i class="fas fa-arrow-right"></i> Enroll Now</a>

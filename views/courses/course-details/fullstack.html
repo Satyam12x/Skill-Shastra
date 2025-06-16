@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital Marketing Courses - Skillshastra</title>
+    <title>Full Stack Development Course Details - Skillshastra</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -21,12 +21,11 @@
             overflow-x: hidden;
         }
 
-        /* Navbar Styles (Unchanged from Previous) */
+        /* Navbar Styles */
         .btm {
             padding: 1rem 2rem;
             border: none;
             border-radius: 12px;
-            /* font-size: 1.1rem; */
             font-weight: 500;
             cursor: pointer;
             text-decoration: none;
@@ -49,8 +48,20 @@
             box-shadow: 0 8px 30px rgba(124, 58, 237, 0.4);
         }
 
+        .btm-secondary {
+            background: #fff;
+            color: #7c3aed;
+            border: 2px solid #7c3aed;
+        }
+
+        .btm-secondary:hover {
+            background: #7c3aed;
+            color: #fff;
+            box-shadow: 0 8px 20px rgba(124, 58, 237, 0.3);
+        }
+
         .navbar {
-            position: fixed;
+            position: sticky;
             top: 0;
             width: 100%;
             background: rgba(255, 255, 255, 0.95);
@@ -109,7 +120,8 @@
             white-space: nowrap;
         }
 
-        .nav-link:hover {
+        .nav-link:hover,
+        .nav-link:focus {
             color: #7c3aed;
             background: rgba(124, 58, 237, 0.1);
         }
@@ -131,7 +143,8 @@
             z-index: 1000;
         }
 
-        .nav-item:hover .dropdown {
+        .nav-item:hover .dropdown,
+        .nav-item:focus-within .dropdown {
             opacity: 1;
             visibility: visible;
             transform: translateY(0);
@@ -148,7 +161,8 @@
             border-left: 3px solid transparent;
         }
 
-        .dropdown-item:hover {
+        .dropdown-item:hover,
+        .dropdown-item:focus {
             background: rgba(124, 58, 237, 0.05);
             color: #7c3aed;
             border-left-color: #7c3aed;
@@ -170,13 +184,25 @@
             transition: all 0.3s ease;
         }
 
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
         /* Hero Section */
         .courses-hero {
-            min-height: 60vh;
+            min-height: 50vh;
             display: flex;
             align-items: center;
             position: relative;
-            padding: 8rem 2rem 4rem;
+            padding: 6rem 2rem 4rem;
             background: linear-gradient(135deg, #0f0f23 0%, #1a1a3a 50%, #2d1b69 100%);
             overflow: hidden;
         }
@@ -188,7 +214,8 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: radial-gradient(circle at 30% 20%, rgba(124, 58, 237, 0.1) 0%, transparent 50%),
+            background: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"%3E%3Cpath fill="%23a855f7" fill-opacity="0.1" d="M0,128L48,144C96,160,192,192,288,186.7C384,181,480,139,576,122.7C672,107,768,117,864,138.7C960,160,1056,192,1152,197.3C1248,203,1344,181,1392,170.7L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"%3E%3C/path%3E%3C/svg%3E') no-repeat bottom center/cover,
+                radial-gradient(circle at 30% 20%, rgba(124, 58, 237, 0.1) 0%, transparent 50%),
                 radial-gradient(circle at 70% 80%, rgba(168, 85, 247, 0.1) 0%, transparent 50%);
             pointer-events: none;
         }
@@ -212,38 +239,18 @@
         }
 
         .courses-hero h1 {
-            font-size: 3rem;
+            font-size: 2.5rem;
             font-weight: 700;
             color: white;
             line-height: 1.2;
             margin-bottom: 1.5rem;
         }
 
-        .courses-hero .gradient-text {
-            background: linear-gradient(135deg, #7c3aed, #a855f7, #ec4899);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: gradient-shift 3s ease-in-out infinite;
-        }
-
-        @keyframes gradient-shift {
-
-            0%,
-            100% {
-                background-position: 0% 50%;
-            }
-
-            50% {
-                background-position: 100% 50%;
-            }
-        }
-
         .courses-hero p {
             font-size: 1.1rem;
-            color: rgba(255, 255, 255, 0.7);
+            color: rgba(255, 255, 255, 0.8);
             line-height: 1.6;
-            max-width: 600px;
+            max-width: 700px;
             margin: 0 auto 2rem;
             opacity: 0;
             animation: fadeIn 1.5s ease forwards 0.5s;
@@ -255,41 +262,22 @@
             }
         }
 
-        /* Courses Section */
-        .courses-section {
+        /* Course Details Section */
+        .course-details-section {
             padding: 6rem 2rem;
-            background: linear-gradient(135deg, #f8f9ff 0%, #e8f0ff 100%);
+            background: #fff;
         }
 
-        .courses-container {
+        .course-details-container {
             max-width: 1200px;
             margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
         }
 
-        .course-card {
-            background: white;
-            border-radius: 16px;
-            padding: 2rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
+        .course-details {
+            margin-bottom: 4rem;
             opacity: 0;
             transform: translateY(20px);
             animation: cardFadeIn 1s ease forwards;
-            animation-delay: calc(var(--delay) * 0.2s);
-        }
-
-        .course-card:nth-child(1) {
-            --delay: 1;
-        }
-
-        .course-card:nth-child(2) {
-            --delay: 2;
         }
 
         @keyframes cardFadeIn {
@@ -299,110 +287,146 @@
             }
         }
 
-        .course-card:hover {
-            transform: translateY(-10px) scale(1.05);
-            box-shadow: 0 15px 40px rgba(124, 58, 237, 0.3);
+        .course-details h2 {
+            font-size: 2rem;
+            color: #7c3aed;
+            margin-bottom: 1rem;
+            position: relative;
         }
 
-        .course-card::before {
+        .course-details h2::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(124, 58, 237, 0.2), transparent);
-            transition: all 0.5s ease;
-        }
-
-        .course-card:hover::before {
-            left: 100%;
-        }
-
-        .course-card::after {
-            content: '';
-            position: absolute;
-            top: 0;
+            bottom: -5px;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at center, rgba(124, 58, 237, 0.15) 0%, transparent 70%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, #7c3aed, #a855f7);
+            border-radius: 2px;
         }
 
-        .course-card:hover::after {
-            opacity: 1;
-        }
-
-        .course-icon {
-            font-size: 2.5rem;
-            color: #7c3aed;
-            margin-bottom: 1rem;
-            transition: transform 0.3s ease, color 0.3s ease;
-        }
-
-        .course-card:hover .course-icon {
-            transform: scale(1.3) rotate(10deg);
-            color: #a855f7;
-        }
-
-        .course-card h3 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #1f2937;
-            margin-bottom: 1rem;
-            transition: color 0.3s ease;
-        }
-
-        .course-card:hover h3 {
-            color: #7c3aed;
-        }
-
-        .course-card p {
+        .course-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
             font-size: 0.9rem;
             color: #6b7280;
+        }
+
+        .course-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #f59e0b;
+        }
+
+        .course-description {
+            font-size: 1rem;
+            color: #1f2937;
             line-height: 1.6;
             margin-bottom: 1.5rem;
         }
 
-        .course-btn {
-            padding: 0.75rem 1.5rem;
+        .instructors,
+        .syllabus,
+        .benefits {
+            margin-bottom: 2rem;
+        }
+
+        .instructors h3,
+        .syllabus h3,
+        .benefits h3 {
+            font-size: 1.5rem;
+            color: #1f2937;
+            margin-bottom: 1rem;
+        }
+
+        .instructor-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .instructor {
+            background: #f8f9ff;
+            padding: 1rem;
+            border-radius: 8px;
+            flex: 1 1 200px;
+            text-align: center;
+        }
+
+        .instructor img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-bottom: 0.5rem;
+        }
+
+        .instructor p {
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+
+        .syllabus ul,
+        .benefits ul {
+            list-style: none;
+        }
+
+        .syllabus ul li,
+        .benefits ul li {
+            font-size: 0.9rem;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .syllabus ul li i,
+        .benefits ul li i {
+            color: #7c3aed;
+        }
+
+        .enroll-btn {
+            display: inline-flex;
+            padding: 1rem 2rem;
             background: linear-gradient(135deg, #7c3aed, #a855f7);
             color: white;
             border: none;
             border-radius: 12px;
-            font-size: 0.9rem;
+            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
             position: relative;
             overflow: hidden;
-            cursor: pointer;
         }
 
-        .course-btn::after {
+        .enroll-btn::after {
             content: '';
             position: absolute;
             top: 0;
             left: -100%;
             width: 100%;
             height: 100%;
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.2);
             transition: all 0.4s ease;
         }
 
-        .course-btn:hover::after {
+        .enroll-btn:hover::after {
             left: 100%;
         }
 
-        .course-btn:hover {
-            transform: translateY(-2px) scale(1.1);
-            box-shadow: 0 8px 20px rgba(124, 58, 237, 0.4);
-            cursor: pointer;
+        .enroll-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(124, 58, 237, 0.3);
         }
 
         /* Footer Styles */
@@ -412,7 +436,6 @@
             position: relative;
             overflow: hidden;
             color: rgba(255, 255, 255, 0.8);
-            border-top: 1px solid rgba(88, 28, 135, 0.3);
         }
 
         .footer::before {
@@ -535,7 +558,6 @@
             color: rgba(255, 255, 255, 0.6);
             margin-bottom: 0.75rem;
             display: flex;
-            align-items: center;
             gap: 0.5rem;
         }
 
@@ -543,6 +565,7 @@
             display: flex;
             gap: 0.5rem;
             margin-top: 1rem;
+            position: relative;
         }
 
         .newsletter-input {
@@ -552,7 +575,7 @@
             background: rgba(255, 255, 255, 0.05);
             color: white;
             font-size: 0.9rem;
-            width: 100%;
+            width: 50%;
             max-width: 200px;
             transition: all 0.3s ease;
         }
@@ -561,6 +584,10 @@
             outline: none;
             background: rgba(255, 255, 255, 0.1);
             transform: scale(1.02);
+        }
+
+        .newsletter-input:invalid:not(:placeholder-shown) {
+            border: 2px solid #ef4444;
         }
 
         .newsletter-btn {
@@ -604,11 +631,31 @@
             text-align: center;
             padding-top: 2rem;
             border-top: 1px solid rgba(88, 28, 135, 0.3);
+            position: relative;
         }
 
         .footer-bottom p {
             font-size: 0.8rem;
             color: rgba(255, 255, 255, 0.5);
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            color: white;
+            padding: 0.75rem;
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            display: none;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px);
         }
 
         /* Responsive Design */
@@ -636,24 +683,35 @@
                 visibility: visible;
             }
 
+            .dropdown {
+                position: static;
+                box-shadow: none;
+                border: none;
+                padding: 0.5rem 0;
+            }
+
             .hamburger {
                 display: flex;
             }
 
             .courses-hero {
-                padding: 6rem 1rem 3rem;
+                padding: 5rem 1rem 3rem;
             }
 
             .courses-hero h1 {
-                font-size: 2.5rem;
+                font-size: 2rem;
             }
 
-            .courses-container {
-                grid-template-columns: 1fr;
+            .courses-hero p {
+                font-size: 1rem;
             }
 
-            .course-card {
-                padding: 1.5rem;
+            .course-details-section {
+                padding: 4rem 1rem;
+            }
+
+            .instructor-list {
+                flex-direction: column;
             }
 
             .footer-content {
@@ -661,10 +719,7 @@
                 text-align: center;
             }
 
-            .social-links {
-                justify-content: center;
-            }
-
+            .social-links,
             .footer-logo {
                 justify-content: center;
             }
@@ -678,23 +733,46 @@
                 max-width: 100%;
             }
         }
+
+        @media (max-width: 480px) {
+            .courses-hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .courses-hero p {
+                font-size: 0.9rem;
+            }
+
+            .course-details h2 {
+                font-size: 1.5rem;
+            }
+
+            .instructors h3,
+            .syllabus h3,
+            .benefits h3 {
+                font-size: 1.2rem;
+            }
+        }
     </style>
 </head>
 
 <body>
-    <!-- Navigation (Unchanged from Previous) -->
+    <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
             <a href="index.html" class="logo"><i class="fas fa-code"></i> Skillshastra</a>
             <ul class="nav-menu">
                 <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Courses <i class="fas fa-chevron-down"
+                    <a href="#" class="nav-link" tabindex="0">Courses <i class="fas fa-chevron-down"
                             style="font-size: 0.8rem;"></i></a>
                     <div class="dropdown">
-                        <a href="Programming.html" class="dropdown-item"><i class="fas fa-laptop-code"></i> Programming
-                            Languages</a>
-                        <a href="webdev.html" class="dropdown-item"><i class="fas fa-globe"></i> Web Development</a>
+                        <a href="frontend.html" class="dropdown-item"><i class="fas fa-desktop"></i> Frontend
+                            Development</a>
+                        <a href="backend.html" class="dropdown-item"><i class="fas fa-server"></i> Backend
+                            Development</a>
+                        <a href="fullstack.html" class="dropdown-item"><i class="fas fa-laptop-code"></i> Full Stack
+                            Development</a>
                         <a href="digitalMarketing.html" class="dropdown-item"><i class="fas fa-bullhorn"></i> Digital
                             Marketing</a>
                         <a href="genai.html" class="dropdown-item"><i class="fas fa-robot"></i> Generative AI</a>
@@ -702,7 +780,7 @@
                 </li>
                 <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Instructors <i class="fas fa-chevron-down"
+                    <a href="#" class="nav-link" tabindex="0">Instructors <i class="fas fa-chevron-down"
                             style="font-size: 0.8rem;"></i></a>
                     <div class="dropdown">
                         <a href="MeetOurTeam.html" class="dropdown-item"><i class="fas fa-users"></i> Meet Our Team</a>
@@ -711,7 +789,7 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Resources <i class="fas fa-chevron-down"
+                    <a href="#" class="nav-link" tabindex="0">Resources <i class="fas fa-chevron-down"
                             style="font-size: 0.8rem;"></i></a>
                     <div class="dropdown">
                         <a href="StudyMaterials.html" class="dropdown-item"><i class="fas fa-file-alt"></i> Study
@@ -724,11 +802,7 @@
                     </div>
                 </li>
                 <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
-                <li>
-                    <a href="signup.html" class="btm btm-primary">
-                        <i class="fas fa-search"></i> Login
-                    </a>
-                </li>
+                <li><a href="signup.html" class="btm btm-primary"><i class="fas fa-user"></i> Login</a></li>
             </ul>
             <div class="hamburger">
                 <span></span>
@@ -741,33 +815,93 @@
     <!-- Courses Hero Section -->
     <section class="courses-hero">
         <div class="courses-hero-container">
-            <h1>Excel in <span class="gradient-text">Digital Marketing</span></h1>
-            <p>Master the art of digital marketing and create stunning visuals with our comprehensive courses.</p>
+            <h1>Full Stack Development Course Details</h1>
+            <p>Dive deep into our comprehensive Full Stack Development course, designed to transform you into a
+                proficient full stack developer with hands-on projects and expert guidance.</p>
         </div>
     </section>
 
-    <!-- Courses Section -->
-    <section class="courses-section">
-        <div class="courses-container">
-            <div class="course-card">
-                <i class="fas fa-bullhorn course-icon"></i>
-                <h3>Digital Marketing</h3>
-                <p>Learn SEO, social media marketing, content creation, and analytics to boost your brand's online
-                    presence.</p>
-                <button class="course-btn"
-                    onclick="window.location.href = '/views/courses/course-details/digital-marketing.html'"><i
-                        class="fas fa-arrow-right"></i> Explore Course</button>
-            </div>
-            <div class="course-card">
-                <i class="fas fa-paint-brush course-icon"></i>
-                <h3>Canva Tutorials</h3>
-                <p>Create professional designs with Canva for social media, presentations, and marketing materials.</p>
-                <button class="course-btn"> <i class="fas fa-arrow-right"></i> Explore Course</button>
+    <!-- Course Details Section -->
+    <section class="course-details-section">
+        <div class="course-details-container">
+            <div class="course-details">
+                <h2>Full Stack Development</h2>
+                <div class="course-meta">
+                    <span><i class="fas fa-clock"></i> Duration: 24 Weeks</span>
+                    <span><i class="fas fa-rupee-sign"></i> Fees: ₹45,000</span>
+                    <span><i class="fas fa-level-up-alt"></i> Level: Beginner to Advanced</span>
+                    <span class="rating"><i class="fas fa-star"></i> 4.9 (2,000 reviews)</span>
+                </div>
+                <div class="course-description">
+                    <p>This course is meticulously crafted to take you from the basics of web development to building
+                        complex, scalable full stack applications. You'll master both frontend and backend technologies,
+                        along with DevOps practices, through real-world projects and mentorship from industry experts.
+                    </p>
+                </div>
+                <div class="instructors">
+                    <h3>Instructors</h3>
+                    <div class="instructor-list">
+                        <div class="instructor">
+                            <img src="https://via.placeholder.com/80" alt="Instructor">
+                            <h4>Sanjay Rao</h4>
+                            <p>Full Stack Developer, 8+ years experience</p>
+                        </div>
+                        <div class="instructor">
+                            <img src="https://via.placeholder.com/80" alt="Instructor">
+                            <h4>Meera Joshi</h4>
+                            <p>Senior Full Stack Developer, 10+ years experience</p>
+                        </div>
+                        <div class="instructor">
+                            <img src="https://via.placeholder.com/80" alt="Instructor">
+                            <h4>Rohit Sharma</h4>
+                            <p>Tech Lead, 15+ years experience</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="syllabus">
+                    <h3>Detailed Course Syllabus</h3>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Module 1: Web Fundamentals</li>
+                        <li><i class="fas fa-check-circle"></i> HTML5: Structure and Semantics</li>
+                        <li><i class="fas fa-check-circle"></i> CSS3: Styling, Flexbox, and Grid</li>
+                        <li><i class="fas fa-check-circle"></i> JavaScript: ES6+, DOM Manipulation</li>
+                        <li><i class="fas fa-check-circle"></i> Module 2: Frontend Development</li>
+                        <li><i class="fas fa-check-circle"></i> React: Components, Hooks, State Management</li>
+                        <li><i class="fas fa-check-circle"></i> Redux for State Management</li>
+                        <li><i class="fas fa-check-circle"></i> Tailwind CSS for Rapid Styling</li>
+                        <li><i class="fas fa-check-circle"></i> Module 3: Backend Development</li>
+                        <li><i class="fas fa-check-circle"></i> Node.js: Environment and Async Programming</li>
+                        <li><i class="fas fa-check-circle"></i> Express.js: RESTful APIs and Middleware</li>
+                        <li><i class="fas fa-check-circle"></i> MongoDB: CRUD Operations and Mongoose</li>
+                        <li><i class="fas fa-check-circle"></i> Authentication: JWT, OAuth</li>
+                        <li><i class="fas fa-check-circle"></i> Module 4: Advanced Full Stack</li>
+                        <li><i class="fas fa-check-circle"></i> Next.js: Server-Side Rendering, API Routes</li>
+                        <li><i class="fas fa-check-circle"></i> GraphQL with Apollo Client and Server</li>
+                        <li><i class="fas fa-check-circle"></i> Microservices Architecture</li>
+                        <li><i class="fas fa-check-circle"></i> Module 5: DevOps and Deployment</li>
+                        <li><i class="fas fa-check-circle"></i> CI/CD with GitHub Actions</li>
+                        <li><i class="fas fa-check-circle"></i> Docker: Containerization</li>
+                        <li><i class="fas fa-check-circle"></i> AWS: Cloud Deployment and Scaling</li>
+                        <li><i class="fas fa-check-circle"></i> Module 6: Projects and Portfolio</li>
+                        <li><i class="fas fa-check-circle"></i> Project 1: Task Management App</li>
+                        <li><i class="fas fa-check-circle"></i> Project 2: Social Media Platform</li>
+                        <li><i class="fas fa-check-circle"></i> Capstone Project: Full Stack E-Commerce Platform</li>
+                    </ul>
+                </div>
+                <div class="benefits">
+                    <h3>Course Benefits</h3>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Hands-on projects to build a strong portfolio</li>
+                        <li><i class="fas fa-check-circle"></i> 1:1 mentorship from industry experts</li>
+                        <li><i class="fas fa-check-circle"></i> Lifetime access to course materials</li>
+                        <li><i class="fas fa-check-circle"></i> Career guidance and job placement support</li>
+                        <li><i class="fas fa-check-circle"></i> Certificate of completion</li>
+                    </ul>
+                </div>
+                <a href="signup.html" class="enroll-btn"><i class="fas fa-arrow-right"></i> Enroll Now</a>
             </div>
         </div>
     </section>
-
-
 
     <!-- Footer -->
     <footer class="footer">
@@ -775,8 +909,7 @@
             <div class="footer-content">
                 <div class="footer-section footer-brand">
                     <a href="index.html" class="footer-logo"><i class="fas fa-code"></i> Skillshastra</a>
-                    <p class="footer-description">Empowering the future with cutting-edge tech skills and
-                        industry-focused learning.</p>
+                    <p class="footer-description">Empowering the future with cutting-edge tech skills.</p>
                     <div class="social-links">
                         <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
                         <a href="#" class="social-icon"><i class="fab fa-linkedin"></i></a>
@@ -788,26 +921,26 @@
                     <h4 class="footer-title">Quick Links</h4>
                     <ul class="footer-menu">
                         <li><a href="index.html" class="footer-link">Home</a></li>
-                        <li><a href="#" class="footer-link">Courses</a></li>
-                        <li><a href="about.html" class="footer-link">About</a></li>
-                        <li><a href="#" class="footer-link">Instructors</a></li>
+                        <li><a href="frontend.html" class="footer-link">Frontend Courses</a></li>
+                        <li><a href="backend.html" class="footer-link">Backend Courses</a></li>
+                        <li><a href="fullstack.html" class="footer-link">Full Stack Courses</a></li>
                         <li><a href="contact.html" class="footer-link">Contact</a></li>
                     </ul>
                 </div>
                 <div class="footer-section footer-contact">
                     <h4 class="footer-title">Contact Us</h4>
-                    <p><i class="fas fa-envelope"></i>skillshastra001@gmail.com</p>
-                    <p><i class="fas fa-phone"></i>+91 8510882886 , +91 8851020767</p>
-                    <p><i class="fas fa-map-marker-alt"></i>Ballabgarh, Faridabad, Haryana</p>
+                    <p><i class="fas fa-envelope"></i> skillshastra001@gmail.com</p>
+                    <p><i class="fas fa-phone"></i> +91 8510882886</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Ballabgarh, Faridabad, Haryana</p>
                 </div>
                 <div class="footer-section footer-newsletter">
                     <h4 class="footer-title">Stay Updated</h4>
-                    <p>Subscribe to our newsletter for the latest courses and updates.</p>
-                    <form class="newsletter-form">
+                    <p>Subscribe for the latest course updates.</p>
+                    <div class="newsletter-form">
                         <input type="email" placeholder="Enter your email" class="newsletter-input" required>
                         <button type="submit" class="newsletter-btn"><i class="fas fa-paper-plane"></i>
                             Subscribe</button>
-                    </form>
+                    </div>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -816,38 +949,27 @@
         </div>
     </footer>
 
+    <!-- Back to Top Button -->
+    <button class="back-to-top"><i class="fas fa-arrow-up"></i></button>
+
     <script>
         // Mobile Menu Toggle
         const hamburger = document.querySelector('.hamburger');
         const navMenu = document.querySelector('.nav-menu');
+        hamburger.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        });
 
-        if (hamburger && navMenu) {
-            hamburger.addEventListener('click', () => {
-                navMenu.classList.toggle('active');
-                hamburger.classList.toggle('active');
-            });
-        }
-
-        // Smooth Scroll for Buttons and Links
-        document.querySelectorAll('.course-btn, .footer-link, .nav-link').forEach(link => {
+        // Smooth Scroll
+        document.querySelectorAll('.nav-link, .footer-link, .enroll-btn').forEach(link => {
             link.addEventListener('click', (e) => {
                 const href = link.getAttribute('href');
                 if (href && href.startsWith('#')) {
                     e.preventDefault();
-                    const targetElement = document.querySelector(href);
-                    if (targetElement) {
-                        targetElement.scrollIntoView({ behavior: 'smooth' });
-                        const ripple = document.createElement('span');
-                        ripple.style.position = 'absolute';
-                        ripple.style.borderRadius = '50%';
-                        ripple.style.background = 'rgba(255, 255, 255, 0.6)';
-                        ripple.style.transform = 'scale(0)';
-                        ripple.style.animation = 'ripple 0.6s linear';
-                        const rect = link.getBoundingClientRect();
-                        ripple.style.left = `${e.clientX - rect.left}px`;
-                        ripple.style.top = `${e.clientY - rect.top}px`;
-                        link.appendChild(ripple);
-                        setTimeout(() => ripple.remove(), 600);
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
                     }
                 }
             });
@@ -856,63 +978,47 @@
         // Navbar Scroll Effect
         window.addEventListener('scroll', () => {
             const navbar = document.querySelector('.navbar');
-            if (navbar) {
-                if (window.scrollY > 100) {
-                    navbar.style.background = 'rgba(255, 255, 255, 0.98)';
-                    navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
-                } else {
-                    navbar.style.background = 'rgba(255, 255, 255, 0.95)';
-                    navbar.style.boxShadow = 'none';
-                }
-            }
+            navbar.style.background = window.scrollY > 100 ? 'rgba(255, 255, 255, 0.98)' : 'rgba(255, 255, 255, 0.95)';
+            navbar.style.boxShadow = window.scrollY > 100 ? '0 2px 20px rgba(0, 0, 0, 0.1)' : 'none';
         });
 
-        // Footer Newsletter Form Submission
+        // Scroll Animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.2 });
+
+        document.querySelectorAll('.course-details').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(30px)';
+            section.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(section);
+        });
+
+        // Newsletter Form
         const newsletterForm = document.querySelector('.newsletter-form');
-        if (newsletterForm) {
-            newsletterForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const emailInput = newsletterForm.querySelector('.newsletter-input');
-                const email = emailInput.value.trim();
-                if (email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                    alert('Thank you for subscribing to Skillshastra!');
-                    emailInput.value = '';
-                } else {
-                    alert('Please enter a valid email address.');
-                }
-            });
-        }
-
-        // Footer Social and Link Hover Animation
-        document.querySelectorAll('.footer-link, .social-icon').forEach(link => {
-            link.addEventListener('mouseenter', () => {
-                link.style.transition = 'all 0.3s ease';
-            });
-            link.addEventListener('mouseleave', () => {
-                link.style.transform = '';
-            });
+        newsletterForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const emailInput = newsletterForm.querySelector('.newsletter-input');
+            if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value.trim())) {
+                alert('Thank you for subscribing!');
+                emailInput.value = '';
+            } else {
+                emailInput.style.border = '2px solid #ef4444';
+            }
         });
 
-        // Ripple Animation Styles
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes ripple {
-                to {
-                    transform: scale(4);
-                    opacity: 0;
-                }
-            }
-        `;
-        document.head.appendChild(style);
-
-        // Accessibility: Close mobile menu on link click
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', () => {
-                if (navMenu.classList.contains('active')) {
-                    navMenu.classList.remove('active');
-                    hamburger.classList.remove('active');
-                }
-            });
+        // Back to Top
+        const backToTop = document.querySelector('.back-to-top');
+        window.addEventListener('scroll', () => {
+            backToTop.style.display = window.scrollY > 300 ? 'block' : 'none';
+        });
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     </script>
 </body>
