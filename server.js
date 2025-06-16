@@ -198,15 +198,15 @@ app.post("/api/auth/verify-otp", async (req, res) => {
     `;
     await sendEmail(user.email, "Welcome to Skillshastra!", welcomeEmail);
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1d",
+    const token = jwt.sign(
+      { id: user._id, name: user.name, email: user.email, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
+    res.status(200).json({
+      token,
+      user: { name: user.name, email: user.email, role: user.role },
     });
-    res
-      .status(200)
-      .json({
-        token,
-        user: { name: user.name, email: user.email, role: user.role },
-      });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -233,15 +233,15 @@ app.post("/api/auth/login", async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1d",
+    const token = jwt.sign(
+      { id: user._id, name: user.name, email: user.email, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
+    res.status(200).json({
+      token,
+      user: { name: user.name, email: user.email, role: user.role },
     });
-    res
-      .status(200)
-      .json({
-        token,
-        user: { name: user.name, email: user.email, role: user.role },
-      });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -324,6 +324,12 @@ app.get("/signup", (req, res) => {
 
 app.get("/admin", protect, admin, (req, res) => {
   res.sendFile(path.join(__dirname, "views", "admin.html"));
+});
+app.get("/dashboard", (req, res) => {
+  res.sendFile(path.join(__dirname, "views", "dashboard.html"));
+});
+app.get("/about", (req, res) => {
+  res.sendFile(path.join(__dirname, "views", "about.html"));
 });
 
 // Start Server

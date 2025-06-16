@@ -1,1010 +1,942 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Skillshastra - Login & Signup</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: "Poppins", sans-serif;
-      }
-
-      body {
-        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-        min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        overflow: hidden;
-        position: relative;
-      }
-
-      .gradient-text {
-        background: linear-gradient(135deg, #7c3aed, #a855f7, #ec4899);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        animation: gradient-shift 3s ease-in-out infinite;
-      }
-
-      @keyframes gradient-shift {
-        0%,
-        100% {
-          background-position: 0% 50%;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
         }
-        50% {
-          background-position: 100% 50%;
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
         }
-      }
 
-      .hover-grid {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50"><path d="M0 25H50M25 0V50" stroke="rgba(0,0,0,0.05)" stroke-width="1"/></svg>');
-        opacity: 0.3;
-        pointer-events: none;
-        z-index: 1;
-      }
-
-      .auth-container {
-        position: relative;
-        width: 100%;
-        max-width: 900px;
-        display: flex;
-        background: rgba(255, 255, 255, 0.9);
-        backdrop-filter: blur(10px);
-        border-radius: 20px;
-        overflow: hidden;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        z-index: 2;
-        animation: slideIn 0.5s ease-out forwards;
-      }
-
-      @keyframes slideIn {
-        from {
-          transform: scale(0.8);
-          opacity: 0;
+        .gradient-text {
+            background: linear-gradient(135deg, #7c3aed, #a855f7, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient-shift 3s ease-in-out infinite;
         }
-        to {
-          transform: scale(1);
-          opacity: 1;
+
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
-      }
 
-      .auth-container.closing {
-        animation: slideOut 0.5s ease-in forwards;
-      }
-
-      @keyframes slideOut {
-        from {
-          transform: scale(1);
-          opacity: 1;
+        .hover-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50"><path d="M0 25H50M25 0V50" stroke="rgba(0,0,0,0.05)" stroke-width="1"/></svg>');
+            opacity: 0.3;
+            pointer-events: none;
+            z-index: 1;
         }
-        to {
-          transform: scale(0.8);
-          opacity: 0;
-        }
-      }
 
-      .close-btn {
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        background: none;
-        border: none;
-        color: #666;
-        font-size: 20px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        z-index: 3;
-      }
-
-      .close-btn:hover {
-        background: linear-gradient(135deg, #7c3aed, #a855f7, #ec4899);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        transform: rotate(90deg);
-      }
-
-      .auth-form,
-      .auth-visual {
-        width: 50%;
-        padding: 40px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-      }
-
-      .auth-visual {
-        background: linear-gradient(
-          135deg,
-          #0f0f23 0%,
-          #1a1a3a 50%,
-          #2d1b69 100%
-        );
-        color: white;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .auth-visual .code-window {
-        background: rgba(0, 0, 0, 0.2);
-        border-radius: 10px;
-        padding: 20px;
-        margin-top: 20px;
-        font-family: "Courier New", monospace;
-        font-size: 14px;
-      }
-
-      .auth-visual .window-header {
-        display: flex;
-        gap: 8px;
-        margin-bottom: 15px;
-      }
-
-      .window-dot {
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-      }
-
-      .dot-red {
-        background: #ff5f56;
-      }
-      .dot-yellow {
-        background: #ffbd2e;
-      }
-      .dot-green {
-        background: #27c93f;
-      }
-
-      .code-line {
-        color: #e0e0e0;
-        margin-bottom: 5px;
-      }
-      .code-line span {
-        color: #ff79c6;
-      }
-
-      .auth-form h2 {
-        color: #333;
-        font-size: 28px;
-        margin-bottom: 10px;
-      }
-      .auth-form p {
-        color: #666;
-        font-size: 14px;
-        margin-bottom: 20px;
-      }
-
-      .form-toggle {
-        display: flex;
-        background: rgba(0, 0, 0, 0.05);
-        border-radius: 30px;
-        margin-bottom: 20px;
-        overflow: hidden;
-      }
-
-      .form-toggle button {
-        flex: 1;
-        padding: 10px;
-        background: none;
-        border: none;
-        color: #666;
-        font-size: 16px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-      }
-
-      .form-toggle button.active {
-        background: linear-gradient(135deg, #7c3aed, #a855f7);
-        color: white;
-      }
-
-      .form-group {
-        margin-bottom: 15px;
-        position: relative;
-      }
-
-      .form-group input {
-        width: 100%;
-        padding: 12px 40px 12px 15px;
-        background: rgba(255, 255, 255, 0.7);
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        color: #333;
-        font-size: 14px;
-        transition: all 0.3s ease;
-      }
-
-      .form-group input:focus {
-        outline: none;
-        border-color: #667eea;
-        background: rgba(255, 255, 255, 1);
-        box-shadow: 0 0 10px rgba(102, 126, 234, 0.2);
-      }
-
-      .form-group i {
-        position: absolute;
-        top: 50%;
-        right: 15px;
-        transform: translateY(-50%);
-        color: #666;
-      }
-
-      .forgot-password {
-        text-align: right;
-        margin-bottom: 15px;
-      }
-
-      .forgot-password a {
-        color: #667eea;
-        font-size: 13px;
-        text-decoration: none;
-      }
-
-      .forgot-password a:hover {
-        text-decoration: underline;
-      }
-
-      .auth-btn {
-        width: 100%;
-        padding: 12px;
-        background: linear-gradient(135deg, #7c3aed, #a855f7);
-        box-shadow: 0 4px 20px rgba(124, 58, 237, 0.3);
-        border: none;
-        border-radius: 8px;
-        color: white;
-        font-size: 16px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .auth-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 30px rgba(124, 58, 237, 0.4);
-      }
-
-      .auth-btn:disabled {
-        background: #ccc;
-        cursor: not-allowed;
-        box-shadow: none;
-      }
-
-      .auth-btn i {
-        margin-right: 8px;
-      }
-
-      .social-login {
-        margin-top: 20px;
-        text-align: center;
-      }
-
-      .social-login p {
-        color: #666;
-        font-size: 13px;
-        margin-bottom: 15px;
-      }
-
-      .social-icons {
-        display: flex;
-        justify-content: center;
-        gap: 15px;
-      }
-
-      .social-icons a {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 40px;
-        height: 40px;
-        background: rgba(0, 0, 0, 0.05);
-        border-radius: 50%;
-        color: #333;
-        text-decoration: none;
-        transition: all 0.3s ease;
-      }
-
-      .social-icons a:hover {
-        background: #667eea;
-        color: white;
-        box-shadow: 0 0 10px rgba(102, 126, 234, 0.2);
-      }
-
-      #signupForm,
-      #otpForm,
-      #resetPasswordForm {
-        display: none;
-      }
-
-      .error-message,
-      .success-message {
-        font-size: 13px;
-        padding: 10px;
-        border-radius: 5px;
-        margin-bottom: 15px;
-        text-align: center;
-      }
-
-      .error-message {
-        background: #fee2e2;
-        color: #dc2626;
-      }
-      .success-message {
-        background: #d1fae5;
-        color: #059669;
-      }
-
-      .password-strength {
-        font-size: 12px;
-        color: #666;
-        margin-top: 5px;
-        display: none;
-      }
-
-      .password-strength.weak {
-        color: #dc2626;
-      }
-      .password-strength.medium {
-        color: #d97706;
-      }
-      .password-strength.strong {
-        color: #059669;
-      }
-
-      .floating-elements {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-      }
-
-      .float-element {
-        position: absolute;
-        color: rgba(0, 0, 0, 0.1);
-        font-size: 24px;
-        animation: float 10s infinite ease-in-out;
-      }
-
-      .float-element:nth-child(1) {
-        top: 10%;
-        left: 20%;
-      }
-      .float-element:nth-child(2) {
-        top: 60%;
-        right: 15%;
-      }
-      .float-element:nth-child(3) {
-        bottom: 20%;
-        left: 30%;
-      }
-      .float-element:nth-child(4) {
-        top: 30%;
-        right: 25%;
-      }
-
-      @keyframes float {
-        0%,
-        100% {
-          transform: translateY(0);
-        }
-        50% {
-          transform: translateY(-20px);
-        }
-      }
-
-      @media (max-width: 768px) {
         .auth-container {
-          flex-direction: column;
-          max-width: 90%;
-          margin: 20px;
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            z-index: 2;
+            animation: slideIn 0.5s ease-out forwards;
         }
 
-        .auth-form,
-        .auth-visual {
-          width: 100%;
-          padding: 20px;
+        @keyframes slideIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .auth-container.closing {
+            animation: slideOut 0.5s ease-in forwards;
+        }
+
+        @keyframes slideOut {
+            from { transform: scale(1); opacity: 1; }
+            to { transform: scale(0.8); opacity: 0; }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: #666;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 3;
+        }
+
+        .close-btn:hover {
+            background: linear-gradient(135deg, #7c3aed, #a855f7, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transform: rotate(90deg);
+        }
+
+        .auth-form, .auth-visual {
+            width: 50%;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .auth-visual {
-          display: none;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3a 50%, #2d1b69 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
         }
-      }
+
+        .auth-visual .code-window {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .auth-visual .window-header {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .window-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot-red { background: #ff5f56; }
+        .dot-yellow { background: #ffbd2e; }
+        .dot-green { background: #27c93f; }
+
+        .code-line { color: #e0e0e0; margin-bottom: 5px; }
+        .code-line span { color: #ff79c6; }
+
+        .auth-form h2 { color: #333; font-size: 28px; margin-bottom: 10px; }
+        .auth-form h3 { color: #333; font-size: 20px; margin-bottom: 15px; }
+        .auth-form p { color: #666; font-size: 14px; margin-bottom: 20px; }
+
+        .form-toggle {
+            display: flex;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 30px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .form-toggle button {
+            flex: 1;
+            padding: 10px;
+            background: none;
+            border: none;
+            color: #666;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .form-toggle button.active {
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            color: white;
+            box-shadow: 0 2px 5px rgba(124, 58, 237, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 40px 12px 15px;
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            color: #333;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #7c3aed;
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0 0 10px rgba(124, 58, 237, 0.2);
+        }
+
+        .form-group i {
+            position: absolute;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+            color: #666;
+        }
+
+        .forgot-password, .back-link {
+            text-align: right;
+            margin-bottom: 15px;
+        }
+
+        .forgot-password a, .back-link a {
+            color: #7c3aed;
+            font-size: 13px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .forgot-password a:hover, .back-link a:hover {
+            color: #a855f7;
+            text-decoration: underline;
+        }
+
+        .auth-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.3);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(124, 58, 237, 0.4);
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+        }
+
+        .auth-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .auth-btn i { margin-right: 8px; }
+
+        .loading::before {
+            content: '';
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #fff;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .social-login {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .social-login p {
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 15px;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .social-icons a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 50%;
+            color: #333;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            background: #7c3aed;
+            color: white;
+            box-shadow: 0 0 10px rgba(124, 58, 237, 0.2);
+        }
+
+        .error-message, .success-message {
+            font-size: 13px;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            text-align: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .error-message { background: #fee2e2; color: #dc2626; }
+        .success-message { background: #d1fae5; color: #059669; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .password-strength {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+            display: none;
+            transition: color 0.3s ease;
+        }
+
+        .password-strength.weak { color: #dc2626; }
+        .password-strength.medium { color: #d97706; }
+        .password-strength.strong { color: #059669; }
+
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .float-element {
+            position: absolute;
+            color: rgba(0, 0, 0, 0.1);
+            font-size: 24px;
+            animation: float 10s infinite ease-in-out;
+        }
+
+        .float-element:nth-child(1) { top: 10%; left: 20%; }
+        .float-element:nth-child(2) { top: 60%; right: 15%; }
+        .float-element:nth-child(3) { bottom: 20%; left: 30%; }
+        .float-element:nth-child(4) { top: 30%; right: 25%; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @media (max-width: 768px) {
+            .auth-container {
+                flex-direction: column;
+                max-width: 90%;
+                margin: 20px;
+            }
+
+            .auth-form, .auth-visual {
+                width: 100%;
+                padding: 20px;
+            }
+
+            .auth-visual { display: none; }
+
+            .auth-form h2 { font-size: 24px; }
+            .auth-form h3 { font-size: 18px; }
+            .form-group input { font-size: 13px; }
+            .auth-btn { font-size: 14px; }
+        }
     </style>
-  </head>
-  <body>
+</head>
+<body>
     <div class="hover-grid"></div>
     <div class="auth-container" id="authContainer">
-      <button class="close-btn" onclick="closePage()">
-        <i class="fas fa-times"></i>
-      </button>
-      <div class="auth-form">
-        <h2>Welcome to <span class="gradient-text">Skillshastra</span></h2>
-        <p>
-          Access your account or join our community to master future-ready
-          skills!
-        </p>
+        <button class="close-btn" onclick="closePage()"><i class="fas fa-times"></i></button>
+        <div class="auth-form">
+            <h2>Welcome to <span class="gradient-text">Skillshastra</span></h2>
+            <p>Join our community to master future-ready skills!</p>
 
-        <div class="form-toggle">
-          <button class="active" onclick="showLogin()">Login</button>
-          <button onclick="showSignup()">Signup</button>
-        </div>
-
-        <div
-          id="errorMessage"
-          class="error-message"
-          style="display: none"
-        ></div>
-        <div
-          id="successMessage"
-          class="success-message"
-          style="display: none"
-        ></div>
-
-        <form id="loginForm">
-          <div class="form-group">
-            <input
-              type="email"
-              id="loginEmail"
-              placeholder="Email Address"
-              required
-            />
-            <i class="fas fa-envelope"></i>
-          </div>
-          <div class="form-group">
-            <input
-              type="password"
-              id="loginPassword"
-              placeholder="Password"
-              required
-            />
-            <i class="fas fa-lock"></i>
-          </div>
-          <div class="forgot-password">
-            <a href="#" onclick="showForgotPassword()">Forgot Password?</a>
-          </div>
-          <button type="submit" class="auth-btn" id="loginBtn">
-            <i class="fas fa-sign-in-alt"></i> Login
-          </button>
-        </form>
-
-        <form id="signupForm">
-          <div class="form-group">
-            <input
-              type="text"
-              id="signupName"
-              placeholder="Full Name"
-              required
-            />
-            <i class="fas fa-user"></i>
-          </div>
-          <div class="form-group">
-            <input
-              type="email"
-              id="signupEmail"
-              placeholder="Email Address"
-              required
-            />
-            <i class="fas fa-envelope"></i>
-          </div>
-          <div class="form-group">
-            <input
-              type="password"
-              id="signupPassword"
-              placeholder="Password"
-              required
-            />
-            <i class="fas fa-lock"></i>
-            <div class="password-strength" id="passwordStrength"></div>
-          </div>
-          <div class="form-group">
-            <input
-              type="password"
-              id="confirmPassword"
-              placeholder="Confirm Password"
-              required
-            />
-            <i class="fas fa-lock"></i>
-          </div>
-          <button type="submit" class="auth-btn" id="signupBtn">
-            <i class="fas fa-user-plus"></i> Signup
-          </button>
-        </form>
-
-        <form id="otpForm">
-          <div class="form-group">
-            <input
-              type="text"
-              id="otpInput"
-              placeholder="Enter OTP"
-              required
-              maxlength="6"
-            />
-            <i class="fas fa-key"></i>
-          </div>
-          <button type="submit" class="auth-btn" id="otpBtn">
-            <i class="fas fa-check"></i> Verify OTP
-          </button>
-          <p class="forgot-password">
-            <a href="#" onclick="resendOTP()">Resend OTP</a>
-          </p>
-        </form>
-
-        <form id="forgotPasswordForm">
-          <div class="form-group">
-            <input
-              type="email"
-              id="forgotEmail"
-              placeholder="Email Address"
-              required
-            />
-            <i class="fas fa-envelope"></i>
-          </div>
-          <button type="submit" class="auth-btn" id="forgotBtn">
-            <i class="fas fa-paper-plane"></i> Send OTP
-          </button>
-        </form>
-
-        <form id="resetPasswordForm">
-          <div class="form-group">
-            <input
-              type="text"
-              id="resetOtp"
-              placeholder="Enter OTP"
-              required
-              maxlength="6"
-            />
-            <i class="fas fa-key"></i>
-          </div>
-          <div class="form-group">
-            <input
-              type="password"
-              id="newPassword"
-              placeholder="New Password"
-              required
-            />
-            <i class="fas fa-lock"></i>
-          </div>
-          <div class="form-group">
-            <input
-              type="password"
-              id="confirmNewPassword"
-              placeholder="Confirm New Password"
-              required
-            />
-            <i class="fas fa-lock"></i>
-          </div>
-          <button type="submit" class="auth-btn" id="resetBtn">
-            <i class="fas fa-unlock"></i> Reset Password
-          </button>
-        </form>
-
-        <div class="social-login">
-          <p>Or continue with</p>
-          <div class="social-icons">
-            <a href="#"><i class="fab fa-google"></i></a>
-            <a href="#"><i class="fab fa-github"></i></a>
-            <a href="#"><i class="fab fa-linkedin"></i></a>
-          </div>
-        </div>
-      </div>
-
-      <div class="auth-visual">
-        <h2 class="gradient-text">Empower Your Future</h2>
-        <p>
-          Learn cutting-edge tech skills with Skillshastra's expert-led courses.
-        </p>
-        <div class="code-window">
-          <div class="window-header">
-            <div class="window-dot dot-red"></div>
-            <div class="window-dot dot-yellow"></div>
-            <div class="window-dot dot-green"></div>
-          </div>
-          <div class="code-content">
-            <div class="code-line"><span>const</span> user = {</div>
-            <div class="code-line">name: <span>'Future Coder'</span>,</div>
-            <div class="code-line">
-              skills: <span>['Tech', 'AI', 'Web']</span>
+            <div class="form-toggle">
+                <button class="active" onclick="showLogin()">Login</button>
+                <button onclick="showSignup()">Signup</button>
             </div>
-            <div class="code-line">};</div>
-            <div class="code-line">
-              console.log(<span>'Ready to learn! 🚀'</span>);
+
+            <div id="errorMessage" class="error-message" style="display: none;"></div>
+            <div id="successMessage" class="success-message" style="display: none;"></div>
+
+            <form id="loginForm">
+                <h3>Login</h3>
+                <div class="form-group">
+                    <input type="email" id="loginEmail" placeholder="Email Address" required>
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="loginPassword" placeholder="Password" required>
+                    <i class="fas fa-lock"></i>
+                </div>
+                <div class="forgot-password">
+                    <a onclick="showForgotPassword()">Forgot Password?</a>
+                </div>
+                <button type="submit" class="auth-btn" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Login</button>
+            </form>
+
+            <form id="signupForm">
+                <h3>Signup</h3>
+                <div class="form-group">
+                    <input type="text" id="signupName" placeholder="Full Name" required>
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="signupEmail" placeholder="Email Address" required>
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="signupPassword" placeholder="Password" required>
+                    <i class="fas fa-lock"></i>
+                </div>
+                <div class="password-strength" id="passwordStrength"></div>
+                <div class="form-group">
+                    <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+                    <i class="fas fa-lock"></i>
+                </div>
+                <button type="submit" class="auth-btn" id="submitSignup"><i class="fas fa-user-plus"></i> Signup</button>
+            </form>
+
+            <form id="otpForm">
+                <h3>Verify OTP</h3>
+                <div class="form-group">
+                    <input type="text" id="otpInput" placeholder="Enter OTP" maxlength="6" required>
+                    <i class="fas fa-key"></i>
+                </div>
+                <button type="submit" class="auth-btn" id="otpBtn"><i class="fas fa-check"></i> Verify OTP</button>
+                <div class="forgot-password">
+                    <a onclick="resendOTP()">Resend OTP</a>
+                </div>
+                <div class="back-link">
+                    <a onclick="showSignup()">Back to Signup</a>
+                </div>
+            </form>
+
+            <form id="forgotPasswordForm">
+    <h3 id="forgotTitle">Reset Password</h3>
+    <div class="form-group" id="forgotEmailGroup">
+        <input type="email" id="forgotEmail" name="forgotEmail" placeholder="Email Address" required>
+        <i class="fas fa-envelope"></i>
+    </div>
+    <div class="form-group" id="resetOtpGroup" style="display: none;">
+        <input type="text" id="resetOtp" name="resetOtp" placeholder="Enter OTP" maxlength="6">
+        <i class="fas fa-key"></i>
+    </div>
+    <div class="form-group" id="newPasswordGroup" style="display: none;">
+        <input type="password" id="newPassword" name="newPassword" placeholder="New Password">
+        <i class="fas fa-lock"></i>
+    </div>
+    <div class="password-strength" id="newPasswordStrength" style="display: none;"></div>
+    <div class="form-group" id="confirmNewPasswordGroup" style="display: none;">
+        <input type="password" id="confirmNewPassword" name="confirmNewPassword" placeholder="Confirm New Password">
+        <i class="fas fa-lock"></i>
+    </div>
+    <button type="submit" class="auth-btn" id="forgotBtn"><i class="fas fa-paper-plane"></i> Send OTP</button>
+    <div class="back-link">
+        <a onclick="showLogin()">Back to Login</a>
+    </div>
+</form>
+
+            <div class="social-login">
+                <p>Or continue with</p>
+                <div class="social-icons">
+                    <a href="#" title="Google"><i class="fab fa-google"></i></a>
+                    <a href="#" title="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="#" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                </div>
             </div>
-          </div>
         </div>
-        <div class="floating-elements">
-          <div class="float-element code-bracket">{</div>
-          <div class="float-element code-bracket">}</div>
-          <div class="float-element code-symbol">&lt;/&gt;</div>
-          <div class="float-element code-word">AI</div>
+
+        <div class="auth-visual">
+            <h2 class="gradient-text">Empower Your Future</h2>
+            <p>Learn cutting-edge skills with Skillshastra’s expert-led courses.</p>
+            <div class="code-window">
+                <div class="window-header">
+                    <div class="window-dot dot-red"></div>
+                    <div class="window-dot dot-yellow"></div>
+                    <div class="window-dot dot-green"></div>
+                </div>
+                <div class="code-content">
+                    <div class="code-line"><span>const</span> user = {</div>
+                    <div class="code-line">  name: <span>'Future Coder'</span>,</div>
+                    <div class="code-line">  skills: <span>['Tech', 'AI', 'Web']</span></div>
+                    <div class="code-line">};</div>
+                    <div class="code-line">console.log(<span>'Ready to learn! 🚀'</span>);</div>
+                </div>
+            </div>
+            <div class="floating-elements">
+                <div class="float-element code-bracket">{</div>
+                <div class="float-element code-bracket">}</div>
+                <div class="float-element code-symbol"></></div>
+                <div class="float-element code-word">AI</div>
+            </div>
         </div>
-      </div>
     </div>
 
     <script>
-      // if (data.user.role === "admin") {
-      //   window.location.href = "/admin";
-      // } else {
-      //   window.location.href = "/";
-      // }
-      const API_URL = "http://localhost:5000/api/auth";
-      let currentEmail = "";
+        const API_URL = 'http://localhost:5000/api/auth';
+        let currentEmail = '';
+        let isResetPasswordStep = false;
 
-      function showLogin() {
-        hideAllForms();
-        document.getElementById("loginForm").style.display = "block";
-        document
-          .querySelectorAll(".form-toggle button")[0]
-          .classList.add("active");
-        document
-          .querySelectorAll(".form-toggle button")[1]
-          .classList.remove("active");
-        clearMessages();
-      }
-
-      function showSignup() {
-        hideAllForms();
-        document.getElementById("signupForm").style.display = "block";
-        document
-          .querySelectorAll(".form-toggle button")[0]
-          .classList.remove("active");
-        document
-          .querySelectorAll(".form-toggle button")[1]
-          .classList.add("active");
-        clearMessages();
-      }
-
-      function showOtpForm() {
-        hideAllForms();
-        document.getElementById("otpForm").style.display = "block";
-        clearMessages();
-      }
-
-      function showForgotPassword() {
-        hideAllForms();
-        document.getElementById("forgotPasswordForm").style.display = "block";
-        clearMessages();
-      }
-
-      function showResetPassword() {
-        hideAllForms();
-        document.getElementById("resetPasswordForm").style.display = "block";
-        clearMessages();
-      }
-
-      function hideAllForms() {
-        document.getElementById("loginForm").style.display = "none";
-        document.getElementById("signupForm").style.display = "none";
-        document.getElementById("otpForm").style.display = "none";
-        document.getElementById("forgotPasswordForm").style.display = "none";
-        document.getElementById("resetPasswordForm").style.display = "none";
-      }
-
-      function showError(message) {
-        const errorDiv = document.getElementById("errorMessage");
-        errorDiv.textContent = message;
-        errorDiv.style.display = "block";
-        document.getElementById("successMessage").style.display = "none";
-      }
-
-      function showSuccess(message) {
-        const successDiv = document.getElementById("successMessage");
-        successDiv.textContent = message;
-        successDiv.style.display = "block";
-        document.getElementById("errorMessage").style.display = "none";
-      }
-
-      function clearMessages() {
-        document.getElementById("errorMessage").style.display = "none";
-        document.getElementById("successMessage").style.display = "none";
-      }
-
-      function disableButton(btn) {
-        btn.disabled = true;
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-      }
-
-      function enableButton(btn, originalText) {
-        btn.disabled = false;
-        btn.innerHTML = originalText;
-      }
-
-      function checkPasswordStrength(password) {
-        const strengthDiv = document.getElementById("passwordStrength");
-        strengthDiv.style.display = "block";
-        if (password.length < 6) {
-          strengthDiv.textContent =
-            "Weak: Password must be at least 6 characters";
-          strengthDiv.className = "password-strength weak";
-          return false;
-        } else if (!/[A-Z]/.test(password) || !/[0-9]/.test(password)) {
-          strengthDiv.textContent = "Medium: Include uppercase and numbers";
-          strengthDiv.className = "password-strength medium";
-          return true;
-        } else {
-          strengthDiv.textContent = "Strong: Good password!";
-          strengthDiv.className = "password-strength strong";
-          return true;
+        function showLogin() {
+            hideAllForms();
+            document.getElementById('loginForm').style.display = 'block';
+            document.querySelectorAll('.form-toggle button')[0].classList.add('active');
+            document.querySelectorAll('.form-toggle button')[1].classList.remove('active');
+            clearMessages();
         }
-      }
 
-      function closePage() {
-        const authContainer = document.getElementById("authContainer");
-        authContainer.classList.add("active");
-        setTimeout(() => {
-          history.back();
-        }, 500);
-      }
-
-      // Signup Form Submission
-      document
-        .getElementById("signupForm")
-        .addEventListener("submit", async (e) => {
-          e.preventDefault();
-          const name = document.getElementById("signupName").value.trim();
-          const email = document.getElementById("signupEmail").value.trim();
-          const password = document.getElementById("signupPassword").value;
-          const confirmPassword =
-            document.getElementById("confirmPassword").value;
-          const signupBtn = document.getElementById("signupBtn");
-          const originalText = signupBtn.innerHTML;
-
-          if (password !== confirmPassword) {
-            showError("Passwords do not match");
-            return;
-          }
-
-          if (!checkPasswordStrength(password)) {
-            showError("Please enter a stronger password");
-            return;
-          }
-
-          disableButton(signupBtn);
-
-          try {
-            const response = await fetch(`${API_URL}/signup`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ name, email, password }),
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-              currentEmail = email;
-              showOtpForm();
-              showSuccess(data.message || "OTP sent to your email");
-            } else {
-              showError(data.message);
-            }
-          } catch (error) {
-            showError("An error occurred during signup");
-            console.error(error);
-          } finally {
-            enableButton(signupBtn, originalText);
-          }
-        });
-
-      // OTP Verification
-      document
-        .getElementById("otpForm")
-        .addEventListener("submit", async (e) => {
-          e.preventDefault();
-          const otp = document.getElementById("otpInput").value.trim();
-          const otpBtn = document.getElementById("otpBtn");
-          const originalText = otpBtn.innerHTML;
-
-          disableButton(otpBtn);
-
-          try {
-            const response = await fetch(`${API_URL}/verify-otp`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ email: currentEmail, otp }),
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-              localStorage.setItem("token", data.token);
-              showSuccess(data.message);
-              setTimeout(() => {
-                if (data.user.role === "admin") {
-                  window.location.href = "/admin.html";
-                } else {
-                  window.location.href = "index.html";
-                }
-              }, 1000);
-            } else {
-              showError(data.message);
-            }
-          } catch (error) {
-            showError("An error occurred during OTP verification");
-            console.error(error);
-          } finally {
-            enableButton(otpBtn, originalText);
-          }
-        });
-
-      // Resend OTP
-      async function resendOTP() {
-        try {
-          const response = await fetch(`${API_URL}/forgot-password`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email: currentEmail }),
-          });
-
-          const data = await response.json();
-
-          if (response.ok) {
-            showSuccess(data.message || "OTP resent to your email");
-          } else {
-            showError(data.message);
-          }
-        } catch (error) {
-          showError("An error occurred while resending OTP");
-          console.error(error);
+        function showSignup() {
+            hideAllForms();
+            document.getElementById('signupForm').style.display = 'block';
+            document.querySelectorAll('.form-toggle button')[0].classList.remove('active');
+            document.querySelectorAll('.form-toggle button')[1].classList.add('active');
+            clearMessages();
         }
-      }
 
-      // Login Form
-      document
-        .getElementById("loginForm")
-        .addEventListener("submit", async (e) => {
-          e.preventDefault();
-          const email = document.getElementById("loginEmail").value.trim();
-          const password = document.getElementById("loginPassword").value;
-          const loginBtn = document.getElementById("loginBtn");
-          const originalText = loginBtn.innerHTML;
+        function showOtpForm() {
+            hideAllForms();
+            document.getElementById('otpForm').style.display = 'block';
+            clearMessages();
+        }
 
-          disableButton(loginBtn);
+        function showForgotPassword() {
+    hideAllForms();
+    document.getElementById('forgotPasswordForm').style.display = 'block';
+    document.getElementById('forgotEmailGroup').style.display = 'block';
+    document.getElementById('resetOtpGroup').style.display = 'none';
+    document.getElementById('newPasswordGroup').style.display = 'none';
+    document.getElementById('confirmNewPasswordGroup').style.display = 'none';
+    document.getElementById('newPasswordStrength').style.display = 'none';
+    
+    // Manage required attributes
+    const forgotEmail = document.getElementById('forgotEmail');
+    const resetOtp = document.getElementById('resetOtp');
+    const newPassword = document.getElementById('newPassword');
+    const confirmNewPassword = document.getElementById('confirmNewPassword');
+    
+    if (forgotEmail) forgotEmail.required = true;
+    if (resetOtp) resetOtp.required = false;
+    if (newPassword) newPassword.required = false;
+    if (confirmNewPassword) confirmNewPassword.required = false;
 
-          try {
-            const response = await fetch(`${API_URL}/login`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ email, password }),
-            });
+    const forgotBtn = document.getElementById('forgotBtn');
+    if (forgotBtn) {
+        forgotBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Send OTP';
+    }
+    document.getElementById('forgotTitle').textContent = 'Reset Password';
+    isResetPasswordStep = false;
+    clearMessages();
+}
 
-            const data = await response.json();
+        function hideAllForms() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('signupForm').style.display = 'none';
+            document.getElementById('otpForm').style.display = 'none';
+            document.getElementById('forgotPasswordForm').style.display = 'none';
+        }
 
-            if (response.ok) {
-              localStorage.setItem("token", data.token);
-              showSuccess("Login successful!");
-              setTimeout(() => {
-                if (data.user.role === "admin") {
-                  window.location.href = "/admin.html";
-                } else {
-                  window.location.href = "index.html";
-                }
-              }, 1000);
-            } else {
-              showError(data.message);
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            if (errorDiv) {
+                errorDiv.innerHTML = message;
+                errorDiv.style.display = 'block';
+                document.getElementById('successMessage').style.display = 'none';
             }
-          } catch (error) {
-            showError("An error occurred during login");
-            console.error(error);
-          } finally {
-            enableButton(loginBtn, originalText);
-          }
+        }
+
+        function showSuccess(message) {
+            const successDiv = document.getElementById('successMessage');
+            if (successDiv) {
+                successDiv.textContent = message;
+                successDiv.style.display = 'block';
+                document.getElementById('errorMessage').style.display = 'none';
+            }
+        }
+
+        function clearMessages() {
+            const errorDiv = document.getElementById('errorMessage');
+            const successDiv = document.getElementById('successMessage');
+            if (errorDiv) errorDiv.style.display = 'none';
+            if (successDiv) successDiv.style.display = 'none';
+        }
+
+        function disableButton(btn) {
+            if (btn) {
+                btn.disabled = true;
+                btn.classList.add('loading');
+                btn.innerHTML = '<span>Processing...</span>';
+            }
+        }
+
+        function enableButton(btn, originalText) {
+            if (btn) {
+                btn.disabled = false;
+                btn.classList.remove('loading');
+                btn.innerHTML = originalText;
+            }
+        }
+
+        function checkPasswordStrength(password, strengthDivId) {
+            const strengthDiv = document.getElementById(strengthDivId);
+            if (!strengthDiv) return false;
+
+            strengthDiv.style.display = 'block';
+            if (password.length < 6) {
+                strengthDiv.textContent = 'Weak: Password must be at least 6 characters';
+                strengthDiv.className = 'password-strength weak';
+                return false;
+            } else if (!/[A-Z]/.test(password) || !/[0-9]/.test(password)) {
+                strengthDiv.textContent = 'Medium: Include uppercase and numbers';
+                strengthDiv.className = 'password-strength medium';
+                return true;
+            } else {
+                strengthDiv.textContent = 'Strong: Good password!';
+                strengthDiv.className = 'password-strength strong';
+                return true;
+            }
+        }
+
+        function closePage() {
+            const authContainer = document.getElementById('authContainer');
+            if (authContainer) {
+                authContainer.classList.add('closing');
+                setTimeout(() => {
+                    history.back();
+                }, 500);
+            }
+        }
+
+        // Signup Form Submission
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('signupName')?.value.trim();
+            const email = document.getElementById('signupEmail')?.value.trim();
+            const password = document.getElementById('signupPassword')?.value;
+            const confirmPassword = document.getElementById('confirmPassword')?.value;
+            const signupBtn = document.getElementById('submitSignup');
+            const originalText = signupBtn?.innerHTML || '<i class="fas fa-user-plus"></i> Signup';
+
+            if (!name || !email || !password || !confirmPassword || !signupBtn) {
+                showError('Form elements are missing. Please refresh the page.');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showError('Passwords do not match');
+                return;
+            }
+
+            if (!checkPasswordStrength(password, 'passwordStrength')) {
+                showError('Please enter a stronger password');
+                return;
+            }
+
+            disableButton(signupBtn);
+
+            try {
+                const response = await fetch(`${API_URL}/signup`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    currentEmail = email;
+                    showOtpForm();
+                    showSuccess(data.message || 'OTP sent to your email');
+                } else if (data.message === 'User already exists') {
+                    showError('Email already registered. Please <a href="#" onclick="showLogin()">login</a>.');
+                } else {
+                    showError(data.message || 'Signup failed. Please try again.');
+                }
+            } catch (error) {
+                showError('Network error during signup. Please check your connection.');
+                console.error('Signup Error:', error);
+            } finally {
+                enableButton(signupBtn, originalText);
+            }
         });
 
-      // Forgot Password Form
-      document
-        .getElementById("forgotPasswordForm")
-        .addEventListener("submit", async (e) => {
-          e.preventDefault();
-          const email = document.getElementById("forgotEmail").value.trim();
-          const forgotBtn = document.getElementById("forgotBtn");
-          const originalText = forgotBtn.innerHTML;
+        // OTP Verification
+        document.getElementById('otpForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const otp = document.getElementById('otpInput')?.value.trim();
+            const otpBtn = document.getElementById('otpBtn');
+            const originalText = otpBtn?.innerHTML || '<i class="fas fa-check"></i> Verify OTP';
 
-          disableButton(forgotBtn);
-
-          try {
-            const response = await fetch(`${API_URL}/forgot-password`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ email }),
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-              currentEmail = email;
-              showResetPassword();
-              showSuccess(data.message);
-            } else {
-              showError(data.message);
+            if (!otp || !otpBtn) {
+                showError('Form elements are missing. Please refresh the page.');
+                return;
             }
-          } catch (error) {
-            showError("An error occurred during password reset request");
-            console.error(error);
-          } finally {
+
+            disableButton(otpBtn);
+
+            try {
+                const response = await fetch(`${API_URL}/verify-otp`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: currentEmail, otp })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('otp', otp);
+                    showSuccess('OTP verified successfully!');
+                    setTimeout(() => {
+                        if (data.user.role === 'admin') {
+                            window.location.href = '/admin';
+                        } else {
+                            window.location.href = '/dashboard';
+                        }
+                    }, 1000);
+                } else {
+                    showError(data.message || 'Invalid OTP. Please try again.');
+                }
+            } catch (error) {
+                showError('Network error during OTP verification.');
+                console.error('OTP Error:', error);
+            } finally {
+                enableButton(otpBtn, originalText);
+            }
+        });
+
+        // Resend OTP
+        async function resendOTP() {
+            if (!currentEmail) {
+                showError('No email associated. Please sign up again.');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/forgot-password`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: currentEmail })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showSuccess(data.message || 'OTP resent to your email');
+                } else {
+                    showError(data.message || 'Failed to resend OTP.');
+                }
+            } catch (error) {
+                showError('Network error while resending OTP.');
+                console.error('Resend OTP Error:', error);
+            }
+        }
+
+        // Login Form Submission
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail')?.value.trim();
+            const password = document.getElementById('loginPassword')?.value;
+            const loginBtn = document.getElementById('loginBtn');
+            const originalText = loginBtn?.innerHTML || '<i class="fas fa-sign-in-alt"></i> Login';
+
+            if (!email || !password || !loginBtn) {
+                showError('Form elements are missing. Please refresh the page.');
+                return;
+            }
+
+            disableButton(loginBtn);
+
+            try {
+                const response = await fetch(`${API_URL}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    localStorage.setItem('token', data.token);
+                    showSuccess('Login successful!');
+                    setTimeout(() => {
+                        if (data.user.role === 'admin') {
+                            window.location.href = '/admin';
+                        } else {
+                            window.location.href = '/dashboard';
+                        }
+                    }, 1000);
+                } else {
+                    showError(data.message || 'Login failed. Please try again.');
+                }
+            } catch (error) {
+                showError('Network error during login.');
+                console.error('Login Error:', error);
+            } finally {
+                enableButton(loginBtn, originalText);
+            }
+        });
+
+// Forgot Password Form Submission
+document.getElementById('forgotPasswordForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('forgotEmail')?.value.trim();
+    const otp = document.getElementById('resetOtp')?.value.trim();
+    const newPassword = document.getElementById('newPassword')?.value;
+    const confirmNewPassword = document.getElementById('confirmNewPassword')?.value;
+    const forgotBtn = document.getElementById('forgotBtn');
+    let originalText = forgotBtn?.innerHTML || '<i class="fas fa-paper-plane"></i> Send OTP';
+
+    if (!forgotBtn) {
+        showError('Form elements are missing. Please refresh the page.');
+        return;
+    }
+
+    disableButton(forgotBtn);
+
+    if (!isResetPasswordStep) {
+        if (!email) {
+            showError('Please enter your email address.');
             enableButton(forgotBtn, originalText);
-          }
-        });
-
-      // Reset Password Form
-      document
-        .getElementById("resetPasswordForm")
-        .addEventListener("submit", async (e) => {
-          e.preventDefault();
-          const otp = document.getElementById("resetOtp").value.trim();
-          const newPassword = document.getElementById("newPassword").value;
-          const confirmPassword =
-            document.getElementById("confirmNewPassword").value;
-          const resetBtn = document.getElementById("resetBtn");
-          const originalText = resetBtn.innerHTML;
-
-          if (newPassword !== confirmPassword) {
-            showError("Passwords do not match");
             return;
-          }
+        }
 
-          if (!checkPasswordStrength(newPassword)) {
-            showError("Please enter a stronger password");
-            return;
-          }
-
-          disableButton(resetBtn);
-
-          try {
-            const response = await fetch(`${API_URL}/reset-password`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ email: currentEmail, otp, newPassword }),
+        try {
+            const response = await fetch(`${API_URL}/forgot-password`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email })
             });
 
             const data = await response.json();
 
             if (response.ok) {
-              showSuccess(data.message);
-              setTimeout(() => showLogin(), 1000);
+                currentEmail = email;
+                document.getElementById('forgotEmailGroup').style.display = 'none';
+                document.getElementById('resetOtpGroup').style.display = 'block';
+                document.getElementById('newPasswordGroup').style.display = 'block';
+                document.getElementById('confirmNewPasswordGroup').style.display = 'block';
+                
+                // Add required attributes for Step 2
+                const resetOtp = document.getElementById('resetOtp');
+                const newPassword = document.getElementById('newPassword');
+                const confirmNewPassword = document.getElementById('confirmNewPassword');
+                if (resetOtp) resetOtp.required = true;
+                if (newPassword) newPassword.required = true;
+                if (confirmNewPassword) confirmNewPassword.required = true;
+
+                originalText = '<i class="fas fa-unlock"></i> Reset Password';
+                forgotBtn.innerHTML = originalText;
+                document.getElementById('forgotTitle').textContent = 'Enter OTP & New Password';
+                isResetPasswordStep = true;
+                showSuccess(data.message || 'OTP sent to your email');
             } else {
-              showError(data.message);
+                showError(data.message || 'Failed to send OTP.');
             }
-          } catch (error) {
-            showError("An error occurred during password reset");
-            console.error(error);
-          } finally {
-            enableButton(resetBtn, originalText);
-          }
+        } catch (error) {
+            showError('Network error during password reset request.');
+            console.error('Forgot Password Error:', error);
+        } finally {
+            enableButton(forgotBtn, originalText);
+        }
+    } else {
+        if (!otp || !newPassword || !confirmNewPassword) {
+            showError('Please fill in all fields.');
+            enableButton(forgotBtn, originalText);
+            return;
+        }
+
+        if (newPassword !== confirmNewPassword) {
+            showError('Passwords do not match');
+            enableButton(forgotBtn, originalText);
+            return;
+        }
+
+        if (!checkPasswordStrength(newPassword, 'newPasswordStrength')) {
+            showError('Please enter a stronger password');
+            enableButton(forgotBtn, originalText);
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_URL}/reset-password`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: currentEmail, otp, newPassword })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                showSuccess(data.message || 'Password reset successfully');
+                setTimeout(() => showLogin(), 1000);
+            } else {
+                showError(data.message || 'Failed to reset password.');
+            }
+        } catch (error) {
+            showError('Network error during password reset.');
+            console.error('Reset Password Error:', error);
+        } finally {
+            enableButton(forgotBtn, originalText);
+        }
+    }
+});
+
+        // Password Strength Real-time Check
+        document.getElementById('signupPassword')?.addEventListener('input', function () {
+            checkPasswordStrength(this.value, 'passwordStrength');
         });
 
-      // Password Strength Real-time Check
-      document
-        .getElementById("signupPassword")
-        .addEventListener("input", function () {
-          checkPasswordStrength(this.value);
+        document.getElementById('newPassword')?.addEventListener('input', function () {
+            checkPasswordStrength(this.value, 'newPasswordStrength');
         });
 
-      // Social Login Placeholder
-      document.querySelectorAll(".social-icons a").forEach((link) => {
-        link.addEventListener("click", (e) => {
-          e.preventDefault();
-          alert("This link is not implemented yet.");
+        // Social Login Placeholder
+        document.querySelectorAll('.social-icons a').forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                showError('Social login is not implemented yet.');
+            });
         });
-      });
+
+        // Initialize
+        showLogin();
     </script>
-  </body>
+</body>
 </html>
