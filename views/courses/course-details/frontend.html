@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Development Courses - Skillshastra</title>
+    <title>Frontend Development Courses - Skillshastra</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -198,11 +198,11 @@
 
         /* Hero Section */
         .courses-hero {
-            min-height: 70vh;
+            min-height: 50vh;
             display: flex;
             align-items: center;
             position: relative;
-            padding: 8rem 2rem 4rem;
+            padding: 6rem 2rem 4rem;
             background: linear-gradient(135deg, #0f0f23 0%, #1a1a3a 50%, #2d1b69 100%);
             overflow: hidden;
         }
@@ -239,35 +239,15 @@
         }
 
         .courses-hero h1 {
-            font-size: 3.5rem;
+            font-size: 2.5rem;
             font-weight: 700;
             color: white;
             line-height: 1.2;
             margin-bottom: 1.5rem;
         }
 
-        .courses-hero .gradient-text {
-            background: linear-gradient(135deg, #7c3aed, #a855f7, #ec4899);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: gradient-shift 3s ease-in-out infinite;
-        }
-
-        @keyframes gradient-shift {
-
-            0%,
-            100% {
-                background-position: 0% 50%;
-            }
-
-            50% {
-                background-position: 100% 50%;
-            }
-        }
-
         .courses-hero p {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: rgba(255, 255, 255, 0.8);
             line-height: 1.6;
             max-width: 700px;
@@ -276,157 +256,40 @@
             animation: fadeIn 1.5s ease forwards 0.5s;
         }
 
-        .hero-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            opacity: 0;
-            animation: fadeIn 1.5s ease forwards 0.7s;
-        }
-
         @keyframes fadeIn {
             to {
                 opacity: 1;
             }
         }
 
-        /* Benefits Section */
-        .benefits-section {
+        /* Course Details Section */
+        .course-details-section {
             padding: 6rem 2rem;
             background: #fff;
-            text-align: center;
         }
 
-        .benefits-section h2 {
-            font-size: 2.5rem;
-            color: #7c3aed;
-            margin-bottom: 3rem;
-            position: relative;
-        }
-
-        .benefits-section h2::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 4px;
-            background: linear-gradient(90deg, #7c3aed, #a855f7);
-            border-radius: 2px;
-        }
-
-        .benefits-container {
+        .course-details-container {
             max-width: 1200px;
             margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
         }
 
-        .benefit-card {
-            background: #f8f9ff;
-            border-radius: 12px;
-            padding: 2rem;
-            transition: all 0.3s ease;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: cardFadeIn 1s ease forwards;
-        }
-
-        .benefit-card:nth-child(1) {
-            --delay: 1;
-        }
-
-        .benefit-card:nth-child(2) {
-            --delay: 2;
-        }
-
-        .benefit-card:nth-child(3) {
-            --delay: 3;
-        }
-
-        .benefit-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(124, 58, 237, 0.2);
-        }
-
-        .benefit-icon {
-            font-size: 2.5rem;
-            color: #7c3aed;
-            margin-bottom: 1rem;
-        }
-
-        .benefit-card h3 {
-            font-size: 1.5rem;
-            color: #1f2937;
-            margin-bottom: 0.75rem;
-        }
-
-        .benefit-card p {
-            font-size: 0.9rem;
-            color: #6b7280;
-            line-height: 1.6;
-        }
-
-        /* Courses Section */
-        .courses-section {
-            padding: 6rem 2rem;
-            background: linear-gradient(135deg, #f8f9ff 0%, #e8f0ff 100%);
-        }
-
-        .courses-section h2 {
-            font-size: 2.5rem;
-            color: #7c3aed;
-            text-align: center;
-            margin-bottom: 3rem;
-            position: relative;
-        }
-
-        .courses-section h2::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 4px;
-            background: linear-gradient(90deg, #7c3aed, #a855f7);
-            border-radius: 2px;
-        }
-
-        .courses-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .course-card {
-            background: white;
-            border-radius: 16px;
-            padding: 2rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
+        .course-details {
+            margin-bottom: 4rem;
             opacity: 0;
             transform: translateY(20px);
             animation: cardFadeIn 1s ease forwards;
             animation-delay: calc(var(--delay) * 0.2s);
         }
 
-        .course-card:nth-child(1) {
+        .course-details:nth-child(1) {
             --delay: 1;
         }
 
-        .course-card:nth-child(2) {
+        .course-details:nth-child(2) {
             --delay: 2;
         }
 
-        .course-card:nth-child(3) {
+        .course-details:nth-child(3) {
             --delay: 3;
         }
 
@@ -437,66 +300,124 @@
             }
         }
 
-        .course-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-            border: 2px solid transparent;
-            background: linear-gradient(white, white) padding-box,
-                linear-gradient(135deg, #7c3aed, #a855f7) border-box;
-        }
-
-        .course-icon {
-            font-size: 2.5rem;
+        .course-details h2 {
+            font-size: 2rem;
             color: #7c3aed;
             margin-bottom: 1rem;
-            transition: transform 0.3s ease;
+            position: relative;
         }
 
-        .course-card:hover .course-icon {
-            transform: scale(1.2) rotate(5deg);
+        .course-details h2::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, #7c3aed, #a855f7);
+            border-radius: 2px;
         }
 
-        .course-card h3 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #1f2937;
-            margin-bottom: 0.5rem;
-        }
-
-        .course-card .course-meta {
-            font-size: 0.8rem;
-            color: #6b7280;
-            margin-bottom: 1rem;
+        .course-meta {
             display: flex;
-            justify-content: center;
+            flex-wrap: wrap;
             gap: 1rem;
-        }
-
-        .course-card p {
+            margin-bottom: 1.5rem;
             font-size: 0.9rem;
             color: #6b7280;
+        }
+
+        .course-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #f59e0b;
+        }
+
+        .course-description {
+            font-size: 1rem;
+            color: #1f2937;
             line-height: 1.6;
             margin-bottom: 1.5rem;
         }
 
-        .course-btn {
-            padding: 0.75rem 1.5rem;
+        .instructors,
+        .syllabus {
+            margin-bottom: 2rem;
+        }
+
+        .instructors h3,
+        .syllabus h3 {
+            font-size: 1.5rem;
+            color: #1f2937;
+            margin-bottom: 1rem;
+        }
+
+        .instructor-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .instructor {
+            background: #f8f9ff;
+            padding: 1rem;
+            border-radius: 8px;
+            flex: 1 1 200px;
+            text-align: center;
+        }
+
+        .instructor img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-bottom: 0.5rem;
+        }
+
+        .instructor p {
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+
+        .syllabus ul {
+            list-style: none;
+        }
+
+        .syllabus ul li {
+            font-size: 0.9rem;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .syllabus ul li i {
+            color: #7c3aed;
+        }
+
+        .enroll-btn {
+            display: inline-flex;
+            padding: 1rem 2rem;
             background: linear-gradient(135deg, #7c3aed, #a855f7);
             color: white;
             border: none;
             border-radius: 12px;
-            font-size: 0.9rem;
+            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
             position: relative;
             overflow: hidden;
         }
 
-        .course-btn::after {
+        .enroll-btn::after {
             content: '';
             position: absolute;
             top: 0;
@@ -507,89 +428,13 @@
             transition: all 0.4s ease;
         }
 
-        .course-btn:hover::after {
+        .enroll-btn:hover::after {
             left: 100%;
         }
 
-        .course-btn:hover {
+        .enroll-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(124, 58, 237, 0.3);
-        }
-
-        /* Why Us Section */
-        .why-us-section {
-            padding: 6rem 2rem;
-            background: linear-gradient(135deg, #7c3aed, #a855f7);
-            color: white;
-            text-align: center;
-        }
-
-        .why-us-section h2 {
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            position: relative;
-        }
-
-        .why-us-section h2::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 4px;
-            background: #fff;
-            border-radius: 2px;
-        }
-
-        .why-us-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-        }
-
-        .why-us-card {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 2rem;
-            transition: all 0.3s ease;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: cardFadeIn 1s ease forwards;
-        }
-
-        .why-us-card:nth-child(1) {
-            --delay: 1;
-        }
-
-        .why-us-card:nth-child(2) {
-            --delay: 2;
-        }
-
-        .why-us-card:nth-child(3) {
-            --delay: 3;
-        }
-
-        .why-us-card:hover {
-            transform: translateY(-10px);
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .why-us-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .why-us-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .why-us-card p {
-            font-size: 0.9rem;
-            line-height: 1.6;
         }
 
         /* Footer Styles */
@@ -821,77 +666,6 @@
             transform: translateY(-5px);
         }
 
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-content {
-            background: white;
-            border-radius: 12px;
-            padding: 2rem;
-            max-width: 500px;
-            width: 90%;
-            position: relative;
-            transform: scale(0.7);
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
-
-        .modal.active .modal-content {
-            transform: scale(1);
-            opacity: 1;
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #4b5563;
-        }
-
-        .modal-content h3 {
-            font-size: 1.5rem;
-            color: #7c3aed;
-            margin-bottom: 1rem;
-        }
-
-        .modal-content p {
-            font-size: 0.9rem;
-            color: #6b7280;
-            line-height: 1.6;
-            margin-bottom: 1rem;
-        }
-
-        .modal-content ul {
-            list-style: none;
-            margin-bottom: 1rem;
-        }
-
-        .modal-content ul li {
-            font-size: 0.9rem;
-            color: #1f2937;
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .modal-content ul li i {
-            color: #7c3aed;
-        }
-
         /* Responsive Design */
         @media (max-width: 768px) {
             .nav-menu {
@@ -929,7 +703,7 @@
             }
 
             .courses-hero {
-                padding: 6rem 1rem 3rem;
+                padding: 5rem 1rem 3rem;
             }
 
             .courses-hero h1 {
@@ -940,21 +714,12 @@
                 font-size: 1rem;
             }
 
-            .hero-buttons {
+            .course-details-section {
+                padding: 4rem 1rem;
+            }
+
+            .instructor-list {
                 flex-direction: column;
-                align-items: center;
-            }
-
-            .courses-container,
-            .benefits-container,
-            .why-us-container {
-                grid-template-columns: 1fr;
-            }
-
-            .course-card,
-            .benefit-card,
-            .why-us-card {
-                padding: 1.5rem;
             }
 
             .footer-content {
@@ -976,6 +741,25 @@
                 max-width: 100%;
             }
         }
+
+        @media (max-width: 480px) {
+            .courses-hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .courses-hero p {
+                font-size: 0.9rem;
+            }
+
+            .course-details h2 {
+                font-size: 1.5rem;
+            }
+
+            .instructors h3,
+            .syllabus h3 {
+                font-size: 1.2rem;
+            }
+        }
     </style>
 </head>
 
@@ -990,9 +774,12 @@
                     <a href="#" class="nav-link" tabindex="0">Courses <i class="fas fa-chevron-down"
                             style="font-size: 0.8rem;"></i></a>
                     <div class="dropdown">
-                        <a href="Programming.html" class="dropdown-item"><i class="fas fa-laptop-code"></i> Programming
-                            Languages</a>
-                        <a href="webdev.html" class="dropdown-item"><i class="fas fa-globe"></i> Web Development</a>
+                        <a href="frontend.html" class="dropdown-item"><i class="fas fa-desktop"></i> Frontend
+                            Development</a>
+                        <a href="backend.html" class="dropdown-item"><i class="fas fa-server"></i> Backend
+                            Development</a>
+                        <a href="fullstack.html" class="dropdown-item"><i class="fas fa-laptop-code"></i> Full Stack
+                            Development</a>
                         <a href="digitalMarketing.html" class="dropdown-item"><i class="fas fa-bullhorn"></i> Digital
                             Marketing</a>
                         <a href="genai.html" class="dropdown-item"><i class="fas fa-robot"></i> Generative AI</a>
@@ -1035,99 +822,121 @@
     <!-- Courses Hero Section -->
     <section class="courses-hero">
         <div class="courses-hero-container">
-            <h1>Become a <span class="gradient-text" id="typing-text">Web Development</span> Expert</h1>
-            <p>Master Frontend, Backend, and Full Stack development with our hands-on, industry-focused MERN Stack
-                courses designed to make you job-ready.</p>
-            <div class="hero-buttons">
-                <a href="#courses" class="btm btm-primary"><i class="fas fa-arrow-right"></i> Explore Courses</a>
-                <a href="contact.html" class="btm btm-secondary"><i class="fas fa-info-circle"></i> Learn More</a>
-            </div>
+            <h1>Frontend Development Courses</h1>
+            <p>Master the art of creating stunning, responsive websites with our comprehensive frontend development
+                courses designed for all skill levels.</p>
         </div>
     </section>
 
-    <!-- Benefits Section -->
-    <section class="benefits-section">
-        <h2>Why Learn Web Development?</h2>
-        <div class="benefits-container">
-            <div class="benefit-card">
-                <i class="fas fa-briefcase benefit-icon"></i>
-                <h3>High-Demand Careers</h3>
-                <p>Web developers are sought after globally, with opportunities in tech giants and startups alike.</p>
+    <!-- Course Details Section -->
+    <section class="course-details-section">
+        <div class="course-details-container">
+            <div class="course-details" id="frontend-beginner">
+                <h2>Frontend Development - Beginner</h2>
+                <div class="course-meta">
+                    <span><i class="fas fa-clock"></i> Duration: 6 Weeks</span>
+                    <span><i class="fas fa-rupee-sign"></i> Fees: ₹12,000</span>
+                    <span><i class="fas fa-level-up-alt"></i> Level: Beginner</span>
+                    <span class="rating"><i class="fas fa-star"></i> 4.8 (1,200 reviews)</span>
+                </div>
+                <div class="course-description">
+                    <p>Start your journey in web development by learning the fundamentals of HTML, CSS, and JavaScript.
+                        Build responsive websites and create a strong foundation for frontend development.</p>
+                </div>
+                <div class="instructors">
+                    <h3>Instructors</h3>
+                    <div class="instructor-list">
+                        <div class="instructor">
+                            <img src="https://via.placeholder.com/80" alt="Instructor">
+                            <h4>Anita Sharma</h4>
+                            <p>Senior Frontend Developer, 8+ years experience</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="syllabus">
+                    <h3>Course Syllabus</h3>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Introduction to Web Development</li>
+                        <li><i class="fas fa-check-circle"></i> HTML5: Structure and Semantics</li>
+                        <li><i class="fas fa-check-circle"></i> CSS3: Styling and Layouts</li>
+                        <li><i class="fas fa-check-circle"></i> JavaScript Basics: Variables, Functions, Events</li>
+                        <li><i class="fas fa-check-circle"></i> Responsive Design with Media Queries</li>
+                        <li><i class="fas fa-check-circle"></i> Project: Personal Portfolio Website</li>
+                    </ul>
+                </div>
+                <a href="signup.html" class="enroll-btn"><i class="fas fa-arrow-right"></i> Enroll Now</a>
             </div>
-            <div class="benefit-card">
-                <i class="fas fa-paint-brush benefit-icon"></i>
-                <h3>Creative Freedom</h3>
-                <p>Design and build innovative, user-friendly websites and applications that stand out.</p>
-            </div>
-            <div class="benefit-card">
-                <i class="fas fa-globe benefit-icon"></i>
-                <h3>Global Opportunities</h3>
-                <p>Work remotely or freelance, connecting with clients and teams worldwide.</p>
-            </div>
-        </div>
-    </section>
 
-    <!-- Courses Section -->
-    <section class="courses-section" id="courses">
-        <h2>Our Web Development Courses</h2>
-        <div class="courses-container">
-            <div class="course-card" data-course="frontend">
-                <i class="fas fa-desktop course-icon"></i>
-                <h3>Frontend Development</h3>
+            <div class="course-details" id="frontend-intermediate">
+                <h2>Frontend Development - Intermediate</h2>
                 <div class="course-meta">
-                    <span><i class="fas fa-clock"></i> 8 Weeks</span>
-                    <span><i class="fas fa-level-up-alt"></i> Beginner</span>
+                    <span><i class="fas fa-clock"></i> Duration: 8 Weeks</span>
+                    <span><i class="fas fa-rupee-sign"></i> Fees: ₹18,000</span>
+                    <span><i class="fas fa-level-up-alt"></i> Level: Intermediate</span>
+                    <span class="rating"><i class="fas fa-star"></i> 4.9 (900 reviews)</span>
                 </div>
-                <p>Learn HTML, CSS, and JavaScript to create stunning, interactive user interfaces for modern websites.
-                </p>
-                <button class="course-btn" onclick=><i class="fas fa-arrow-right"></i> Explore
-                    Course</button>
-            </div>
-            <div class="course-card" data-course="backend">
-                <i class="fas fa-server course-icon"></i>
-                <h3>Backend Development</h3>
-                <div class="course-meta">
-                    <span><i class="fas fa-clock"></i> 10 Weeks</span>
-                    <span><i class="fas fa-level-up-alt"></i> Intermediate</span>
+                <div class="course-description">
+                    <p>Take your frontend skills to the next level with React and Tailwind CSS. Learn to build dynamic
+                        user interfaces and modern web applications.</p>
                 </div>
-                <p>Master server-side technologies like Node.js and Express to build robust APIs and manage databases.
-                </p>
-                <button class="course-btn" onclick="openModal('backend')"><i class="fas fa-arrow-right"></i> Explore
-                    Course</button>
-            </div>
-            <div class="course-card" data-course="fullstack">
-                <i class="fas fa-laptop-code course-icon"></i>
-                <h3>Full Stack (MERN)</h3>
-                <div class="course-meta">
-                    <span><i class="fas fa-clock"></i> 12 Weeks</span>
-                    <span><i class="fas fa-level-up-alt"></i> Advanced</span>
+                <div class="instructors">
+                    <h3>Instructors</h3>
+                    <div class="instructor-list">
+                        <div class="instructor">
+                            <img src="https://via.placeholder.com/80" alt="Instructor">
+                            <h4>Rahul Verma</h4>
+                            <p>React Expert, 10+ years experience</p>
+                        </div>
+                    </div>
                 </div>
-                <p>Become a full-stack developer with MongoDB, Express, React, and Node.js to build complete web
-                    applications.</p>
-                <button class="course-btn" onclick="openModal('fullstack')"><i class="fas fa-arrow-right"></i> Explore
-                    Course</button>
+                <div class="syllabus">
+                    <h3>Course Syllabus</h3>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Advanced CSS: Flexbox and Grid</li>
+                        <li><i class="fas fa-check-circle"></i> JavaScript ES6+: Modules, Promises, Async/Await</li>
+                        <li><i class="fas fa-check-circle"></i> React: Components, Props, State</li>
+                        <li><i class="fas fa-check-circle"></i> Tailwind CSS for Rapid Styling</li>
+                        <li><i class="fas fa-check-circle"></i> State Management with Context API</li>
+                        <li><i class="fas fa-check-circle"></i> Project: E-Commerce Website</li>
+                    </ul>
+                </div>
+                <a href="signup.html" class="enroll-btn"><i class="fas fa-arrow-right"></i> Enroll Now</a>
             </div>
-        </div>
-    </section>
 
-    <!-- Why Us Section -->
-    <section class="why-us-section">
-        <h2>Why Choose Skillshastra?</h2>
-        <div class="why-us-container">
-            <div class="why-us-card">
-                <i class="fas fa-chalkboard-teacher why-us-icon"></i>
-                <h3>Expert Instructors</h3>
-                <p>Learn from industry professionals with years of real-world experience.</p>
-            </div>
-            <div class="why-us-card">
-                <i class="fas fa-project-diagram why-us-icon"></i>
-                <h3>Hands-On Projects</h3>
-                <p>Build real-world applications to showcase in your portfolio.</p>
-            </div>
-            <div class="why-us-card">
-                <i class="fas fa-user-shield why-us-icon"></i>
-                <h3>Career Support</h3>
-                <p>Get personalized mentorship and job placement assistance.</p>
+            <div class="course-details" id="frontend-advanced">
+                <h2>Frontend Development - Advanced</h2>
+                <div class="course-meta">
+                    <span><i class="fas fa-clock"></i> Duration: 10 Weeks</span>
+                    <span><i class="fas fa-rupee-sign"></i> Fees: ₹25,000</span>
+                    <span><i class="fas fa-level-up-alt"></i> Level: Advanced</span>
+                    <span class="rating"><i class="fas fa-star"></i> 4.7 (600 reviews)</span>
+                </div>
+                <div class="course-description">
+                    <p>Master advanced frontend frameworks and UI/UX principles. Learn to optimize performance and build
+                        complex web applications.</p>
+                </div>
+                <div class="instructors">
+                    <h3>Instructors</h3>
+                    <div class="instructor-list">
+                        <div class="instructor">
+                            <img src="https://via.placeholder.com/80" alt="Instructor">
+                            <h4>Priya Gupta</h4>
+                            <p>UI/UX Specialist, 12+ years experience</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="syllabus">
+                    <h3>Course Syllabus</h3>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Advanced React: Hooks, Suspense, Lazy Loading</li>
+                        <li><i class="fas fa-check-circle"></i> Next.js for Server-Side Rendering</li>
+                        <li><i class="fas fa-check-circle"></i> UI/UX Design Principles</li>
+                        <li><i class="fas fa-check-circle"></i> Performance Optimization Techniques</li>
+                        <li><i class="fas fa-check-circle"></i> Accessibility (a11y) Best Practices</li>
+                        <li><i class="fas fa-check-circle"></i> Project: Admin Dashboard</li>
+                    </ul>
+                </div>
+                <a href="signup.html" class="enroll-btn"><i class="fas fa-arrow-right"></i> Enroll Now</a>
             </div>
         </div>
     </section>
@@ -1137,9 +946,8 @@
         <div class="footer-container">
             <div class="footer-content">
                 <div class="footer-section footer-brand">
-                    <a href="#" class="footer-logo"><i class="fas fa-code"></i> Skillshastra</a>
-                    <p class="footer-description">Empowering the future with cutting-edge tech skills and
-                        industry-focused learning.</p>
+                    <a href="index.html" class="footer-logo"><i class="fas fa-code"></i> Skillshastra</a>
+                    <p class="footer-description">Empowering the future with cutting-edge tech skills.</p>
                     <div class="social-links">
                         <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
                         <a href="#" class="social-icon"><i class="fab fa-linkedin"></i></a>
@@ -1150,27 +958,27 @@
                 <div class="footer-section footer-links">
                     <h4 class="footer-title">Quick Links</h4>
                     <ul class="footer-menu">
-                        <li><a href="#" class="footer-link">Home</a></li>
-                        <li><a href="#" class="footer-link">Courses</a></li>
-                        <li><a href="#" class="footer-link">About</a></li>
-                        <li><a href="#" class="footer-link">Instructors</a></li>
-                        <li><a href="#" class="footer-link">Contact</a></li>
+                        <li><a href="index.html" class="footer-link">Home</a></li>
+                        <li><a href="frontend.html" class="footer-link">Frontend Courses</a></li>
+                        <li><a href="backend.html" class="footer-link">Backend Courses</a></li>
+                        <li><a href="fullstack.html" class="footer-link">Full Stack Courses</a></li>
+                        <li><a href="contact.html" class="footer-link">Contact</a></li>
                     </ul>
                 </div>
                 <div class="footer-section footer-contact">
                     <h4 class="footer-title">Contact Us</h4>
                     <p><i class="fas fa-envelope"></i> skillshastra001@gmail.com</p>
-                    <p><i class="fas fa-phone"></i> +91 8510882886, +91 8851020767</p>
+                    <p><i class="fas fa-phone"></i> +91 8510882886</p>
                     <p><i class="fas fa-map-marker-alt"></i> Ballabgarh, Faridabad, Haryana</p>
                 </div>
                 <div class="footer-section footer-newsletter">
                     <h4 class="footer-title">Stay Updated</h4>
-                    <p>Subscribe to our newsletter for the latest courses and updates.</p>
-                    <form class="newsletter-form">
+                    <p>Subscribe for the latest course updates.</p>
+                    <div class="newsletter-form">
                         <input type="email" placeholder="Enter your email" class="newsletter-input" required>
                         <button type="submit" class="newsletter-btn"><i class="fas fa-paper-plane"></i>
                             Subscribe</button>
-                    </form>
+                    </div>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -1182,50 +990,24 @@
     <!-- Back to Top Button -->
     <button class="back-to-top"><i class="fas fa-arrow-up"></i></button>
 
-    <!-- Modal -->
-    <div class="modal" id="course-modal">
-        <div class="modal-content">
-            <span class="modal-close">&times;</span>
-            <h3 id="modal-title"></h3>
-            <p id="modal-description"></p>
-            <ul id="modal-details"></ul>
-            <a href="#" class="btm btm-primary">Enroll Now</a>
-        </div>
-    </div>
-
     <script>
         // Mobile Menu Toggle
         const hamburger = document.querySelector('.hamburger');
         const navMenu = document.querySelector('.nav-menu');
+        hamburger.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        });
 
-        if (hamburger && navMenu) {
-            hamburger.addEventListener('click', () => {
-                navMenu.classList.toggle('active');
-                hamburger.classList.toggle('active');
-            });
-        }
-
-        // Smooth Scroll for Buttons and Links
-        document.querySelectorAll('.course-btn, .footer-link, .nav-link, .btm').forEach(link => {
+        // Smooth Scroll
+        document.querySelectorAll('.nav-link, .footer-link, .enroll-btn').forEach(link => {
             link.addEventListener('click', (e) => {
                 const href = link.getAttribute('href');
                 if (href && href.startsWith('#')) {
                     e.preventDefault();
-                    const targetElement = document.querySelector(href);
-                    if (targetElement) {
-                        targetElement.scrollIntoView({ behavior: 'smooth' });
-                        const ripple = document.createElement('span');
-                        ripple.style.position = 'absolute';
-                        ripple.style.borderRadius = '50%';
-                        ripple.style.background = 'rgba(255, 255, 255, 0.6)';
-                        ripple.style.transform = 'scale(0)';
-                        ripple.style.animation = 'ripple 0.6s linear';
-                        const rect = link.getBoundingClientRect();
-                        ripple.style.width = ripple.style.height = `${Math.max(rect.width, rect.height) * 2}px`;
-                        ripple.style.left = `${e.clientX - rect.left - rect.width / 2}px`;
-                        ripple.style.top = `${e.clientY - rect.top - rect.height / 2}px`;
-                        link.appendChild(ripple);
-                        setTimeout(() => ripple.remove(), 600);
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
                     }
                 }
             });
@@ -1234,43 +1016,9 @@
         // Navbar Scroll Effect
         window.addEventListener('scroll', () => {
             const navbar = document.querySelector('.navbar');
-            if (navbar) {
-                if (window.scrollY > 100) {
-                    navbar.style.background = 'rgba(255, 255, 255, 0.98)';
-                    navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
-                } else {
-                    navbar.style.background = 'rgba(255, 255, 255, 0.95)';
-                    navbar.style.boxShadow = 'none';
-                }
-            }
+            navbar.style.background = window.scrollY > 100 ? 'rgba(255, 255, 255, 0.98)' : 'rgba(255, 255, 255, 0.95)';
+            navbar.style.boxShadow = window.scrollY > 100 ? '0 2px 20px rgba(0, 0, 0, 0.1)' : 'none';
         });
-
-        // Typing Animation for Hero
-        const typingText = document.getElementById('typing-text');
-        const words = ['Web Development', 'Frontend Expert', 'Backend Guru', 'Full Stack Master'];
-        let wordIndex = 0;
-        let charIndex = 0;
-        let isDeleting = false;
-
-        function type() {
-            const currentWord = words[wordIndex];
-            if (!isDeleting && charIndex < currentWord.length) {
-                typingText.textContent = currentWord.substring(0, charIndex + 1);
-                charIndex++;
-                setTimeout(type, 100);
-            } else if (isDeleting && charIndex > 0) {
-                typingText.textContent = currentWord.substring(0, charIndex - 1);
-                charIndex--;
-                setTimeout(type, 50);
-            } else if (!isDeleting && charIndex === currentWord.length) {
-                setTimeout(() => { isDeleting = true; type(); }, 1000);
-            } else if (isDeleting && charIndex === 0) {
-                isDeleting = false;
-                wordIndex = (wordIndex + 1) % words.length;
-                setTimeout(type, 200);
-            }
-        }
-        type();
 
         // Scroll Animations
         const observer = new IntersectionObserver((entries) => {
@@ -1282,137 +1030,34 @@
             });
         }, { threshold: 0.2 });
 
-        document.querySelectorAll('.benefits-section, .courses-section, .why-us-section').forEach(section => {
+        document.querySelectorAll('.course-details').forEach(section => {
             section.style.opacity = '0';
             section.style.transform = 'translateY(30px)';
             section.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
             observer.observe(section);
         });
 
-        // Footer Newsletter Form Submission
+        // Newsletter Form
         const newsletterForm = document.querySelector('.newsletter-form');
-        if (newsletterForm) {
-            newsletterForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const emailInput = newsletterForm.querySelector('.newsletter-input');
-                const email = emailInput.value.trim();
-                if (email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                    alert('Thank you for subscribing to Skillshastra!');
-                    emailInput.value = '';
-                    emailInput.style.border = 'none';
-                } else {
-                    emailInput.style.border = '2px solid #ef4444';
-                    emailInput.focus();
-                }
-            });
-        }
-
-        // Back to Top Button
-        const backToTop = document.querySelector('.back-to-top');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) {
-                backToTop.style.display = 'block';
+        newsletterForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const emailInput = newsletterForm.querySelector('.newsletter-input');
+            if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value.trim())) {
+                alert('Thank you for subscribing!');
+                emailInput.value = '';
             } else {
-                backToTop.style.display = 'none';
+                emailInput.style.border = '2px solid #ef4444';
             }
         });
 
+        // Back to Top
+        const backToTop = document.querySelector('.back-to-top');
+        window.addEventListener('scroll', () => {
+            backToTop.style.display = window.scrollY > 300 ? 'block' : 'none';
+        });
         backToTop.addEventListener('click', () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
-
-        // Modal Functionality
-        const modal = document.getElementById('course-modal');
-        const modalTitle = document.getElementById('modal-title');
-        const modalDescription = document.getElementById('modal-description');
-        const modalDetails = document.getElementById('modal-details');
-        const modalClose = document.querySelector('.modal-close');
-
-        const courseData = {
-            frontend: {
-                title: 'Frontend Development',
-                description: 'Master the art of creating responsive and interactive user interfaces.',
-                details: [
-                    'HTML5, CSS3, JavaScript',
-                    'React and Tailwind CSS',
-                    'Responsive Design Principles',
-                    'UI/UX Fundamentals'
-                ]
-            },
-            backend: {
-                title: 'Backend Development',
-                description: 'Build powerful server-side applications and APIs.',
-                details: [
-                    'Node.js and Express',
-                    'MongoDB and SQL',
-                    'RESTful API Development',
-                    'Authentication & Security'
-                ]
-            },
-            fullstack: {
-                title: 'Full Stack (MERN)',
-                description: 'Become a versatile developer by mastering both frontend and backend.',
-                details: [
-                    'MongoDB, Express, React, Node.js',
-                    'End-to-End Project Development',
-                    'DevOps Basics',
-                    'Portfolio Building'
-                ]
-            }
-        };
-
-        function openModal(course) {
-            const data = courseData[course];
-            modalTitle.textContent = data.title;
-            modalDescription.textContent = data.description;
-            modalDetails.innerHTML = data.details.map(item => `<li><i class="fas fa-check-circle"></i> ${item}</li>`).join('');
-            modal.style.display = 'flex';
-            modal.classList.add('active');
-        }
-
-        modalClose.addEventListener('click', () => {
-            modal.classList.remove('active');
-            setTimeout(() => { modal.style.display = 'none'; }, 300);
-        });
-
-        window.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.classList.remove('active');
-                setTimeout(() => { modal.style.display = 'none'; }, 300);
-            }
-        });
-
-        // Accessibility: Close mobile menu on link click
-        document.querySelectorAll('.nav-link, .dropdown-item').forEach(link => {
-            link.addEventListener('click', () => {
-                if (navMenu.classList.contains('active')) {
-                    navMenu.classList.remove('active');
-                    hamburger.classList.remove('active');
-                }
-            });
-        });
-
-        // Accessibility: Keyboard navigation for dropdowns
-        document.querySelectorAll('.nav-link[tabindex="0"]').forEach(link => {
-            link.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    link.parentElement.querySelector('.dropdown').focus();
-                }
-            });
-        });
-
-        // Ripple Animation Styles
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes ripple {
-                to {
-                    transform: scale(4);
-                    opacity: 0;
-                }
-            }
-        `;
-        document.head.appendChild(style);
     </script>
 </body>
 
