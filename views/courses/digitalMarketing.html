@@ -21,12 +21,11 @@
             overflow-x: hidden;
         }
 
-        /* Navbar Styles (Unchanged from Previous) */
+        /* Navbar Styles */
         .btm {
-            padding: 1rem 2rem;
+            padding: 0.75rem 1.5rem;
             border: none;
             border-radius: 12px;
-            /* font-size: 1.1rem; */
             font-weight: 500;
             cursor: pointer;
             text-decoration: none;
@@ -50,7 +49,7 @@
         }
 
         .navbar {
-            position: fixed;
+            position: sticky;
             top: 0;
             width: 100%;
             background: rgba(255, 255, 255, 0.95);
@@ -67,11 +66,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 2rem;
+            padding: 0 1.5rem;
         }
 
         .logo {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-weight: 700;
             color: #7c3aed;
             text-decoration: none;
@@ -81,13 +80,13 @@
         }
 
         .logo i {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
         }
 
         .nav-menu {
             display: flex;
             list-style: none;
-            gap: 1.5rem;
+            gap: 1rem;
             align-items: center;
         }
 
@@ -99,8 +98,8 @@
             text-decoration: none;
             color: #4b5563;
             font-weight: 500;
-            font-size: 1rem;
-            padding: 0.75rem 1.25rem;
+            font-size: 0.95rem;
+            padding: 0.5rem 1rem;
             border-radius: 8px;
             transition: all 0.3s ease;
             display: flex;
@@ -109,7 +108,8 @@
             white-space: nowrap;
         }
 
-        .nav-link:hover {
+        .nav-link:hover,
+        .nav-link:focus {
             color: #7c3aed;
             background: rgba(124, 58, 237, 0.1);
         }
@@ -131,7 +131,8 @@
             z-index: 1000;
         }
 
-        .nav-item:hover .dropdown {
+        .nav-item:hover .dropdown,
+        .nav-item:focus-within .dropdown {
             opacity: 1;
             visibility: visible;
             transform: translateY(0);
@@ -148,7 +149,8 @@
             border-left: 3px solid transparent;
         }
 
-        .dropdown-item:hover {
+        .dropdown-item:hover,
+        .dropdown-item:focus {
             background: rgba(124, 58, 237, 0.05);
             color: #7c3aed;
             border-left-color: #7c3aed;
@@ -170,13 +172,25 @@
             transition: all 0.3s ease;
         }
 
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
         /* Hero Section */
         .courses-hero {
             min-height: 60vh;
             display: flex;
             align-items: center;
             position: relative;
-            padding: 8rem 2rem 4rem;
+            padding: 6rem 1.5rem 4rem;
             background: linear-gradient(135deg, #0f0f23 0%, #1a1a3a 50%, #2d1b69 100%);
             overflow: hidden;
         }
@@ -212,7 +226,7 @@
         }
 
         .courses-hero h1 {
-            font-size: 3rem;
+            font-size: 2.8rem;
             font-weight: 700;
             color: white;
             line-height: 1.2;
@@ -241,7 +255,7 @@
 
         .courses-hero p {
             font-size: 1.1rem;
-            color: rgba(255, 255, 255, 0.7);
+            color: rgba(255, 255, 255, 0.8);
             line-height: 1.6;
             max-width: 600px;
             margin: 0 auto 2rem;
@@ -257,7 +271,7 @@
 
         /* Courses Section */
         .courses-section {
-            padding: 6rem 2rem;
+            padding: 4rem 1.5rem;
             background: linear-gradient(135deg, #f8f9ff 0%, #e8f0ff 100%);
         }
 
@@ -265,14 +279,14 @@
             max-width: 1200px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
         }
 
         .course-card {
             background: white;
             border-radius: 16px;
-            padding: 2rem;
+            padding: 1.5rem;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
             text-align: center;
@@ -300,67 +314,33 @@
         }
 
         .course-card:hover {
-            transform: translateY(-10px) scale(1.05);
-            box-shadow: 0 15px 40px rgba(124, 58, 237, 0.3);
-        }
-
-        .course-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(124, 58, 237, 0.2), transparent);
-            transition: all 0.5s ease;
-        }
-
-        .course-card:hover::before {
-            left: 100%;
-        }
-
-        .course-card::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at center, rgba(124, 58, 237, 0.15) 0%, transparent 70%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .course-card:hover::after {
-            opacity: 1;
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            border: 2px solid transparent;
+            background: linear-gradient(white, white) padding-box,
+                linear-gradient(135deg, #7c3aed, #a855f7) border-box;
         }
 
         .course-icon {
-            font-size: 2.5rem;
+            font-size: 2rem;
             color: #7c3aed;
             margin-bottom: 1rem;
-            transition: transform 0.3s ease, color 0.3s ease;
+            transition: transform 0.3s ease;
         }
 
         .course-card:hover .course-icon {
-            transform: scale(1.3) rotate(10deg);
-            color: #a855f7;
+            transform: scale(1.2) rotate(5deg);
         }
 
         .course-card h3 {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 600;
             color: #1f2937;
-            margin-bottom: 1rem;
-            transition: color 0.3s ease;
-        }
-
-        .course-card:hover h3 {
-            color: #7c3aed;
+            margin-bottom: 0.5rem;
         }
 
         .course-card p {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #6b7280;
             line-height: 1.6;
             margin-bottom: 1.5rem;
@@ -381,7 +361,7 @@
             gap: 0.5rem;
             position: relative;
             overflow: hidden;
-            cursor: pointer;
+            text-decoration: none;
         }
 
         .course-btn::after {
@@ -391,7 +371,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.2);
             transition: all 0.4s ease;
         }
 
@@ -400,19 +380,17 @@
         }
 
         .course-btn:hover {
-            transform: translateY(-2px) scale(1.1);
-            box-shadow: 0 8px 20px rgba(124, 58, 237, 0.4);
-            cursor: pointer;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(124, 58, 237, 0.3);
         }
 
         /* Footer Styles */
         .footer {
             background: linear-gradient(135deg, #0a0a1a 0%, #14142b 50%, #1f1247 100%);
-            padding: 5rem 2rem 2rem;
+            padding: 4rem 1.5rem 2rem;
             position: relative;
             overflow: hidden;
             color: rgba(255, 255, 255, 0.8);
-            border-top: 1px solid rgba(88, 28, 135, 0.3);
         }
 
         .footer::before {
@@ -437,8 +415,8 @@
         .footer-content {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
         }
 
         .footer-section {
@@ -446,7 +424,7 @@
         }
 
         .footer-logo {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-weight: 700;
             color: #9333ea;
             text-decoration: none;
@@ -457,7 +435,7 @@
         }
 
         .footer-logo i {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             transition: transform 0.3s ease;
         }
 
@@ -466,10 +444,10 @@
         }
 
         .footer-description {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: rgba(255, 255, 255, 0.6);
             line-height: 1.6;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
 
         .social-links {
@@ -479,7 +457,7 @@
 
         .social-icon {
             color: rgba(255, 255, 255, 0.6);
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             transition: all 0.3s ease;
         }
 
@@ -489,10 +467,10 @@
         }
 
         .footer-title {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 600;
             color: #9333ea;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             position: relative;
         }
 
@@ -519,7 +497,7 @@
         .footer-link {
             color: rgba(255, 255, 255, 0.6);
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             display: block;
             margin-bottom: 0.75rem;
             transition: all 0.3s ease;
@@ -531,11 +509,10 @@
         }
 
         .footer-contact p {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: rgba(255, 255, 255, 0.6);
             margin-bottom: 0.75rem;
             display: flex;
-            align-items: center;
             gap: 0.5rem;
         }
 
@@ -543,6 +520,7 @@
             display: flex;
             gap: 0.5rem;
             margin-top: 1rem;
+            position: relative;
         }
 
         .newsletter-input {
@@ -551,7 +529,7 @@
             border-radius: 8px;
             background: rgba(255, 255, 255, 0.05);
             color: white;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             width: 100%;
             max-width: 200px;
             transition: all 0.3s ease;
@@ -563,13 +541,17 @@
             transform: scale(1.02);
         }
 
+        .newsletter-input:invalid:not(:placeholder-shown) {
+            border: 2px solid #ef4444;
+        }
+
         .newsletter-btn {
             padding: 0.75rem 1.5rem;
             background: linear-gradient(135deg, #581c87, #9333ea);
             color: white;
             border: none;
             border-radius: 8px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 600;
             cursor: pointer;
             display: flex;
@@ -604,6 +586,7 @@
             text-align: center;
             padding-top: 2rem;
             border-top: 1px solid rgba(88, 28, 135, 0.3);
+            position: relative;
         }
 
         .footer-bottom p {
@@ -636,16 +619,31 @@
                 visibility: visible;
             }
 
+            .dropdown {
+                position: static;
+                box-shadow: none;
+                border: none;
+                padding: 0.5rem 0;
+            }
+
             .hamburger {
                 display: flex;
             }
 
             .courses-hero {
-                padding: 6rem 1rem 3rem;
+                padding: 4rem 1rem 3rem;
             }
 
             .courses-hero h1 {
-                font-size: 2.5rem;
+                font-size: 2rem;
+            }
+
+            .courses-hero p {
+                font-size: 1rem;
+            }
+
+            .courses-section {
+                padding: 3rem 1rem;
             }
 
             .courses-container {
@@ -661,10 +659,7 @@
                 text-align: center;
             }
 
-            .social-links {
-                justify-content: center;
-            }
-
+            .social-links,
             .footer-logo {
                 justify-content: center;
             }
@@ -678,31 +673,89 @@
                 max-width: 100%;
             }
         }
+
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 1.4rem;
+            }
+
+            .courses-hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .courses-hero p {
+                font-size: 0.9rem;
+            }
+
+            .course-card h3 {
+                font-size: 1.1rem;
+            }
+
+            .course-card p {
+                font-size: 0.8rem;
+            }
+
+            .course-btn {
+                font-size: 0.8rem;
+                padding: 0.6rem 1.2rem;
+            }
+
+            .footer-logo {
+                font-size: 1.4rem;
+            }
+
+            .footer-title {
+                font-size: 1rem;
+            }
+
+            .footer-link,
+            .footer-contact p,
+            .footer-description {
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Ripple Animation */
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 
 <body>
-    <!-- Navigation (Unchanged from Previous) -->
+    <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
             <a href="index.html" class="logo"><i class="fas fa-code"></i> Skillshastra</a>
             <ul class="nav-menu">
                 <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Courses <i class="fas fa-chevron-down"
+                    <a href="#" class="nav-link" tabindex="0">Courses <i class="fas fa-chevron-down"
                             style="font-size: 0.8rem;"></i></a>
                     <div class="dropdown">
-                        <a href="Programming.html" class="dropdown-item"><i class="fas fa-laptop-code"></i> Programming
-                            Languages</a>
-                        <a href="webdev.html" class="dropdown-item"><i class="fas fa-globe"></i> Web Development</a>
+                        <a href="frontend.html" class="dropdown-item"><i class="fas fa-desktop"></i> Frontend
+                            Development</a>
+                        <a href="backend.html" class="dropdown-item"><i class="fas fa-server"></i> Backend
+                            Development</a>
+                        <a href="fullstack.html" class="dropdown-item"><i class="fas fa-laptop-code"></i> Full Stack
+                            Development</a>
                         <a href="digitalMarketing.html" class="dropdown-item"><i class="fas fa-bullhorn"></i> Digital
                             Marketing</a>
                         <a href="genai.html" class="dropdown-item"><i class="fas fa-robot"></i> Generative AI</a>
+                        <a href="java.html" class="dropdown-item"><i class="fas fa-coffee"></i> Java Basics</a>
+                        <a href="c.html" class="dropdown-item"><i class="fas fa-code"></i> C Basics</a>
+                        <a href="python.html" class="dropdown-item"><i class="fas fa-snake"></i> Python Basics</a>
+                        <a href="cpp.html" class="dropdown-item"><i class="fas fa-code"></i> C++ Basics</a>
+                        <a href="dsa.html" class="dropdown-item"><i class="fas fa-sitemap"></i> Data Structures &
+                            Algorithms</a>
                     </div>
                 </li>
                 <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Instructors <i class="fas fa-chevron-down"
+                    <a href="#" class="nav-link" tabindex="0">Instructors <i class="fas fa-chevron-down"
                             style="font-size: 0.8rem;"></i></a>
                     <div class="dropdown">
                         <a href="MeetOurTeam.html" class="dropdown-item"><i class="fas fa-users"></i> Meet Our Team</a>
@@ -711,7 +764,7 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Resources <i class="fas fa-chevron-down"
+                    <a href="#" class="nav-link" tabindex="0">Resources <i class="fas fa-chevron-down"
                             style="font-size: 0.8rem;"></i></a>
                     <div class="dropdown">
                         <a href="StudyMaterials.html" class="dropdown-item"><i class="fas fa-file-alt"></i> Study
@@ -724,11 +777,7 @@
                     </div>
                 </li>
                 <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
-                <li>
-                    <a href="signup.html" class="btm btm-primary">
-                        <i class="fas fa-search"></i> Login
-                    </a>
-                </li>
+                <li><a href="signup.html" class="btm btm-primary"><i class="fas fa-user"></i> Login</a></li>
             </ul>
             <div class="hamburger">
                 <span></span>
@@ -754,20 +803,17 @@
                 <h3>Digital Marketing</h3>
                 <p>Learn SEO, social media marketing, content creation, and analytics to boost your brand's online
                     presence.</p>
-                <button class="course-btn"
-                    onclick="window.location.href = '/views/courses/course-details/digital-marketing.html'"><i
-                        class="fas fa-arrow-right"></i> Explore Course</button>
+                <a href="course-details/digital-marketing.html" class="course-btn"><i class="fas fa-arrow-right"></i> Explore
+                    Course</a>
             </div>
             <div class="course-card">
                 <i class="fas fa-paint-brush course-icon"></i>
                 <h3>Canva Tutorials</h3>
                 <p>Create professional designs with Canva for social media, presentations, and marketing materials.</p>
-                <button class="course-btn"> <i class="fas fa-arrow-right"></i> Explore Course</button>
+                <a href="canva.html" class="course-btn"><i class="fas fa-arrow-right"></i> Explore Course</a>
             </div>
         </div>
     </section>
-
-
 
     <!-- Footer -->
     <footer class="footer">
@@ -788,17 +834,17 @@
                     <h4 class="footer-title">Quick Links</h4>
                     <ul class="footer-menu">
                         <li><a href="index.html" class="footer-link">Home</a></li>
-                        <li><a href="#" class="footer-link">Courses</a></li>
+                        <li><a href="digitalMarketing.html" class="footer-link">Digital Marketing</a></li>
+                        <li><a href="canva.html" class="footer-link">Canva Tutorials</a></li>
                         <li><a href="about.html" class="footer-link">About</a></li>
-                        <li><a href="#" class="footer-link">Instructors</a></li>
                         <li><a href="contact.html" class="footer-link">Contact</a></li>
                     </ul>
                 </div>
                 <div class="footer-section footer-contact">
                     <h4 class="footer-title">Contact Us</h4>
-                    <p><i class="fas fa-envelope"></i>skillshastra001@gmail.com</p>
-                    <p><i class="fas fa-phone"></i>+91 8510882886 , +91 8851020767</p>
-                    <p><i class="fas fa-map-marker-alt"></i>Ballabgarh, Faridabad, Haryana</p>
+                    <p><i class="fas fa-envelope"></i> skillshastra001@gmail.com</p>
+                    <p><i class="fas fa-phone"></i> +91 8510882886</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Ballabgarh, Faridabad, Haryana</p>
                 </div>
                 <div class="footer-section footer-newsletter">
                     <h4 class="footer-title">Stay Updated</h4>
@@ -820,34 +866,20 @@
         // Mobile Menu Toggle
         const hamburger = document.querySelector('.hamburger');
         const navMenu = document.querySelector('.nav-menu');
+        hamburger.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        });
 
-        if (hamburger && navMenu) {
-            hamburger.addEventListener('click', () => {
-                navMenu.classList.toggle('active');
-                hamburger.classList.toggle('active');
-            });
-        }
-
-        // Smooth Scroll for Buttons and Links
-        document.querySelectorAll('.course-btn, .footer-link, .nav-link').forEach(link => {
+        // Smooth Scroll for Links
+        document.querySelectorAll('.nav-link, .footer-link, .btm, .course-btn').forEach(link => {
             link.addEventListener('click', (e) => {
                 const href = link.getAttribute('href');
                 if (href && href.startsWith('#')) {
                     e.preventDefault();
-                    const targetElement = document.querySelector(href);
-                    if (targetElement) {
-                        targetElement.scrollIntoView({ behavior: 'smooth' });
-                        const ripple = document.createElement('span');
-                        ripple.style.position = 'absolute';
-                        ripple.style.borderRadius = '50%';
-                        ripple.style.background = 'rgba(255, 255, 255, 0.6)';
-                        ripple.style.transform = 'scale(0)';
-                        ripple.style.animation = 'ripple 0.6s linear';
-                        const rect = link.getBoundingClientRect();
-                        ripple.style.left = `${e.clientX - rect.left}px`;
-                        ripple.style.top = `${e.clientY - rect.top}px`;
-                        link.appendChild(ripple);
-                        setTimeout(() => ripple.remove(), 600);
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
                     }
                 }
             });
@@ -856,61 +888,42 @@
         // Navbar Scroll Effect
         window.addEventListener('scroll', () => {
             const navbar = document.querySelector('.navbar');
-            if (navbar) {
-                if (window.scrollY > 100) {
-                    navbar.style.background = 'rgba(255, 255, 255, 0.98)';
-                    navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
-                } else {
-                    navbar.style.background = 'rgba(255, 255, 255, 0.95)';
-                    navbar.style.boxShadow = 'none';
-                }
-            }
+            navbar.style.background = window.scrollY > 100 ? 'rgba(255, 255, 255, 0.98)' : 'rgba(255, 255, 255, 0.95)';
+            navbar.style.boxShadow = window.scrollY > 100 ? '0 2px 20px rgba(0, 0, 0, 0.1)' : 'none';
         });
 
-        // Footer Newsletter Form Submission
+        // Newsletter Form Submission
         const newsletterForm = document.querySelector('.newsletter-form');
-        if (newsletterForm) {
-            newsletterForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const emailInput = newsletterForm.querySelector('.newsletter-input');
-                const email = emailInput.value.trim();
-                if (email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                    alert('Thank you for subscribing to Skillshastra!');
-                    emailInput.value = '';
-                } else {
-                    alert('Please enter a valid email address.');
-                }
-            });
-        }
-
-        // Footer Social and Link Hover Animation
-        document.querySelectorAll('.footer-link, .social-icon').forEach(link => {
-            link.addEventListener('mouseenter', () => {
-                link.style.transition = 'all 0.3s ease';
-            });
-            link.addEventListener('mouseleave', () => {
-                link.style.transform = '';
-            });
+        newsletterForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const emailInput = newsletterForm.querySelector('.newsletter-input');
+            if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value.trim())) {
+                alert('Thank you for subscribing!');
+                emailInput.value = '';
+            } else {
+                emailInput.style.border = '2px solid #ef4444';
+            }
         });
 
-        // Ripple Animation Styles
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes ripple {
-                to {
-                    transform: scale(4);
-                    opacity: 0;
-                }
-            }
-        `;
-        document.head.appendChild(style);
-
-        // Accessibility: Close mobile menu on link click
-        document.querySelectorAll('.nav-link').forEach(link => {
+        // Close Mobile Menu on Link Click
+        document.querySelectorAll('.nav-link, .dropdown-item').forEach(link => {
             link.addEventListener('click', () => {
                 if (navMenu.classList.contains('active')) {
                     navMenu.classList.remove('active');
                     hamburger.classList.remove('active');
+                }
+            });
+        });
+
+        // Accessibility: Keyboard Navigation for Dropdowns
+        document.querySelectorAll('.nav-link[tabindex="0"]').forEach(link => {
+            link.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    const dropdown = link.parentElement.querySelector('.dropdown');
+                    if (dropdown) {
+                        dropdown.querySelector('.dropdown-item').focus();
+                    }
                 }
             });
         });
