@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/navbar.css">
     <style>
         * {
             margin: 0;
@@ -47,127 +48,6 @@
         .btm-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 30px rgba(124, 58, 237, 0.4);
-        }
-
-        .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            padding: 1rem 0;
-            transition: all 0.3s ease;
-            border-bottom: 1px solid rgba(147, 51, 234, 0.1);
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 2rem;
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #7c3aed;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .logo i {
-            font-size: 1.5rem;
-        }
-
-        .nav-menu {
-            display: flex;
-            list-style: none;
-            gap: 1.5rem;
-            align-items: center;
-        }
-
-        .nav-item {
-            position: relative;
-        }
-
-        .nav-link {
-            text-decoration: none;
-            color: #4b5563;
-            font-weight: 500;
-            font-size: 1rem;
-            padding: 0.75rem 1.25rem;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            white-space: nowrap;
-        }
-
-        .nav-link:hover {
-            color: #7c3aed;
-            background: rgba(124, 58, 237, 0.1);
-        }
-
-        .dropdown {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s ease;
-            min-width: 220px;
-            padding: 1rem 0;
-            border: 1px solid rgba(124, 58, 237, 0.1);
-            z-index: 1000;
-        }
-
-        .nav-item:hover .dropdown {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .dropdown-item {
-            padding: 0.75rem 1.5rem;
-            color: #4b5563;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            transition: all 0.3s ease;
-            border-left: 3px solid transparent;
-        }
-
-        .dropdown-item:hover {
-            background: rgba(124, 58, 237, 0.05);
-            color: #7c3aed;
-            border-left-color: #7c3aed;
-            padding-left: 2rem;
-        }
-
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            cursor: pointer;
-            gap: 4px;
-        }
-
-        .hamburger span {
-            width: 25px;
-            height: 3px;
-            background: #7c3aed;
-            border-radius: 2px;
-            transition: all 0.3s ease;
         }
 
         /* Study Materials Hero Section */
@@ -606,33 +486,6 @@
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            .nav-menu {
-                position: fixed;
-                top: 80px;
-                left: 0;
-                width: 100%;
-                background: white;
-                flex-direction: column;
-                gap: 0;
-                padding: 2rem;
-                transform: translateY(-100%);
-                opacity: 0;
-                visibility: hidden;
-                transition: all 0.3s ease;
-                border-top: 1px solid rgba(124, 58, 237, 0.1);
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            }
-
-            .nav-menu.active {
-                transform: translateY(0);
-                opacity: 1;
-                visibility: visible;
-            }
-
-            .hamburger {
-                display: flex;
-            }
-
             .study-hero {
                 padding: 6rem 1rem 3rem;
             }
@@ -681,60 +534,7 @@
 
 <body>
     <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="index.html" class="logo"><i class="fas fa-code"></i> Skillshastra</a>
-            <ul class="nav-menu">
-                <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
-                <li class="nav-item">
-                    <a href="#coursesSection" class="nav-link">Courses <i class="fas fa-chevron-down"
-                            style="font-size: 0.8rem;"></i></a>
-                    <div class="dropdown">
-                        <a href="Programming.html" class="dropdown-item"><i class="fas fa-laptop-code"></i> Programming
-                            Languages</a>
-                        <a href="webdev.html" class="dropdown-item"><i class="fas fa-globe"></i> Web Development</a>
-                        <a href="digitalMarketing.html" class="dropdown-item"><i class="fas fa-bullhorn"></i> Digital
-                            Marketing</a>
-                        <a href="genai.html" class="dropdown-item"><i class="fas fa-robot"></i> Generative AI</a>
-                    </div>
-                </li>
-                <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
-                <li class="nav-item">
-                    <a href="#mentorsSection" class="nav-link">Instructors <i class="fas fa-chevron-down"
-                            style="font-size: 0.8rem;"></i></a>
-                    <div class="dropdown">
-                        <a href="MeetOurTeam.html" class="dropdown-item"><i class="fas fa-users"></i> Meet Our Team</a>
-                        <a href="ExpertProfile.html" class="dropdown-item"><i class="fas fa-user-tie"></i> Expert
-                            Profiles</a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">Resources <i class="fas fa-chevron-down"
-                            style="font-size: 0.8rem;"></i></a>
-                    <div class="dropdown">
-                        <a href="StudyMaterials.html" class="dropdown-item"><i class="fas fa-file-alt"></i> Study
-                            Materials</a>
-                        <a href="PracticeProject.html" class="dropdown-item"><i class="fas fa-project-diagram"></i>
-                            Practice Projects</a>
-                        <a href="CodingChallenge.html" class="dropdown-item"><i class="fas fa-trophy"></i> Coding
-                            Challenges</a>
-                        <a href="#" class="dropdown-item"><i class="fas fa-route"></i> Career Guidance</a>
-                    </div>
-                </li>
-                <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
-                <li>
-                    <a href="signup.html" class="btm btm-primary">
-                        <i class="fas fa-search"></i> Login
-                    </a>
-                </li>
-            </ul>
-            <div class="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-    </nav>
+    <%- include('../partials/navbar') %>
 
 
 
@@ -780,51 +580,7 @@
     </section>
 
     <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-content">
-                <div class="footer-section footer-brand">
-                    <a href="index.html" class="footer-logo"><i class="fas fa-code"></i> Skillshastra</a>
-                    <p class="footer-description">Empowering the future with cutting-edge tech skills and
-                        industry-focused learning.</p>
-                    <div class="social-links">
-                        <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-linkedin"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
-                    </div>
-                </div>
-                <div class="footer-section footer-links">
-                    <h4 class="footer-title">Quick Links</h4>
-                    <ul class="footer-menu">
-                        <li><a href="index.html" class="footer-link">Home</a></li>
-                        <li><a href="#coursesSection" class="footer-link">Courses</a></li>
-                        <li><a href="about.html" class="footer-link">About</a></li>
-                        <li><a href="MeetOurTeam.html" class="footer-link">Instructors</a></li>
-                        <li><a href="contact.html" class="footer-link">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section footer-contact">
-                    <h4 class="footer-title">Contact Us</h4>
-                    <p><i class="fas fa-envelope"></i> skillshastra001@gmail.com</p>
-                    <p><i class="fas fa-phone"></i> +91 8510882886, +91 8851020767</p>
-                    <p><i class="fas fa-map-marker-alt"></i> Ballabgarh, Faridabad, Haryana</p>
-                </div>
-                <div class="footer-section footer-newsletter">
-                    <h4 class="footer-title">Stay Updated</h4>
-                    <p>Subscribe to our newsletter for the latest courses and updates.</p>
-                    <form class="newsletter-form">
-                        <input type="email" placeholder="Enter your email" class="newsletter-input" required>
-                        <button type="submit" class="newsletter-btn"><i class="fas fa-paper-plane"></i>
-                            Subscribe</button>
-                    </form>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>© 2025 Skillshastra. All Rights Reserved.</p>
-            </div>
-        </div>
-    </footer>
+    <%- include('../partials/footer') %>
 
     <script>
         // Study Materials Data
@@ -942,19 +698,9 @@
             });
         });
 
-        // Mobile Menu Toggle
-        const hamburger = document.querySelector('.hamburger');
-        const navMenu = document.querySelector('.nav-menu');
-
-        if (hamburger && navMenu) {
-            hamburger.addEventListener('click', () => {
-                navMenu.classList.toggle('active');
-                hamburger.classList.toggle('active');
-            });
-        }
 
         // Smooth Scroll for Buttons and Links
-        document.querySelectorAll('.footer-link, .nav-link').forEach(link => {
+        document.querySelectorAll('.footer-link').forEach(link => {
             link.addEventListener('click', (e) => {
                 const href = link.getAttribute('href');
                 if (href && href.startsWith('#')) {
@@ -976,20 +722,6 @@
                     }
                 }
             });
-        });
-
-        // Navbar Scroll Effect
-        window.addEventListener('scroll', () => {
-            const navbar = document.querySelector('.navbar');
-            if (navbar) {
-                if (window.scrollY > 100) {
-                    navbar.style.background = 'rgba(255, 255, 255, 0.98)';
-                    navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
-                } else {
-                    navbar.style.background = 'rgba(255, 255, 255, 0.95)';
-                    navbar.style.boxShadow = 'none';
-                }
-            }
         });
 
         // Footer Newsletter Form Submission
@@ -1029,17 +761,8 @@
             }
         `;
         document.head.appendChild(style);
-
-        // Accessibility: Close mobile menu on link click
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', () => {
-                if (navMenu.classList.contains('active')) {
-                    navMenu.classList.remove('active');
-                    hamburger.classList.remove('active');
-                }
-            });
-        });
     </script>
+    <script src="/js/navbar.js"></script>
 </body>
 
 </html>
