@@ -1,3 +1,11 @@
+i am not getting user image in /payment navbar which is the representation of localstorage or cookies not working properly in /payment and there is also a another error occur when i tried to submit student-details form here is error 
+Uncaught TypeError: Cannot read properties of null (reading 'style')
+    at payment:1088:19
+    at NodeList.forEach (<anonymous>)
+    at validateForm (payment:1085:16)
+    at nextStep (payment:991:16)
+    at HTMLButtonElement.onclick (payment:789:16)
+and here is full code of payment.ejs 
 <!DOCTYPE html>
 <html lang="en">
   <head>

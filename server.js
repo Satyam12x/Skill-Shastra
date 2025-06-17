@@ -7,23 +7,23 @@ const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const path = require("path");
 const multer = require("multer");
+const cookieParser = require("cookie-parser");
+const crypto = require("crypto");
 
 dotenv.config();
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({ origin: "http://localhost:5000", credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 // MongoDB Connection
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await mongoose.connect(process.env.MONGO_URI);
     console.log("MongoDB Connected");
   } catch (error) {
     console.error("MongoDB Connection Error:", error);
@@ -48,12 +48,25 @@ const userSchema = new mongoose.Schema(
       minlength: 6,
     },
     role: { type: String, enum: ["user", "admin"], default: "user" },
-    otp: { type: String, default: null },
-    otpExpires: { type: Date, default: null },
+    otp: { type: String },
+    otpExpires: { type: Date },
     isVerified: { type: Boolean, default: false },
+    profileImage: { type: String },
   },
   { timestamps: true }
 );
+
+// Generate Gravatar URL
+userSchema.pre("save", function (next) {
+  if (!this.profileImage && this.email) {
+    const emailHash = crypto
+      .createHash("md5")
+      .update(this.email.trim().toLowerCase())
+      .digest("hex");
+    this.profileImage = `https://www.gravatar.com/avatar/${emailHash}?s=40&d=identicon`;
+  }
+  next();
+});
 
 // Hash password
 userSchema.pre("save", async function (next) {
@@ -87,7 +100,12 @@ const enrollmentSchema = new mongoose.Schema({
   address: { type: String, required: true },
   transactionId: { type: String, required: true },
   paymentDate: { type: Date, required: true },
-  paymentProof: { type: String, required: true }, // Path to uploaded file
+  paymentProof: { type: String, required: true },
+  status: {
+    type: String,
+    default: "pending",
+    enum: ["pending", "approved", "rejected"],
+  },
   createdAt: { type: Date, default: Date.now },
 });
 
@@ -95,9 +113,7 @@ const Enrollment = mongoose.model("Enrollment", enrollmentSchema);
 
 // Multer Setup
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/");
-  },
+  destination: (req, file, cb) => cb(null, "uploads/"),
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname);
     cb(null, `${Date.now()}-${file.originalname.replace(ext, "")}${ext}`);
@@ -111,56 +127,79 @@ const upload = multer({
     if (allowedTypes.includes(file.mimetype)) {
       cb(null, true);
     } else {
-      cb(new Error("Invalid file type. Only PNG, JPG, and PDF are allowed."));
+      cb(new Error("Only PNG, JPG, and PDF files are allowed."));
     }
   },
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
+  limits: { fileSize: 5 * 1024 * 1024 },
 });
 
 // Nodemailer Setup
 const transporter = nodemailer.createTransport({
-  service: "Gmail",
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false,
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
+  tls: { rejectUnauthorized: false },
 });
 
-const sendEmail = async (to, subject, html) => {
-  try {
-    await transporter.sendMail({
-      from: `"Skillshastra" <${process.env.EMAIL_USER}>`,
-      to,
-      subject,
-      html,
-    });
-    console.log(`Email sent to ${to}`);
-  } catch (error) {
-    console.error("Email Error:", error);
-    throw new Error("Failed to send email");
+transporter.verify((error, success) => {
+  if (error) console.error("SMTP Configuration Error:", error);
+  else console.log("SMTP Server is ready to send emails");
+});
+
+const sendEmail = async (to, subject, html, retries = 3) => {
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      await transporter.sendMail({
+        from: `"Skillshastra" <${process.env.EMAIL_USER}>`,
+        to,
+        subject,
+        html,
+      });
+      console.log(`Email sent to ${to} on attempt ${attempt}`);
+      return;
+    } catch (error) {
+      console.error(`Email Error (Attempt ${attempt}/${retries}):`, error);
+      if (attempt < retries) {
+        await new Promise((resolve) => setTimeout(resolve, 1000 * attempt));
+      } else {
+        throw new Error(`Failed to send email to ${to}: ${error.message}`);
+      }
+    }
   }
 };
 
 // Authentication Middleware
 const protect = async (req, res, next) => {
-  let token;
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
-  ) {
-    try {
-      token = req.headers.authorization.split(" ")[1];
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      req.user = await User.findById(decoded.id).select("-password");
-      if (!req.user) {
-        return res.status(401).json({ message: "User not found" });
-      }
-      next();
-    } catch (error) {
-      return res.status(401).json({ message: "Not authorized, token failed" });
+  const token = req.cookies.token;
+  if (!token) {
+    return res.redirect(
+      `/signup?redirect=${encodeURIComponent(req.originalUrl)}`
+    );
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.id).select(
+      "-password -otp -otpExpires"
+    );
+    if (!user || !user.isVerified) {
+      res.clearCookie("token");
+      return res.redirect(
+        `/signup?redirect=${encodeURIComponent(req.originalUrl)}`
+      );
     }
-  } else {
-    return res.status(401).json({ message: "No token provided" });
+    req.user = user;
+    next();
+  } catch (error) {
+    console.error("JWT Verification Error:", error);
+    res.clearCookie("token");
+    return res.redirect(
+      `/signup?redirect=${encodeURIComponent(req.originalUrl)}`
+    );
   }
 };
 
@@ -168,7 +207,7 @@ const admin = (req, res, next) => {
   if (req.user && req.user.role === "admin") {
     next();
   } else {
-    return res.status(403).json({ message: "Not authorized as admin" });
+    res.status(403).json({ message: "Not authorized as admin" });
   }
 };
 
@@ -178,7 +217,10 @@ const generateOTP = () =>
 
 // Authentication Routes
 app.post("/api/auth/signup", async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, redirect } = req.body;
+  if (!name || !email || !password) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
 
   try {
     let user = await User.findOne({ email });
@@ -187,7 +229,7 @@ app.post("/api/auth/signup", async (req, res) => {
     }
 
     const otp = generateOTP();
-    const otpExpires = Date.now() + 10 * 60 * 1000;
+    const otpExpires = new Date(Date.now() + 10 * 60 * 1000);
 
     user = new User({
       name,
@@ -209,15 +251,18 @@ app.post("/api/auth/signup", async (req, res) => {
     `;
     await sendEmail(email, "Verify Your Skillshastra Account", otpEmail);
 
-    res.status(201).json({ message: "OTP sent to your email" });
+    res.status(201).json({ message: "OTP sent to your email", redirect });
   } catch (error) {
-    console.error(error);
+    console.error("Signup Error:", error);
     res.status(500).json({ message: "Server error" });
   }
 });
 
 app.post("/api/auth/verify-otp", async (req, res) => {
-  const { email, otp } = req.body;
+  const { email, otp, redirect } = req.body;
+  if (!email || !otp) {
+    return res.status(400).json({ message: "Email and OTP are required" });
+  }
 
   try {
     const user = await User.findOne({ email });
@@ -238,6 +283,17 @@ app.post("/api/auth/verify-otp", async (req, res) => {
     user.otpExpires = null;
     await user.save();
 
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1d",
+    });
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 24 * 60 * 60 * 1000,
+      sameSite: "strict",
+    });
+
     const welcomeEmail = `
       <h2>Welcome to Skillshastra, ${user.name}!</h2>
       <p>Your account has been successfully verified.</p>
@@ -245,56 +301,104 @@ app.post("/api/auth/verify-otp", async (req, res) => {
     `;
     await sendEmail(user.email, "Welcome to Skillshastra!", welcomeEmail);
 
-    const token = jwt.sign(
-      { id: user._id, name: user.name, email: user.email, role: user.role },
-      process.env.JWT_SECRET,
-      { expiresIn: "1d" }
-    );
     res.status(200).json({
-      token,
-      user: { name: user.name, email: user.email, role: user.role },
+      user: {
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        profileImage: user.profileImage,
+      },
+      redirect,
     });
   } catch (error) {
-    console.error(error);
+    console.error("Verify OTP Error:", error);
     res.status(500).json({ message: "Server error" });
   }
 });
 
 app.post("/api/auth/login", async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, redirect } = req.body;
+  if (!email || !password) {
+    return res.status(400).json({ message: "Email and password are required" });
+  }
 
   try {
+    const token = req.cookies.token;
+    if (token) {
+      try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const user = await User.findById(decoded.id).select(
+          "-password -otp -otpExpires"
+        );
+        if (user && user.isVerified) {
+          return res.status(400).json({
+            message: "User already logged in",
+            user: {
+              name: user.name,
+              email: user.email,
+              role: user.role,
+              profileImage: user.profileImage,
+            },
+            redirect,
+          });
+        }
+        res.clearCookie("token");
+      } catch (error) {
+        res.clearCookie("token");
+      }
+    }
+
     const user = await User.findOne({ email });
-    if (!user) {
+    if (!user || !(await user.comparePassword(password))) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
     if (!user.isVerified) {
-      return res.status(400).json({ message: "Please verify your email first" });
+      return res
+        .status(400)
+        .json({ message: "Please verify your email first" });
     }
 
-    const isMatch = await user.comparePassword(password);
-    if (!isMatch) {
-      return res.status(400).json({ message: "Invalid credentials" });
-    }
+    const newToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1d",
+    });
 
-    const token = jwt.sign(
-      { id: user._id, name: user.name, email: user.email, role: user.role },
-      process.env.JWT_SECRET,
-      { expiresIn: "1d" }
-    );
+    res.cookie("token", newToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 24 * 60 * 60 * 1000,
+      sameSite: "strict",
+    });
+
     res.status(200).json({
-      token,
-      user: { name: user.name, email: user.email, role: user.role },
+      user: {
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        profileImage: user.profileImage,
+      },
+      redirect,
     });
   } catch (error) {
-    console.error(error);
+    console.error("Login Error:", error);
     res.status(500).json({ message: "Server error" });
   }
 });
 
+app.post("/api/auth/logout", (req, res) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+  });
+  res.status(200).json({ message: "Logged out successfully" });
+});
+
 app.post("/api/auth/forgot-password", async (req, res) => {
-  const { email } = req.body;
+  const { email, redirect } = req.body;
+  if (!email) {
+    return res.status(400).json({ message: "Email is required" });
+  }
 
   try {
     const user = await User.findOne({ email });
@@ -304,7 +408,7 @@ app.post("/api/auth/forgot-password", async (req, res) => {
 
     const otp = generateOTP();
     user.otp = otp;
-    user.otpExpires = Date.now() + 10 * 60 * 1000;
+    user.otpExpires = new Date(Date.now() + 10 * 60 * 1000);
     await user.save();
 
     const resetEmail = `
@@ -314,15 +418,20 @@ app.post("/api/auth/forgot-password", async (req, res) => {
     `;
     await sendEmail(email, "Skillshastra Password Reset", resetEmail);
 
-    res.status(200).json({ message: "OTP sent to your email for password reset" });
+    res
+      .status(200)
+      .json({ message: "OTP sent to your email for password reset", redirect });
   } catch (error) {
-    console.error(error);
+    console.error("Forgot Password Error:", error);
     res.status(500).json({ message: "Server error" });
   }
 });
 
 app.post("/api/auth/reset-password", async (req, res) => {
-  const { email, otp, newPassword } = req.body;
+  const { email, otp, newPassword, redirect } = req.body;
+  if (!email || !otp || !newPassword) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
 
   try {
     const user = await User.findOne({ email });
@@ -339,9 +448,9 @@ app.post("/api/auth/reset-password", async (req, res) => {
     user.otpExpires = null;
     await user.save();
 
-    res.status(200).json({ message: "Password reset successfully" });
+    res.status(200).json({ message: "Password reset successfully", redirect });
   } catch (error) {
-    console.error(error);
+    console.error("Reset Password Error:", error);
     res.status(500).json({ message: "Server error" });
   }
 });
@@ -351,129 +460,132 @@ app.get("/api/auth/admin-panel", protect, admin, async (req, res) => {
     const users = await User.find().select("-password -otp -otpExpires");
     res.status(200).json({ message: "Welcome to Admin Panel", users });
   } catch (error) {
-    console.error(error);
+    console.error("Admin Panel Error:", error);
     res.status(500).json({ message: "Server error" });
   }
 });
 
 // Enrollment Route
-app.post("/api/enroll", protect, upload.single("paymentProof"), async (req, res) => {
-  try {
-    const studentData = JSON.parse(req.body.studentData);
-    const { transactionId, paymentDate } = req.body;
+app.post(
+  "/api/enroll",
+  protect,
+  upload.single("paymentProof"),
+  async (req, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ message: "Payment proof is required" });
+      }
 
-    if (!req.file) {
-      return res.status(400).json({ message: "Payment proof is required." });
-    }
+      const studentData = JSON.parse(req.body.studentData);
+      const { transactionId, paymentDate } = req.body;
 
-    const enrollmentData = {
-      userId: req.user._id,
-      ...studentData,
-      transactionId,
-      paymentDate: new Date(paymentDate),
-      paymentProof: req.file.path,
-    };
+      const requiredFields = [
+        "course",
+        "fullName",
+        "email",
+        "phone",
+        "age",
+        "gender",
+        "education",
+        "institution",
+        "guardianName",
+        "guardianPhone",
+        "country",
+        "address",
+      ];
+      for (const field of requiredFields) {
+        if (!studentData[field]) {
+          return res.status(400).json({ message: `${field} is required` });
+        }
+      }
+      if (!transactionId || !paymentDate) {
+        return res
+          .status(400)
+          .json({ message: "Transaction ID and payment date are required" });
+      }
 
-    const enrollment = new Enrollment(enrollmentData);
-    await enrollment.save();
+      const enrollment = new Enrollment({
+        userId: req.user._id,
+        course: studentData.course,
+        fullName: studentData.fullName,
+        email: studentData.email,
+        phone: studentData.phone,
+        age: parseInt(studentData.age),
+        gender: studentData.gender,
+        education: studentData.education,
+        institution: studentData.institution,
+        guardianName: studentData.guardianName,
+        guardianPhone: studentData.guardianPhone,
+        country: studentData.country,
+        address: studentData.address,
+        transactionId,
+        paymentDate: new Date(paymentDate),
+        paymentProof: req.file.path,
+        status: "pending",
+      });
 
-    // Send confirmation email
-    const confirmationEmail = `
+      await enrollment.save();
+
+      const confirmationEmail = `
       <h2>Enrollment Confirmation</h2>
       <p>Dear ${studentData.fullName},</p>
-      <p>Your enrollment for the course <strong>${studentData.course}</strong> has been received.</p>
-      <p>We will verify your payment details and confirm your enrollment soon.</p>
+      <p>Your enrollment for <strong>${studentData.course}</strong> has been received.</p>
       <p>Transaction ID: ${transactionId}</p>
+      <p>We will verify your payment and confirm your enrollment soon.</p>
       <p>Thank you for choosing Skillshastra!</p>
     `;
-    await sendEmail(studentData.email, "Skillshastra Enrollment Confirmation", confirmationEmail);
+      await sendEmail(
+        studentData.email,
+        "Skillshastra Enrollment Confirmation",
+        confirmationEmail
+      );
 
-    res.status(201).json({ message: "Enrollment submitted successfully." });
-  } catch (error) {
-    console.error("Error saving enrollment:", error);
-    res.status(500).json({ message: error.message || "Server error." });
+      res.status(201).json({ message: "Enrollment submitted successfully" });
+    } catch (error) {
+      console.error("Enrollment Error:", error);
+      res.status(500).json({ message: error.message || "Server error" });
+    }
   }
-});
+);
 
 // EJS Setup
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 // Routes for EJS Templates
-app.get("/", (req, res) => {
-  res.render("index");
-});
+const renderPage = (page) => (req, res) =>
+  res.render(page, { user: req.user || null, request: req });
 
-app.get("/signup", (req, res) => {
-  res.render("signup");
-});
-
-app.get("/admin", protect, admin, (req, res) => {
-  res.render("admin");
-});
-
-app.get("/dashboard", protect, (req, res) => {
-  res.render("dashboard");
-});
-
-app.get("/digital-marketing", (req, res) => {
-  res.render("courses/digitalMarketing");
-});
-
-app.get("/details-digital-marketing", (req, res) => {
-  res.render("courses/course-details/digital-marketing");
-});
-
-app.get("/web-dev", (req, res) => {
-  res.render("courses/webdev");
-});
-
-app.get("/frontend", (req, res) => {
-  res.render("courses/course-details/frontend");
-});
-
-app.get("/backend", (req, res) => {
-  res.render("courses/course-details/backend");
-});
-
-app.get("/fullstack", (req, res) => {
-  res.render("courses/course-details/fullstack");
-});
-
-app.get("/programming", (req, res) => {
-  res.render("courses/Programming");
-});
-
-app.get("/genai", (req, res) => {
-  res.render("genai");
-});
-
-app.get("/codingChallenge", (req, res) => {
-  res.render("resources/CodingChallenge");
-});
-
-app.get("/practiceProject", (req, res) => {
-  res.render("resources/PracticeProject");
-});
-
-app.get("/studyMaterials", (req, res) => {
-  res.render("resources/StudyMaterials");
-});
-
-app.get("/expertProfiles", (req, res) => {
-  res.render("team/ExpertProfiles");
-});
-
-app.get("/meetTeam", (req, res) => {
-  res.render("team/MeetOurTeam");
-});
-
-// app.get("/payment", (req, res) => {
-//   res.render("courses/payment");
-// });
+app.get("/", renderPage("index"));
+app.get("/signup", renderPage("signup"));
+app.get("/admin", protect, admin, renderPage("admin"));
+app.get("/dashboard", protect, renderPage("dashboard"));
+app.get("/digital-marketing", renderPage("courses/digitalMarketing"));
+app.get(
+  "/details-digital-marketing",
+  renderPage("courses/course-details/digital-marketing")
+);
+app.get("/web-dev", renderPage("courses/webdev"));
+app.get("/frontend", renderPage("courses/course-details/frontend"));
+app.get("/backend", renderPage("courses/course-details/backend"));
+app.get("/fullstack", renderPage("courses/course-details/fullstack"));
+app.get("/programming", renderPage("courses/Programming"));
+app.get("/genai", renderPage("genai"));
+app.get("/codingChallenge", renderPage("resources/CodingChallenge"));
+app.get("/practiceProject", renderPage("resources/PracticeProject"));
+app.get("/studyMaterials", renderPage("resources/StudyMaterials"));
+app.get("/expertProfiles", renderPage("team/ExpertProfiles"));
+app.get("/meetTeam", renderPage("team/MeetOurTeam"));
 
 app.get("/payment", protect, (req, res) => {
-  res.render("courses/payment", { user: req.user });
+  res.render("courses/payment", {
+    user: {
+      name: req.user.name,
+      email: req.user.email,
+      profileImage: req.user.profileImage,
+    },
+    request: req,
+  });
 });
 
 // Start Server

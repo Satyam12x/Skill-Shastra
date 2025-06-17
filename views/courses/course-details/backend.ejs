@@ -1,109 +1,199 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Backend Development Course Details - Skillshastra</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="/css/backend.css">
-    <link rel="stylesheet" href="/css/navbar.css">
-</head>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/css/backend.css" />
+    <link rel="stylesheet" href="/css/navbar.css" />
+  </head>
 
-<body>
+  <body>
     <!-- Navigation -->
     <%- include('../../partials/navbar') %>
 
     <!-- Courses Hero Section -->
     <section class="courses-hero">
-        <div class="courses-hero-container">
-            <h1>Backend Development Course Details</h1>
-            <p>Explore our in-depth Backend Development course, designed to equip you with the skills to build robust,
-                scalable server-side applications with hands-on projects and expert mentorship.</p>
-        </div>
+      <div class="courses-hero-container">
+        <h1>Backend Development Course Details</h1>
+        <p>
+          Explore our in-depth Backend Development course, designed to equip you
+          with the skills to build robust, scalable server-side applications
+          with hands-on projects and expert mentorship.
+        </p>
+      </div>
     </section>
 
     <!-- Course Details Section -->
     <section class="course-details-section">
-        <div class="course-details-container">
-            <div class="course-details">
-                <h2>Backend Development</h2>
-                <div class="course-meta">
-                    <span><i class="fas fa-clock"></i> Duration: 18 Weeks</span>
-                    <span><i class="fas fa-rupee-sign"></i> Fees: ₹35,000</span>
-                    <span><i class="fas fa-level-up-alt"></i> Level: Beginner to Advanced</span>
-                    <span class="rating"><i class="fas fa-star"></i> 4.7 (1,200 reviews)</span>
-                </div>
-                <div class="course-description">
-                    <p>This comprehensive course transforms you into a skilled backend developer, covering everything
-                        from core programming concepts to advanced server-side technologies. Learn to design APIs,
-                        manage databases, and deploy applications with guidance from industry experts.</p>
-                </div>
-                <div class="instructors">
-                    <h3>Instructors</h3>
-                    <div class="instructor-list">
-                        <div class="instructor">
-                            <img src="https://via.placeholder.com/80" alt="Instructor">
-                            <h4>Vikram Singh</h4>
-                            <p>Senior Backend Developer, 9+ years experience</p>
-                        </div>
-                        <div class="instructor">
-                            <img src="https://via.placeholder.com/80" alt="Instructor">
-                            <h4>Neha Patel</h4>
-                            <p>Database Specialist, 11+ years experience</p>
-                        </div>
-                        <div class="instructor">
-                            <img src="https://via.placeholder.com/80" alt="Instructor">
-                            <h4>Amit Kumar</h4>
-                            <p>DevOps Engineer, 10+ years experience</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="syllabus">
-                    <h3>Detailed Course Syllabus</h3>
-                    <ul>
-                        <li><i class="fas fa-check-circle"></i> Module 1: Programming Fundamentals</li>
-                        <li><i class="fas fa-check-circle"></i> Introduction to Backend Development</li>
-                        <li><i class="fas fa-check-circle"></i> JavaScript/Node.js: Fundamentals and Async Programming
-                        </li>
-                        <li><i class="fas fa-check-circle"></i> Python: Basics and Data Structures</li>
-                        <li><i class="fas fa-check-circle"></i> Module 2: APIs and Web Servers</li>
-                        <li><i class="fas fa-check-circle"></i> Express.js: Building RESTful APIs</li>
-                        <li><i class="fas fa-check-circle"></i> Authentication and Authorization (JWT, OAuth)</li>
-                        <li><i class="fas fa-check-circle"></i> API Documentation with Swagger</li>
-                        <li><i class="fas fa-check-circle"></i> Module 3: Databases</li>
-                        <li><i class="fas fa-check-circle"></i> SQL: MySQL/PostgreSQL (Queries, Joins, Indexes)</li>
-                        <li><i class="fas fa-check-circle"></i> NoSQL: MongoDB (CRUD, Aggregation)</li>
-                        <li><i class="fas fa-check-circle"></i> ORM: Sequelize/Prisma</li>
-                        <li><i class="fas fa-check-circle"></i> Module 4: Advanced Backend</li>
-                        <li><i class="fas fa-check-circle"></i> Microservices Architecture</li>
-                        <li><i class="fas fa-check-circle"></i> Message Queues: RabbitMQ/Kafka</li>
-                        <li><i class="fas fa-check-circle"></i> Docker and Containerization</li>
-                        <li><i class="fas fa-check-circle"></i> Module 5: Deployment and DevOps</li>
-                        <li><i class="fas fa-check-circle"></i> Cloud Deployment: AWS/GCP</li>
-                        <li><i class="fas fa-check-circle"></i> CI/CD Pipelines with GitHub Actions</li>
-                        <li><i class="fas fa-check-circle"></i> Performance Optimization and Scaling</li>
-                        <li><i class="fas fa-check-circle"></i> Module 6: Projects</li>
-                        <li><i class="fas fa-check-circle"></i> Project 1: Task Management API</li>
-                        <li><i class="fas fa-check-circle"></i> Project 2: E-Commerce Backend</li>
-                        <li><i class="fas fa-check-circle"></i> Capstone Project: Real-Time Chat Application</li>
-                    </ul>
-                </div>
-                <div class="benefits">
-                    <h3>Course Benefits</h3>
-                    <ul>
-                        <li><i class="fas fa-check-circle"></i> Real-world projects to build a robust portfolio</li>
-                        <li><i class="fas fa-check-circle"></i> Personalized mentorship from industry professionals</li>
-                        <li><i class="fas fa-check-circle"></i> Lifetime access to course resources</li>
-                        <li><i class="fas fa-check-circle"></i> Job placement assistance and career guidance</li>
-                        <li><i class="fas fa-check-circle"></i> Certificate of completion</li>
-                    </ul>
-                </div>
-                <a href="/payment" class="enroll-btn"><i class="fas fa-arrow-right"></i> Enroll Now</a>
+      <div class="course-details-container">
+        <div class="course-details">
+          <h2>Backend Development</h2>
+          <div class="course-meta">
+            <span><i class="fas fa-clock"></i> Duration: 18 Weeks</span>
+            <span><i class="fas fa-rupee-sign"></i> Fees: ₹35,000</span>
+            <span
+              ><i class="fas fa-level-up-alt"></i> Level: Beginner to
+              Advanced</span
+            >
+            <span class="rating"
+              ><i class="fas fa-star"></i> 4.7 (1,200 reviews)</span
+            >
+          </div>
+          <div class="course-description">
+            <p>
+              This comprehensive course transforms you into a skilled backend
+              developer, covering everything from core programming concepts to
+              advanced server-side technologies. Learn to design APIs, manage
+              databases, and deploy applications with guidance from industry
+              experts.
+            </p>
+          </div>
+          <div class="instructors">
+            <h3>Instructors</h3>
+            <div class="instructor-list">
+              <div class="instructor">
+                <img src="https://via.placeholder.com/80" alt="Instructor" />
+                <h4>Vikram Singh</h4>
+                <p>Senior Backend Developer, 9+ years experience</p>
+              </div>
+              <div class="instructor">
+                <img src="https://via.placeholder.com/80" alt="Instructor" />
+                <h4>Neha Patel</h4>
+                <p>Database Specialist, 11+ years experience</p>
+              </div>
+              <div class="instructor">
+                <img src="https://via.placeholder.com/80" alt="Instructor" />
+                <h4>Amit Kumar</h4>
+                <p>DevOps Engineer, 10+ years experience</p>
+              </div>
             </div>
+          </div>
+          <div class="syllabus">
+            <h3>Detailed Course Syllabus</h3>
+            <ul>
+              <li>
+                <i class="fas fa-check-circle"></i> Module 1: Programming
+                Fundamentals
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Introduction to Backend
+                Development
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> JavaScript/Node.js:
+                Fundamentals and Async Programming
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Python: Basics and Data
+                Structures
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Module 2: APIs and Web
+                Servers
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Express.js: Building RESTful
+                APIs
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Authentication and
+                Authorization (JWT, OAuth)
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> API Documentation with
+                Swagger
+              </li>
+              <li><i class="fas fa-check-circle"></i> Module 3: Databases</li>
+              <li>
+                <i class="fas fa-check-circle"></i> SQL: MySQL/PostgreSQL
+                (Queries, Joins, Indexes)
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> NoSQL: MongoDB (CRUD,
+                Aggregation)
+              </li>
+              <li><i class="fas fa-check-circle"></i> ORM: Sequelize/Prisma</li>
+              <li>
+                <i class="fas fa-check-circle"></i> Module 4: Advanced Backend
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Microservices Architecture
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Message Queues:
+                RabbitMQ/Kafka
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Docker and Containerization
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Module 5: Deployment and
+                DevOps
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Cloud Deployment: AWS/GCP
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> CI/CD Pipelines with GitHub
+                Actions
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Performance Optimization and
+                Scaling
+              </li>
+              <li><i class="fas fa-check-circle"></i> Module 6: Projects</li>
+              <li>
+                <i class="fas fa-check-circle"></i> Project 1: Task Management
+                API
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Project 2: E-Commerce
+                Backend
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Capstone Project: Real-Time
+                Chat Application
+              </li>
+            </ul>
+          </div>
+          <div class="benefits">
+            <h3>Course Benefits</h3>
+            <ul>
+              <li>
+                <i class="fas fa-check-circle"></i> Real-world projects to build
+                a robust portfolio
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Personalized mentorship from
+                industry professionals
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Lifetime access to course
+                resources
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Job placement assistance and
+                career guidance
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Certificate of completion
+              </li>
+            </ul>
+          </div>
+          <button class="enroll-btn" onclick="handleEnroll()">
+            <i class="fas fa-arrow-right"></i> Enroll Now
+          </button>
         </div>
+      </div>
     </section>
 
     <!-- Footer -->
@@ -113,46 +203,56 @@
     <button class="back-to-top"><i class="fas fa-arrow-up"></i></button>
 
     <script>
-        // Scroll Animations
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, { threshold: 0.2 });
-
-        document.querySelectorAll('.course-details').forEach(section => {
-            section.style.opacity = '0';
-            section.style.transform = 'translateY(30px)';
-            section.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-            observer.observe(section);
-        });
-
-        // Newsletter Form
-        const newsletterForm = document.querySelector('.newsletter-form');
-        newsletterForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const emailInput = newsletterForm.querySelector('.newsletter-input');
-            if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value.trim())) {
-                alert('Thank you for subscribing!');
-                emailInput.value = '';
-            } else {
-                emailInput.style.border = '2px solid #ef4444';
+      function handleEnroll() {
+        const user = localStorage.getItem("user");
+        if (user) {
+          window.location.href = "/payment";
+        } else {
+          window.location.href = "/signup?redirect=/payment";
+        }
+      }
+      // Scroll Animations
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.style.opacity = "1";
+              entry.target.style.transform = "translateY(0)";
             }
-        });
+          });
+        },
+        { threshold: 0.2 }
+      );
 
-        // Back to Top
-        const backToTop = document.querySelector('.back-to-top');
-        window.addEventListener('scroll', () => {
-            backToTop.style.display = window.scrollY > 300 ? 'block' : 'none';
-        });
-        backToTop.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
+      document.querySelectorAll(".course-details").forEach((section) => {
+        section.style.opacity = "0";
+        section.style.transform = "translateY(30px)";
+        section.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+        observer.observe(section);
+      });
+
+      // Newsletter Form
+      const newsletterForm = document.querySelector(".newsletter-form");
+      newsletterForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const emailInput = newsletterForm.querySelector(".newsletter-input");
+        if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value.trim())) {
+          alert("Thank you for subscribing!");
+          emailInput.value = "";
+        } else {
+          emailInput.style.border = "2px solid #ef4444";
+        }
+      });
+
+      // Back to Top
+      const backToTop = document.querySelector(".back-to-top");
+      window.addEventListener("scroll", () => {
+        backToTop.style.display = window.scrollY > 300 ? "block" : "none";
+      });
+      backToTop.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
     </script>
     <script src="/js/navbar.js"></script>
-</body>
-
+  </body>
 </html>

@@ -210,7 +210,7 @@ body {
 
 .form-group input {
   width: 100%;
-  padding: 12px 40px 12px 15px;
+  padding: 12px 60px 12px 15px; /* Adjusted for toggle button */
   background: rgba(255, 255, 255, 0.8);
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -229,9 +229,27 @@ body {
 .form-group i {
   position: absolute;
   top: 50%;
-  right: 15px;
+  right: 40px; /* Adjusted for toggle button */
   transform: translateY(-50%);
   color: #666;
+}
+
+.toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 5px;
+  transition: color 0.3s ease;
+}
+
+.toggle-password:hover {
+  color: #7c3aed;
 }
 
 .forgot-password,
@@ -287,7 +305,7 @@ body {
   margin-right: 8px;
 }
 
-.loading::before {
+.auth-btn[aria-busy="true"]::before {
   content: "";
   display: inline-block;
   width: 16px;
@@ -376,7 +394,6 @@ body {
   font-size: 12px;
   color: #666;
   margin-top: 5px;
-  display: none;
   transition: color 0.3s ease;
 }
 
@@ -401,7 +418,7 @@ body {
 
 .float-element {
   position: absolute;
-  color: rgba(0, 0, 0, 0.1);
+  color: rgba(255, 255, 255, 0.1);
   font-size: 24px;
   animation: float 10s infinite ease-in-out;
 }
@@ -436,8 +453,8 @@ body {
 @media (max-width: 768px) {
   .auth-container {
     flex-direction: column;
-    max-width: 90%;
-    margin: 20px;
+    max-width: 95%;
+    margin: 10px;
   }
 
   .auth-form,
@@ -458,8 +475,15 @@ body {
   }
   .form-group input {
     font-size: 13px;
+    padding-right: 50px; /* Adjusted for mobile */
   }
   .auth-btn {
     font-size: 14px;
+  }
+  .toggle-password {
+    right: 5px;
+  }
+  .form-group i {
+    right: 30px;
   }
 }

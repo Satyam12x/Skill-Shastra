@@ -2,6 +2,24 @@ const API_URL = "http://localhost:5000/api/auth";
 let currentEmail = "";
 let isResetPasswordStep = false;
 
+// Get redirect URL from query parameter
+const urlParams = new URLSearchParams(window.location.search);
+const redirectUrl = urlParams.get("redirect") || "/";
+window.redirectUrl = redirectUrl;
+
+// Check if user is already logged in
+document.addEventListener("DOMContentLoaded", () => {
+  const user = localStorage.getItem("user");
+  if (user) {
+    showSuccess("You are already logged in. Redirecting to dashboard.");
+    setTimeout(() => {
+      window.location.href = "/dashboard";
+    }, 1000);
+    return;
+  }
+  showLogin(); // Initialize with login form
+});
+
 function showLogin() {
   hideAllForms();
   document.getElementById("loginForm").style.display = "block";
@@ -36,23 +54,19 @@ function showForgotPassword() {
   document.getElementById("newPasswordGroup").style.display = "none";
   document.getElementById("confirmNewPasswordGroup").style.display = "none";
   document.getElementById("newPasswordStrength").style.display = "none";
+  document.getElementById("forgotTitle").textContent = "Reset Password";
+  document.getElementById("forgotBtn").innerHTML =
+    '<i class="fas fa-paper-plane"></i> Send OTP';
 
-  // Manage required attributes
   const forgotEmail = document.getElementById("forgotEmail");
   const resetOtp = document.getElementById("resetOtp");
   const newPassword = document.getElementById("newPassword");
   const confirmNewPassword = document.getElementById("confirmNewPassword");
-
   if (forgotEmail) forgotEmail.required = true;
   if (resetOtp) resetOtp.required = false;
   if (newPassword) newPassword.required = false;
   if (confirmNewPassword) confirmNewPassword.required = false;
 
-  const forgotBtn = document.getElementById("forgotBtn");
-  if (forgotBtn) {
-    forgotBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Send OTP';
-  }
-  document.getElementById("forgotTitle").textContent = "Reset Password";
   isResetPasswordStep = false;
   clearMessages();
 }
@@ -92,15 +106,16 @@ function clearMessages() {
 function disableButton(btn) {
   if (btn) {
     btn.disabled = true;
-    btn.classList.add("loading");
-    btn.innerHTML = "<span>Processing...</span>";
+    btn.setAttribute("aria-busy", "true");
+    btn.innerHTML =
+      '<span class="loading"><i class="fas fa-spinner fa-spin"></i> Processing...</span>';
   }
 }
 
 function enableButton(btn, originalText) {
   if (btn) {
     btn.disabled = false;
-    btn.classList.remove("loading");
+    btn.setAttribute("aria-busy", "false");
     btn.innerHTML = originalText;
   }
 }
@@ -125,14 +140,33 @@ function checkPasswordStrength(password, strengthDivId) {
   }
 }
 
+function togglePassword(inputId, button) {
+  const input = document.getElementById(inputId);
+  const icon = button.querySelector("i");
+  if (input.type === "password") {
+    input.type = "text";
+    icon.classList.remove("fa-eye");
+    icon.classList.add("fa-eye-slash");
+  } else {
+    input.type = "password";
+    icon.classList.remove("fa-eye-slash");
+    icon.classList.add("fa-eye");
+  }
+}
+
 function closePage() {
   const authContainer = document.getElementById("authContainer");
   if (authContainer) {
     authContainer.classList.add("closing");
     setTimeout(() => {
-      history.back();
+      const url = window.redirectUrl || "/";
+      window.location.href = url;
     }, 500);
   }
+}
+
+function socialLogin(provider) {
+  showError(`${provider} login is not implemented yet.`);
 }
 
 // Signup Form Submission
@@ -143,21 +177,25 @@ document.getElementById("signupForm").addEventListener("submit", async (e) => {
   const password = document.getElementById("signupPassword")?.value;
   const confirmPassword = document.getElementById("confirmPassword")?.value;
   const signupBtn = document.getElementById("submitSignup");
-  const originalText =
-    signupBtn?.innerHTML || '<i class="fas fa-user-plus"></i> Signup';
+  const originalText = '<i class="fas fa-user-plus"></i> Signup';
 
   if (!name || !email || !password || !confirmPassword || !signupBtn) {
     showError("Form elements are missing. Please refresh the page.");
     return;
   }
 
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    showError("Please enter a valid email address.");
+    return;
+  }
+
   if (password !== confirmPassword) {
-    showError("Passwords do not match");
+    showError("Passwords do not match.");
     return;
   }
 
   if (!checkPasswordStrength(password, "passwordStrength")) {
-    showError("Please enter a stronger password");
+    showError("Please enter a stronger password.");
     return;
   }
 
@@ -167,7 +205,13 @@ document.getElementById("signupForm").addEventListener("submit", async (e) => {
     const response = await fetch(`${API_URL}/signup`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, password }),
+      credentials: "include", // Include cookies
+      body: JSON.stringify({
+        name,
+        email,
+        password,
+        redirect: window.redirectUrl,
+      }),
     });
 
     const data = await response.json();
@@ -175,7 +219,7 @@ document.getElementById("signupForm").addEventListener("submit", async (e) => {
     if (response.ok) {
       currentEmail = email;
       showOtpForm();
-      showSuccess(data.message || "OTP sent to your email");
+      showSuccess(data.message || "OTP sent to your email.");
     } else if (data.message === "User already exists") {
       showError(
         'Email already registered. Please <a href="#" onclick="showLogin()">login</a>.'
@@ -196,11 +240,15 @@ document.getElementById("otpForm").addEventListener("submit", async (e) => {
   e.preventDefault();
   const otp = document.getElementById("otpInput")?.value.trim();
   const otpBtn = document.getElementById("otpBtn");
-  const originalText =
-    otpBtn?.innerHTML || '<i class="fas fa-check"></i> Verify OTP';
+  const originalText = '<i class="fas fa-check"></i> Verify OTP';
 
   if (!otp || !otpBtn) {
     showError("Form elements are missing. Please refresh the page.");
+    return;
+  }
+
+  if (!/^\d{6}$/.test(otp)) {
+    showError("OTP must be a 6-digit number.");
     return;
   }
 
@@ -210,21 +258,24 @@ document.getElementById("otpForm").addEventListener("submit", async (e) => {
     const response = await fetch(`${API_URL}/verify-otp`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: currentEmail, otp }),
+      credentials: "include", // Include cookies
+      body: JSON.stringify({
+        email: currentEmail,
+        otp,
+        redirect: window.redirectUrl,
+      }),
     });
 
     const data = await response.json();
 
     if (response.ok) {
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("otp", otp);
+      localStorage.setItem("user", JSON.stringify(data.user)); // Store user data
       showSuccess("OTP verified successfully!");
       setTimeout(() => {
-        if (data.user.role === "admin") {
-          window.location.href = "/admin";
-        } else {
-          window.location.href = "/dashboard";
-        }
+        const url =
+          data.redirect ||
+          (data.user.role === "admin" ? "/admin" : "/dashboard");
+        window.location.href = url; // Force reload
       }, 1000);
     } else {
       showError(data.message || "Invalid OTP. Please try again.");
@@ -248,13 +299,17 @@ async function resendOTP() {
     const response = await fetch(`${API_URL}/forgot-password`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: currentEmail }),
+      credentials: "include", // Include cookies
+      body: JSON.stringify({
+        email: currentEmail,
+        redirect: window.redirectUrl,
+      }),
     });
 
     const data = await response.json();
 
     if (response.ok) {
-      showSuccess(data.message || "OTP resent to your email");
+      showSuccess(data.message || "OTP resent to your email.");
     } else {
       showError(data.message || "Failed to resend OTP.");
     }
@@ -270,11 +325,15 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
   const email = document.getElementById("loginEmail")?.value.trim();
   const password = document.getElementById("loginPassword")?.value;
   const loginBtn = document.getElementById("loginBtn");
-  const originalText =
-    loginBtn?.innerHTML || '<i class="fas fa-sign-in-alt"></i> Login';
+  const originalText = '<i class="fas fa-sign-in-alt"></i> Login';
 
   if (!email || !password || !loginBtn) {
     showError("Form elements are missing. Please refresh the page.");
+    return;
+  }
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    showError("Please enter a valid email address.");
     return;
   }
 
@@ -284,20 +343,29 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
     const response = await fetch(`${API_URL}/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
+      credentials: "include", // Include cookies
+      body: JSON.stringify({ email, password, redirect: window.redirectUrl }),
     });
 
     const data = await response.json();
 
     if (response.ok) {
-      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user)); // Store user data
       showSuccess("Login successful!");
       setTimeout(() => {
-        if (data.user.role === "admin") {
-          window.location.href = "/admin";
-        } else {
-          window.location.href = "/dashboard";
-        }
+        const url =
+          data.redirect ||
+          (data.user.role === "admin" ? "/admin" : "/dashboard");
+        window.location.href = url; // Force reload
+      }, 1000);
+    } else if (data.message === "User already logged in") {
+      localStorage.setItem("user", JSON.stringify(data.user));
+      showSuccess("You are already logged in. Redirecting...");
+      setTimeout(() => {
+        const url =
+          data.redirect ||
+          (data.user.role === "admin" ? "/admin" : "/dashboard");
+        window.location.href = url;
       }, 1000);
     } else {
       showError(data.message || "Login failed. Please try again.");
@@ -321,8 +389,7 @@ document
     const confirmNewPassword =
       document.getElementById("confirmNewPassword")?.value;
     const forgotBtn = document.getElementById("forgotBtn");
-    let originalText =
-      forgotBtn?.innerHTML || '<i class="fas fa-paper-plane"></i> Send OTP';
+    let originalText = '<i class="fas fa-paper-plane"></i> Send OTP';
 
     if (!forgotBtn) {
       showError("Form elements are missing. Please refresh the page.");
@@ -338,11 +405,18 @@ document
         return;
       }
 
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showError("Please enter a valid email address.");
+        enableButton(forgotBtn, originalText);
+        return;
+      }
+
       try {
         const response = await fetch(`${API_URL}/forgot-password`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email }),
+          credentials: "include", // Include cookies
+          body: JSON.stringify({ email, redirect: window.redirectUrl }),
         });
 
         const data = await response.json();
@@ -354,22 +428,17 @@ document
           document.getElementById("newPasswordGroup").style.display = "block";
           document.getElementById("confirmNewPasswordGroup").style.display =
             "block";
-
-          // Add required attributes for Step 2
-          const resetOtp = document.getElementById("resetOtp");
-          const newPassword = document.getElementById("newPassword");
-          const confirmNewPassword =
-            document.getElementById("confirmNewPassword");
-          if (resetOtp) resetOtp.required = true;
-          if (newPassword) newPassword.required = true;
-          if (confirmNewPassword) confirmNewPassword.required = true;
-
-          originalText = '<i class="fas fa-unlock"></i> Reset Password';
-          forgotBtn.innerHTML = originalText;
+          document.getElementById("newPasswordStrength").style.display =
+            "block";
           document.getElementById("forgotTitle").textContent =
             "Enter OTP & New Password";
+          document.getElementById("resetOtp").required = true;
+          document.getElementById("newPassword").required = true;
+          document.getElementById("confirmNewPassword").required = true;
+          originalText = '<i class="fas fa-unlock"></i> Reset Password';
+          forgotBtn.innerHTML = originalText;
           isResetPasswordStep = true;
-          showSuccess(data.message || "OTP sent to your email");
+          showSuccess(data.message || "OTP sent to your email.");
         } else {
           showError(data.message || "Failed to send OTP.");
         }
@@ -386,14 +455,20 @@ document
         return;
       }
 
+      if (!/^\d{6}$/.test(otp)) {
+        showError("OTP must be a 6-digit number.");
+        enableButton(forgotBtn, originalText);
+        return;
+      }
+
       if (newPassword !== confirmNewPassword) {
-        showError("Passwords do not match");
+        showError("Passwords do not match.");
         enableButton(forgotBtn, originalText);
         return;
       }
 
       if (!checkPasswordStrength(newPassword, "newPasswordStrength")) {
-        showError("Please enter a stronger password");
+        showError("Please enter a stronger password.");
         enableButton(forgotBtn, originalText);
         return;
       }
@@ -402,13 +477,19 @@ document
         const response = await fetch(`${API_URL}/reset-password`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: currentEmail, otp, newPassword }),
+          credentials: "include", // Include cookies
+          body: JSON.stringify({
+            email: currentEmail,
+            otp,
+            newPassword,
+            redirect: window.redirectUrl,
+          }),
         });
 
         const data = await response.json();
 
         if (response.ok) {
-          showSuccess(data.message || "Password reset successfully");
+          showSuccess(data.message || "Password reset successfully.");
           setTimeout(() => showLogin(), 1000);
         } else {
           showError(data.message || "Failed to reset password.");
@@ -432,14 +513,3 @@ document
 document.getElementById("newPassword")?.addEventListener("input", function () {
   checkPasswordStrength(this.value, "newPasswordStrength");
 });
-
-// Social Login Placeholder
-document.querySelectorAll(".social-icons a").forEach((link) => {
-  link.addEventListener("click", (e) => {
-    e.preventDefault();
-    showError("Social login is not implemented yet.");
-  });
-});
-
-// Initialize
-showLogin();
