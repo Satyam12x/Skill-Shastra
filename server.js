@@ -5,7 +5,8 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
-const path = require("path"); // Added for file path handling
+const path = require("path");
+const multer = require("multer");
 
 dotenv.config();
 const app = express();
@@ -13,8 +14,7 @@ const app = express();
 // Middleware
 app.use(cors());
 app.use(express.json());
-
-// Serve static files from 'public' directory
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
 // MongoDB Connection
@@ -24,9 +24,9 @@ const connectDB = async () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    console.log("MongoDB connected");
+    console.log("MongoDB Connected");
   } catch (error) {
-    console.error("MongoDB connection error:", error);
+    console.error("MongoDB Connection Error:", error);
     process.exit(1);
   }
 };
@@ -70,6 +70,53 @@ userSchema.methods.comparePassword = async function (candidatePassword) {
 
 const User = mongoose.model("User", userSchema);
 
+// Enrollment Schema
+const enrollmentSchema = new mongoose.Schema({
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  course: { type: String, required: true },
+  fullName: { type: String, required: true },
+  email: { type: String, required: true, match: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ },
+  phone: { type: String, required: true },
+  age: { type: Number, required: true, min: 15, max: 100 },
+  gender: { type: String, required: true, enum: ["Male", "Female", "Other"] },
+  education: { type: String, required: true },
+  institution: { type: String, required: true },
+  guardianName: { type: String, required: true },
+  guardianPhone: { type: String, required: true },
+  country: { type: String, required: true },
+  address: { type: String, required: true },
+  transactionId: { type: String, required: true },
+  paymentDate: { type: Date, required: true },
+  paymentProof: { type: String, required: true }, // Path to uploaded file
+  createdAt: { type: Date, default: Date.now },
+});
+
+const Enrollment = mongoose.model("Enrollment", enrollmentSchema);
+
+// Multer Setup
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/");
+  },
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    cb(null, `${Date.now()}-${file.originalname.replace(ext, "")}${ext}`);
+  },
+});
+
+const upload = multer({
+  storage,
+  fileFilter: (req, file, cb) => {
+    const allowedTypes = ["image/png", "image/jpeg", "application/pdf"];
+    if (allowedTypes.includes(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error("Invalid file type. Only PNG, JPG, and PDF are allowed."));
+    }
+  },
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
+});
+
 // Nodemailer Setup
 const transporter = nodemailer.createTransport({
   service: "Gmail",
@@ -89,12 +136,12 @@ const sendEmail = async (to, subject, html) => {
     });
     console.log(`Email sent to ${to}`);
   } catch (error) {
-    console.error("Email error:", error);
+    console.error("Email Error:", error);
     throw new Error("Failed to send email");
   }
 };
 
-// Middleware
+// Authentication Middleware
 const protect = async (req, res, next) => {
   let token;
   if (
@@ -125,11 +172,11 @@ const admin = (req, res, next) => {
   }
 };
 
-// Helper
+// Helper Function
 const generateOTP = () =>
   Math.floor(100000 + Math.random() * 900000).toString();
 
-// Routes
+// Authentication Routes
 app.post("/api/auth/signup", async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -223,9 +270,7 @@ app.post("/api/auth/login", async (req, res) => {
     }
 
     if (!user.isVerified) {
-      return res
-        .status(400)
-        .json({ message: "Please verify your email first" });
+      return res.status(400).json({ message: "Please verify your email first" });
     }
 
     const isMatch = await user.comparePassword(password);
@@ -269,9 +314,7 @@ app.post("/api/auth/forgot-password", async (req, res) => {
     `;
     await sendEmail(email, "Skillshastra Password Reset", resetEmail);
 
-    res
-      .status(200)
-      .json({ message: "OTP sent to your email for password reset" });
+    res.status(200).json({ message: "OTP sent to your email for password reset" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -313,12 +356,50 @@ app.get("/api/auth/admin-panel", protect, admin, async (req, res) => {
   }
 });
 
+// Enrollment Route
+app.post("/api/enroll", protect, upload.single("paymentProof"), async (req, res) => {
+  try {
+    const studentData = JSON.parse(req.body.studentData);
+    const { transactionId, paymentDate } = req.body;
+
+    if (!req.file) {
+      return res.status(400).json({ message: "Payment proof is required." });
+    }
+
+    const enrollmentData = {
+      userId: req.user._id,
+      ...studentData,
+      transactionId,
+      paymentDate: new Date(paymentDate),
+      paymentProof: req.file.path,
+    };
+
+    const enrollment = new Enrollment(enrollmentData);
+    await enrollment.save();
+
+    // Send confirmation email
+    const confirmationEmail = `
+      <h2>Enrollment Confirmation</h2>
+      <p>Dear ${studentData.fullName},</p>
+      <p>Your enrollment for the course <strong>${studentData.course}</strong> has been received.</p>
+      <p>We will verify your payment details and confirm your enrollment soon.</p>
+      <p>Transaction ID: ${transactionId}</p>
+      <p>Thank you for choosing Skillshastra!</p>
+    `;
+    await sendEmail(studentData.email, "Skillshastra Enrollment Confirmation", confirmationEmail);
+
+    res.status(201).json({ message: "Enrollment submitted successfully." });
+  } catch (error) {
+    console.error("Error saving enrollment:", error);
+    res.status(500).json({ message: error.message || "Server error." });
+  }
+});
+
+// EJS Setup
 app.set("view engine", "ejs");
-app.set("views", path.resolve("./views"));
+app.set("views", path.join(__dirname, "views"));
 
-app.use(express.urlencoded({ extended: false }));
-
-// Serve HTML files
+// Routes for EJS Templates
 app.get("/", (req, res) => {
   res.render("index");
 });
@@ -330,47 +411,69 @@ app.get("/signup", (req, res) => {
 app.get("/admin", protect, admin, (req, res) => {
   res.render("admin");
 });
-app.get("/dashboard", (req, res) => {
+
+app.get("/dashboard", protect, (req, res) => {
   res.render("dashboard");
 });
+
 app.get("/digital-marketing", (req, res) => {
   res.render("courses/digitalMarketing");
 });
+
 app.get("/details-digital-marketing", (req, res) => {
   res.render("courses/course-details/digital-marketing");
 });
+
 app.get("/web-dev", (req, res) => {
   res.render("courses/webdev");
 });
+
 app.get("/frontend", (req, res) => {
   res.render("courses/course-details/frontend");
 });
+
 app.get("/backend", (req, res) => {
   res.render("courses/course-details/backend");
 });
+
 app.get("/fullstack", (req, res) => {
   res.render("courses/course-details/fullstack");
 });
+
 app.get("/programming", (req, res) => {
   res.render("courses/Programming");
 });
+
 app.get("/genai", (req, res) => {
   res.render("genai");
 });
+
 app.get("/codingChallenge", (req, res) => {
   res.render("resources/CodingChallenge");
 });
+
 app.get("/practiceProject", (req, res) => {
   res.render("resources/PracticeProject");
 });
+
 app.get("/studyMaterials", (req, res) => {
   res.render("resources/StudyMaterials");
 });
+
 app.get("/expertProfiles", (req, res) => {
   res.render("team/ExpertProfiles");
 });
+
 app.get("/meetTeam", (req, res) => {
   res.render("team/MeetOurTeam");
+});
+
+// app.get("/payment", (req, res) => {
+//   res.render("courses/payment");
+// });
+
+app.get("/payment", protect, (req, res) => {
+  res.render("courses/payment", { user: req.user });
 });
 
 // Start Server
