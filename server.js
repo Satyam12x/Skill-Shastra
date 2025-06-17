@@ -313,52 +313,49 @@ app.get("/api/auth/admin-panel", protect, admin, async (req, res) => {
   }
 });
 
-app.set('view engine', 'ejs');
-app.set('views', path.resolve('./views'));
+app.set("view engine", "ejs");
+app.set("views", path.resolve("./views"));
 
 app.use(express.urlencoded({ extended: false }));
 
 // Serve HTML files
 app.get("/", (req, res) => {
-  res.render('index');
+  res.render("index");
 });
 
 app.get("/signup", (req, res) => {
-  res.render('signup')
+  res.render("signup");
 });
 
 app.get("/admin", protect, admin, (req, res) => {
-  res.sendFile(path.join(__dirname, "views", "admin.html"));
+  res.render("admin");
 });
 app.get("/dashboard", (req, res) => {
-  res.sendFile(path.join(__dirname, "views", "dashboard.html"));
-});
-app.get("/about", (req, res) => {
-  res.sendFile(path.join(__dirname, "views", "about.html"));
+  res.render("dashboard");
 });
 app.get("/digital-marketing", (req, res) => {
-  res.render('courses/digitalMarketing')
+  res.render("courses/digitalMarketing");
 });
 app.get("/details-digital-marketing", (req, res) => {
-  res.sendFile(path.join(__dirname, "views/courses/course-details", "digital-marketing.html"));
+  res.render("courses/course-details/digital-marketing");
 });
 app.get("/web-dev", (req, res) => {
-  res.sendFile(path.join(__dirname, "views/courses", "webdev.html"));
+  res.render("courses/webdev");
 });
 app.get("/frontend", (req, res) => {
-  res.sendFile(path.join(__dirname, "views/courses/course-details", "frontend.html"));
+  res.render("courses/course-details/frontend");
 });
 app.get("/backend", (req, res) => {
-  res.sendFile(path.join(__dirname, "views/courses/course-details", "backend.html"));
+  res.render("courses/course-details/backend");
 });
 app.get("/fullstack", (req, res) => {
-  res.sendFile(path.join(__dirname, "views/courses/course-details", "fullstack.html"));
+  res.render("courses/course-details/fullstack");
 });
 app.get("/programming", (req, res) => {
-  res.sendFile(path.join(__dirname, "views/courses", "Programming.html"));
+  res.render("courses/Programming");
 });
 app.get("/genai", (req, res) => {
-  res.sendFile(path.join(__dirname, "views/courses", "genai.html"));
+  res.render("genai");
 });
 
 // Start Server
