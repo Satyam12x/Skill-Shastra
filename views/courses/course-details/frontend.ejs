@@ -1,276 +1,244 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Frontend Development Course Details - Skillshastra</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/frontend.css">
-</head>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="css/frontend.css" />
+    <link rel="stylesheet" href="/css/navbar.css" />
+  </head>
 
-<body>
+  <body>
     <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="index.html" class="logo"><i class="fas fa-code"></i> Skillshastra</a>
-            <ul class="nav-menu">
-                <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link" tabindex="0">Courses <i class="fas fa-chevron-down"
-                            style="font-size: 0.8rem;"></i></a>
-                    <div class="dropdown">
-                        <a href="frontend.html" class="dropdown-item"><i class="fas fa-desktop"></i> Frontend
-                            Development</a>
-                        <a href="backend.html" class="dropdown-item"><i class="fas fa-server"></i> Backend
-                            Development</a>
-                        <a href="fullstack.html" class="dropdown-item"><i class="fas fa-laptop-code"></i> Full Stack
-                            Development</a>
-                        <a href="digitalMarketing.html" class="dropdown-item"><i class="fas fa-bullhorn"></i> Digital
-                            Marketing</a>
-                        <a href="genai.html" class="dropdown-item"><i class="fas fa-robot"></i> Generative AI</a>
-                    </div>
-                </li>
-                <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link" tabindex="0">Instructors <i class="fas fa-chevron-down"
-                            style="font-size: 0.8rem;"></i></a>
-                    <div class="dropdown">
-                        <a href="MeetOurTeam.html" class="dropdown-item"><i class="fas fa-users"></i> Meet Our Team</a>
-                        <a href="ExpertProfile.html" class="dropdown-item"><i class="fas fa-user-tie"></i> Expert
-                            Profiles</a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link" tabindex="0">Resources <i class="fas fa-chevron-down"
-                            style="font-size: 0.8rem;"></i></a>
-                    <div class="dropdown">
-                        <a href="StudyMaterials.html" class="dropdown-item"><i class="fas fa-file-alt"></i> Study
-                            Materials</a>
-                        <a href="PracticeProject.html" class="dropdown-item"><i class="fas fa-project-diagram"></i>
-                            Practice Projects</a>
-                        <a href="CodingChallenge.html" class="dropdown-item"><i class="fas fa-trophy"></i> Coding
-                            Challenges</a>
-                        <a href="#" class="dropdown-item"><i class="fas fa-route"></i> Career Guidance</a>
-                    </div>
-                </li>
-                <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
-                <li><a href="signup.html" class="btm btm-primary"><i class="fas fa-user"></i> Login</a></li>
-            </ul>
-            <div class="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-    </nav>
+    <%- include('../../partials/navbar') %>
 
     <!-- Courses Hero Section -->
     <section class="courses-hero">
-        <div class="courses-hero-container">
-            <h1>Frontend Development Course Details</h1>
-            <p>Dive deep into our comprehensive Frontend Development course, designed to transform you into a proficient
-                frontend developer with hands-on projects and expert guidance.</p>
-        </div>
+      <div class="courses-hero-container">
+        <h1>Frontend Development Course Details</h1>
+        <p>
+          Dive deep into our comprehensive Frontend Development course, designed
+          to transform you into a proficient frontend developer with hands-on
+          projects and expert guidance.
+        </p>
+      </div>
     </section>
 
     <!-- Course Details Section -->
     <section class="course-details-section">
-        <div class="course-details-container">
-            <div class="course-details">
-                <h2>Frontend Development</h2>
-                <div class="course-meta">
-                    <span><i class="fas fa-clock"></i> Duration: 18 Weeks</span>
-                    <span><i class="fas fa-rupee-sign"></i> Fees: ₹35,000</span>
-                    <span><i class="fas fa-level-up-alt"></i> Level: Beginner to Advanced</span>
-                    <span class="rating"><i class="fas fa-star"></i> 4.8 (1,500 reviews)</span>
-                </div>
-                <div class="course-description">
-                    <p>This course is meticulously crafted to take you from the basics of web development to building
-                        complex, interactive, and accessible web interfaces. You'll master modern frontend technologies
-                        and best practices through real-world projects and mentorship from industry experts.</p>
-                </div>
-                <div class="instructors">
-                    <h3>Instructors</h3>
-                    <div class="instructor-list">
-                        <div class="instructor">
-                            <img src="https://via.placeholder.com/80" alt="Instructor">
-                            <h4>Anita Sharma</h4>
-                            <p>Senior Frontend Developer, 8+ years experience</p>
-                        </div>
-                        <div class="instructor">
-                            <img src="https://via.placeholder.com/80" alt="Instructor">
-                            <h4>Rahul Verma</h4>
-                            <p>React Expert, 10+ years experience</p>
-                        </div>
-                        <div class="instructor">
-                            <img src="https://via.placeholder.com/80" alt="Instructor">
-                            <h4>Priya Gupta</h4>
-                            <p>UI/UX Specialist, 12+ years experience</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="syllabus">
-                    <h3>Detailed Course Syllabus</h3>
-                    <ul>
-                        <li><i class="fas fa-check-circle"></i> Module 1: Web Fundamentals</li>
-                        <li><i class="fas fa-check-circle"></i> HTML5: Structure and Semantics</li>
-                        <li><i class="fas fa-check-circle"></i> CSS3: Styling, Flexbox, and Grid</li>
-                        <li><i class="fas fa-check-circle"></i> JavaScript: ES6+, DOM Manipulation</li>
-                        <li><i class="fas fa-check-circle"></i> Module 2: Intermediate Frontend</li>
-                        <li><i class="fas fa-check-circle"></i> Advanced CSS: Animations and Transitions</li>
-                        <li><i class="fas fa-check-circle"></i> JavaScript: Promises, Async/Await, Modules</li>
-                        <li><i class="fas fa-check-circle"></i> React: Components, Hooks, State Management</li>
-                        <li><i class="fas fa-check-circle"></i> Tailwind CSS for Rapid Styling</li>
-                        <li><i class="fas fa-check-circle"></i> Module 3: Advanced Frontend</li>
-                        <li><i class="fas fa-check-circle"></i> Next.js: Server-Side Rendering, Static Site Generation
-                        </li>
-                        <li><i class="fas fa-check-circle"></i> TypeScript for Type-Safe Development</li>
-                        <li><i class="fas fa-check-circle"></i> Redux for Advanced State Management</li>
-                        <li><i class="fas fa-check-circle"></i> UI/UX Design Principles</li>
-                        <li><i class="fas fa-check-circle"></i> Accessibility (a11y) Best Practices</li>
-                        <li><i class="fas fa-check-circle"></i> Performance Optimization Techniques</li>
-                        <li><i class="fas fa-check-circle"></i> Module 4: Projects and Portfolio</li>
-                        <li><i class="fas fa-check-circle"></i> Project 1: Personal Portfolio Website</li>
-                        <li><i class="fas fa-check-circle"></i> Project 2: E-Commerce Website</li>
-                        <li><i class="fas fa-check-circle"></i> Capstone Project: Admin Dashboard</li>
-                    </ul>
-                </div>
-                <div class="benefits">
-                    <h3>Course Benefits</h3>
-                    <ul>
-                        <li><i class="fas fa-check-circle"></i> Hands-on projects to build a strong portfolio</li>
-                        <li><i class="fas fa-check-circle"></i> 1:1 mentorship from industry experts</li>
-                        <li><i class="fas fa-check-circle"></i> Lifetime access to course materials</li>
-                        <li><i class="fas fa-check-circle"></i> Career guidance and job placement support</li>
-                        <li><i class="fas fa-check-circle"></i> Certificate of completion</li>
-                    </ul>
-                </div>
-                <a href="signup.html" class="enroll-btn"><i class="fas fa-arrow-right"></i> Enroll Now</a>
+      <div class="course-details-container">
+        <div class="course-details">
+          <h2>Frontend Development</h2>
+          <div class="course-meta">
+            <span><i class="fas fa-clock"></i> Duration: 18 Weeks</span>
+            <span><i class="fas fa-rupee-sign"></i> Fees: ₹35,000</span>
+            <span
+              ><i class="fas fa-level-up-alt"></i> Level: Beginner to
+              Advanced</span
+            >
+            <span class="rating"
+              ><i class="fas fa-star"></i> 4.8 (1,500 reviews)</span
+            >
+          </div>
+          <div class="course-description">
+            <p>
+              This course is meticulously crafted to take you from the basics of
+              web development to building complex, interactive, and accessible
+              web interfaces. You'll master modern frontend technologies and
+              best practices through real-world projects and mentorship from
+              industry experts.
+            </p>
+          </div>
+          <div class="instructors">
+            <h3>Instructors</h3>
+            <div class="instructor-list">
+              <div class="instructor">
+                <img src="https://via.placeholder.com/80" alt="Instructor" />
+                <h4>Anita Sharma</h4>
+                <p>Senior Frontend Developer, 8+ years experience</p>
+              </div>
+              <div class="instructor">
+                <img src="https://via.placeholder.com/80" alt="Instructor" />
+                <h4>Rahul Verma</h4>
+                <p>React Expert, 10+ years experience</p>
+              </div>
+              <div class="instructor">
+                <img src="https://via.placeholder.com/80" alt="Instructor" />
+                <h4>Priya Gupta</h4>
+                <p>UI/UX Specialist, 12+ years experience</p>
+              </div>
             </div>
+          </div>
+          <div class="syllabus">
+            <h3>Detailed Course Syllabus</h3>
+            <ul>
+              <li>
+                <i class="fas fa-check-circle"></i> Module 1: Web Fundamentals
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> HTML5: Structure and
+                Semantics
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> CSS3: Styling, Flexbox, and
+                Grid
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> JavaScript: ES6+, DOM
+                Manipulation
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Module 2: Intermediate
+                Frontend
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Advanced CSS: Animations and
+                Transitions
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> JavaScript: Promises,
+                Async/Await, Modules
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> React: Components, Hooks,
+                State Management
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Tailwind CSS for Rapid
+                Styling
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Module 3: Advanced Frontend
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Next.js: Server-Side
+                Rendering, Static Site Generation
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> TypeScript for Type-Safe
+                Development
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Redux for Advanced State
+                Management
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> UI/UX Design Principles
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Accessibility (a11y) Best
+                Practices
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Performance Optimization
+                Techniques
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Module 4: Projects and
+                Portfolio
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Project 1: Personal
+                Portfolio Website
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Project 2: E-Commerce
+                Website
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Capstone Project: Admin
+                Dashboard
+              </li>
+            </ul>
+          </div>
+          <div class="benefits">
+            <h3>Course Benefits</h3>
+            <ul>
+              <li>
+                <i class="fas fa-check-circle"></i> Hands-on projects to build a
+                strong portfolio
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> 1:1 mentorship from industry
+                experts
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Lifetime access to course
+                materials
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Career guidance and job
+                placement support
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Certificate of completion
+              </li>
+            </ul>
+          </div>
+          <a href="signup.html" class="enroll-btn"
+            ><i class="fas fa-arrow-right"></i> Enroll Now</a
+          >
         </div>
+      </div>
     </section>
 
     <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-content">
-                <div class="footer-section footer-brand">
-                    <a href="index.html" class="footer-logo"><i class="fas fa-code"></i> Skillshastra</a>
-                    <p class="footer-description">Empowering the future with cutting-edge tech skills.</p>
-                    <div class="social-links">
-                        <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-linkedin"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
-                    </div>
-                </div>
-                <div class="footer-section footer-links">
-                    <h4 class="footer-title">Quick Links</h4>
-                    <ul class="footer-menu">
-                        <li><a href="index.html" class="footer-link">Home</a></li>
-                        <li><a href="frontend.html" class="footer-link">Frontend Courses</a></li>
-                        <li><a href="backend.html" class="footer-link">Backend Courses</a></li>
-                        <li><a href="fullstack.html" class="footer-link">Full Stack Courses</a></li>
-                        <li><a href="contact.html" class="footer-link">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section footer-contact">
-                    <h4 class="footer-title">Contact Us</h4>
-                    <p><i class="fas fa-envelope"></i> skillshastra001@gmail.com</p>
-                    <p><i class="fas fa-phone"></i> +91 8510882886</p>
-                    <p><i class="fas fa-map-marker-alt"></i> Ballabgarh, Faridabad, Haryana</p>
-                </div>
-                <div class="footer-section footer-newsletter">
-                    <h4 class="footer-title">Stay Updated</h4>
-                    <p>Subscribe for the latest course updates.</p>
-                    <div class="newsletter-form">
-                        <input type="email" placeholder="Enter your email" class="newsletter-input" required>
-                        <button type="submit" class="newsletter-btn"><i class="fas fa-paper-plane"></i>
-                            Subscribe</button>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>© 2025 Skillshastra. All Rights Reserved.</p>
-            </div>
-        </div>
-    </footer>
+    <%- include('../../partials/footer') %>
 
     <!-- Back to Top Button -->
     <button class="back-to-top"><i class="fas fa-arrow-up"></i></button>
 
     <script>
-        // Mobile Menu Toggle
-        const hamburger = document.querySelector('.hamburger');
-        const navMenu = document.querySelector('.nav-menu');
-        hamburger.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
-            hamburger.classList.toggle('active');
-        });
-
-        // Smooth Scroll
-        document.querySelectorAll('.nav-link, .footer-link, .enroll-btn').forEach(link => {
-            link.addEventListener('click', (e) => {
-                const href = link.getAttribute('href');
-                if (href && href.startsWith('#')) {
-                    e.preventDefault();
-                    const target = document.querySelector(href);
-                    if (target) {
-                        target.scrollIntoView({ behavior: 'smooth' });
-                    }
-                }
-            });
-        });
-
-        // Navbar Scroll Effect
-        window.addEventListener('scroll', () => {
-            const navbar = document.querySelector('.navbar');
-            navbar.style.background = window.scrollY > 100 ? 'rgba(255, 255, 255, 0.98)' : 'rgba(255, 255, 255, 0.95)';
-            navbar.style.boxShadow = window.scrollY > 100 ? '0 2px 20px rgba(0, 0, 0, 0.1)' : 'none';
-        });
-
-        // Scroll Animations
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, { threshold: 0.2 });
-
-        document.querySelectorAll('.course-details').forEach(section => {
-            section.style.opacity = '0';
-            section.style.transform = 'translateY(30px)';
-            section.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-            observer.observe(section);
-        });
-
-        // Newsletter Form
-        const newsletterForm = document.querySelector('.newsletter-form');
-        newsletterForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const emailInput = newsletterForm.querySelector('.newsletter-input');
-            if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value.trim())) {
-                alert('Thank you for subscribing!');
-                emailInput.value = '';
-            } else {
-                emailInput.style.border = '2px solid #ef4444';
+      // Scroll Animations
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.style.opacity = "1";
+              entry.target.style.transform = "translateY(0)";
             }
-        });
+          });
+        },
+        { threshold: 0.2 }
+      );
 
-        // Back to Top
-        const backToTop = document.querySelector('.back-to-top');
-        window.addEventListener('scroll', () => {
-            backToTop.style.display = window.scrollY > 300 ? 'block' : 'none';
-        });
-        backToTop.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
+      document.querySelectorAll(".course-details").forEach((section) => {
+        section.style.opacity = "0";
+        section.style.transform = "translateY(30px)";
+        section.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+        observer.observe(section);
+      });
+
+      // Newsletter Form
+      const newsletterForm = document.querySelector(".newsletter-form");
+      newsletterForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const emailInput = newsletterForm.querySelector(".newsletter-input");
+        if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value.trim())) {
+          alert("Thank you for subscribing!");
+          emailInput.value = "";
+        } else {
+          emailInput.style.border = "2px solid #ef4444";
+        }
+      });
+
+      // Back to Top
+      const backToTop = document.querySelector(".back-to-top");
+      window.addEventListener("scroll", () => {
+        backToTop.style.display = window.scrollY > 300 ? "block" : "none";
+      });
+      backToTop.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
     </script>
-</body>
-
+    <script src="/js/navbar.js"></script>
+  </body>
 </html>
