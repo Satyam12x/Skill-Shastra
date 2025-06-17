@@ -253,7 +253,7 @@ body {
 
 /* Course Details Section */
 .course-details-section {
-    padding: 6rem 2rem;
+    padding: 4rem 2rem;
     background: #fff;
 }
 
@@ -263,7 +263,7 @@ body {
 }
 
 .course-details {
-    margin-bottom: 4rem;
+    margin-bottom: 3rem;
     opacity: 0;
     transform: translateY(20px);
     animation: cardFadeIn 1s ease forwards;
@@ -279,8 +279,9 @@ body {
 .course-details h2 {
     font-size: 2rem;
     color: #7c3aed;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
     position: relative;
+    text-align: left;
 }
 
 .course-details h2::after {
@@ -297,9 +298,9 @@ body {
 .course-meta {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-    font-size: 0.9rem;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    font-size: 0.95rem;
     color: #6b7280;
 }
 
@@ -319,14 +320,14 @@ body {
 .course-description {
     font-size: 1rem;
     color: #1f2937;
-    line-height: 1.6;
-    margin-bottom: 1.5rem;
+    line-height: 1.7;
+    margin-bottom: 2rem;
 }
 
 .instructors,
 .syllabus,
 .benefits {
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
 }
 
 .instructors h3,
@@ -334,68 +335,84 @@ body {
 .benefits h3 {
     font-size: 1.5rem;
     color: #1f2937;
-    margin-bottom: 1rem;
+    margin-bottom: 1.2rem;
 }
 
 .instructor-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
 }
 
 .instructor {
     background: #f8f9ff;
-    padding: 1rem;
-    border-radius: 8px;
-    flex: 1 1 200px;
+    padding: 1.5rem;
+    border-radius: 12px;
     text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.instructor:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
 }
 
 .instructor img {
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
 }
 
 .instructor p {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     color: #6b7280;
 }
 
 .syllabus ul,
 .benefits ul {
     list-style: none;
+    background: #f8f9ff;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
 .syllabus ul li,
 .benefits ul li {
-    font-size: 0.9rem;
+    font-size: 1rem;
     color: #1f2937;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
     display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    align-items: flex-start;
+    gap: 0.75rem;
+    line-height: 1.5;
 }
 
 .syllabus ul li i,
 .benefits ul li i {
     color: #7c3aed;
+    font-size: 1.2rem;
+    margin-top: 0.2rem;
 }
 
 .enroll-btn {
     display: inline-flex;
-    padding: 1rem 2rem;
+    padding: 1.2rem 2.5rem;
     background: linear-gradient(135deg, #7c3aed, #a855f7);
     color: white;
     border: none;
     border-radius: 12px;
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+    margin-top: 1.5rem;
+    box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .enroll-btn::after {
@@ -414,8 +431,8 @@ body {
 }
 
 .enroll-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(124, 58, 237, 0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(124, 58, 237, 0.4);
 }
 
 /* Footer Styles */
@@ -696,11 +713,11 @@ body {
     }
 
     .course-details-section {
-        padding: 4rem 1rem;
+        padding: 3rem 1rem;
     }
 
     .instructor-list {
-        flex-direction: column;
+        grid-template-columns: 1fr;
     }
 
     .footer-content {
@@ -740,5 +757,10 @@ body {
     .syllabus h3,
     .benefits h3 {
         font-size: 1.2rem;
+    }
+
+    .enroll-btn {
+        padding: 1rem 2rem;
+        font-size: 1rem;
     }
 }

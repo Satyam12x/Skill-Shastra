@@ -15,7 +15,6 @@ body {
   padding: 1rem 2rem;
   border: none;
   border-radius: 12px;
-  /* font-size: 1.1rem; */
   font-weight: 500;
   cursor: pointer;
   text-decoration: none;
@@ -36,6 +35,18 @@ body {
 .btm-primary:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 30px rgba(124, 58, 237, 0.4);
+}
+
+.btm-secondary {
+  background: #fff;
+  color: #7c3aed;
+  border: 2px solid #7c3aed;
+}
+
+.btm-secondary:hover {
+  background: #7c3aed;
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(124, 58, 237, 0.3);
 }
 
 /* Hero Section */
@@ -98,7 +109,6 @@ body {
   100% {
     background-position: 0% 50%;
   }
-
   50% {
     background-position: 100% 50%;
   }
@@ -114,7 +124,7 @@ body {
 
 /* Courses Section */
 .courses-section {
-  padding: 6rem 2rem;
+  padding: 4rem 2rem;
   background: linear-gradient(135deg, #f8f9ff 0%, #e8f0ff 100%);
 }
 
@@ -132,7 +142,7 @@ body {
   padding: 2rem;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
-  text-align: center;
+  text-align: left;
   position: relative;
   overflow: hidden;
 }
@@ -146,6 +156,7 @@ body {
   font-size: 2.5rem;
   color: #7c3aed;
   margin-bottom: 1rem;
+  text-align: center;
 }
 
 .course-card h3 {
@@ -156,30 +167,72 @@ body {
 }
 
 .course-card p {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   color: #6b7280;
   line-height: 1.6;
   margin-bottom: 1.5rem;
 }
 
+.course-card ul {
+  list-style: none;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: #f8f9ff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.course-card ul li {
+  font-size: 0.95rem;
+  color: #1f2937;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  line-height: 1.5;
+}
+
+.course-card ul li i {
+  color: #7c3aed;
+  font-size: 1.2rem;
+  margin-top: 0.2rem;
+}
+
 .course-btn {
-  padding: 0.75rem 1.5rem;
+  padding: 1rem 2rem;
   background: linear-gradient(135deg, #7c3aed, #a855f7);
   color: white;
   border: none;
   border-radius: 12px;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
+  margin-top: 1rem;
+  box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+}
+
+.course-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: all 0.4s ease;
+}
+
+.course-btn:hover::after {
+  left: 100%;
 }
 
 .course-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(124, 58, 237, 0.3);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(124, 58, 237, 0.4);
 }
 
 /* Footer Styles */
@@ -243,6 +296,11 @@ body {
 
 .footer-logo i {
   font-size: 1.5rem;
+  transition: transform 0.3s ease;
+}
+
+.footer-logo:hover i {
+  transform: rotate(360deg);
 }
 
 .footer-description {
@@ -265,7 +323,7 @@ body {
 
 .social-icon:hover {
   color: #9333ea;
-  transform: translateY(-3px);
+  transform: translateY(-3px) scale(1.2);
 }
 
 .footer-title {
@@ -285,6 +343,11 @@ body {
   height: 3px;
   background: linear-gradient(90deg, #581c87, #9333ea);
   border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.footer-section:hover .footer-title::after {
+  width: 60px;
 }
 
 .footer-menu {
@@ -335,6 +398,11 @@ body {
 .newsletter-input:focus {
   outline: none;
   background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.02);
+}
+
+.newsletter-input:invalid:not(:placeholder-shown) {
+  border: 2px solid #ef4444;
 }
 
 .newsletter-btn {
@@ -350,6 +418,23 @@ body {
   align-items: center;
   gap: 0.5rem;
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.newsletter-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: all 0.4s ease;
+}
+
+.newsletter-btn:hover::after {
+  left: 100%;
 }
 
 .newsletter-btn:hover {
@@ -406,5 +491,24 @@ body {
 
   .newsletter-input {
     max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .courses-hero h1 {
+    font-size: 2rem;
+  }
+
+  .courses-hero p {
+    font-size: 1rem;
+  }
+
+  .course-card h3 {
+    font-size: 1.3rem;
+  }
+
+  .course-btn {
+    font-size: 0.9rem;
+    padding: 0.8rem 1.5rem;
   }
 }
