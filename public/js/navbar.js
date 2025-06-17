@@ -16,10 +16,9 @@ document.addEventListener("DOMContentLoaded", () => {
     navItems.forEach((item) => {
       const link = item.querySelector(".nav-link");
       const dropdown = item.querySelector(".dropdown");
-      const subDropdownItems = item.querySelectorAll(".has-sub-dropdown");
 
       // Toggle Dropdown on Mobile
-      if (dropdown) {
+      if (dropdown && link) {
         link.addEventListener("click", (e) => {
           if (window.innerWidth <= 768) {
             e.preventDefault();
@@ -36,21 +35,22 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       // Toggle Sub-Dropdown on Mobile
+      const subDropdownItems = item.querySelectorAll(".has-sub-dropdown");
       subDropdownItems.forEach((subItem) => {
-        const subLink = subItem.querySelector(".dropdown-item");
+        const subToggle = subItem.querySelector(".sub-dropdown-toggle");
         const subDropdown = subItem.querySelector(".sub-dropdown");
-        if (subLink && subDropdown) {
-          subLink.addEventListener("click", (e) => {
-            if (window.innerWidth <= 768) {
-              e.preventDefault();
-              const isActive = subItem.classList.contains("active");
-              subDropdownItems.forEach((i) => i.classList.remove("active"));
-              if (!isActive) {
-                subItem.classList.add("active");
-                subLink.setAttribute("aria-expanded", "true");
-              } else {
-                subLink.setAttribute("aria-expanded", "false");
-              }
+        if (subToggle && subDropdown) {
+          subToggle.addEventListener("click", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const isActive = subItem.classList.contains("active");
+            subDropdownItems.forEach((i) => i.classList.remove("active"));
+            if (!isActive) {
+              subItem.classList.add("active");
+              subToggle.setAttribute("aria-expanded", "true");
+            } else {
+              subItem.classList.add("active");
+              subToggle.setAttribute("aria-expanded", "true");
             }
           });
         }
@@ -69,8 +69,8 @@ document.addEventListener("DOMContentLoaded", () => {
           const subDropdownItems = item.querySelectorAll(".has-sub-dropdown");
           subDropdownItems.forEach((subItem) => {
             subItem.classList.remove("active");
-            const subLink = subItem.querySelector(".dropdown-item");
-            if (subLink) subLink.setAttribute("aria-expanded", "false");
+            const subToggle = subItem.querySelector(".sub-dropdown-toggle");
+            if (subToggle) subToggle.setAttribute("aria-expanded", "false");
           });
         });
         body.style.overflow = "";
@@ -84,6 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const dropdown = item.querySelector(".dropdown");
       if (dropdown && link) {
         link.addEventListener("focus", () => {
+          navItems.forEach((i) => i.classList.remove("focus-within"));
           item.classList.add("focus-within");
         });
         link.addEventListener("blur", (e) => {
@@ -95,13 +96,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const subDropdownItems = item.querySelectorAll(".has-sub-dropdown");
       subDropdownItems.forEach((subItem) => {
-        const subLink = subItem.querySelector(".dropdown-item");
+        const subToggle = subItem.querySelector(".sub-dropdown-toggle");
         const subDropdown = subItem.querySelector(".sub-dropdown");
-        if (subLink && subDropdown) {
-          subLink.addEventListener("focus", () => {
+        if (subToggle && subDropdown) {
+          subToggle.addEventListener("focus", () => {
             subItem.classList.add("focus-within");
           });
-          subLink.addEventListener("blur", (e) => {
+          subToggle.addEventListener("blur", (e) => {
             if (!subItem.contains(e.relatedTarget)) {
               subItem.classList.remove("focus-within");
             }
