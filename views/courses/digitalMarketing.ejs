@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/navbar.css">
     <style>
         * {
             margin: 0;
@@ -22,7 +23,7 @@
         }
 
         /* Navbar Styles */
-        .btm {
+        /* .btm {
             padding: 0.75rem 1.5rem;
             border: none;
             border-radius: 12px;
@@ -182,7 +183,7 @@
 
         .hamburger.active span:nth-child(3) {
             transform: rotate(-45deg) translate(7px, -7px);
-        }
+        } */
 
         /* Hero Section */
         .courses-hero {
@@ -727,65 +728,7 @@
 
 <body>
     <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="index.html" class="logo"><i class="fas fa-code"></i> Skillshastra</a>
-            <ul class="nav-menu">
-                <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link" tabindex="0">Courses <i class="fas fa-chevron-down"
-                            style="font-size: 0.8rem;"></i></a>
-                    <div class="dropdown">
-                        <a href="frontend.html" class="dropdown-item"><i class="fas fa-desktop"></i> Frontend
-                            Development</a>
-                        <a href="backend.html" class="dropdown-item"><i class="fas fa-server"></i> Backend
-                            Development</a>
-                        <a href="fullstack.html" class="dropdown-item"><i class="fas fa-laptop-code"></i> Full Stack
-                            Development</a>
-                        <a href="/details-digital-marketing" class="dropdown-item"><i class="fas fa-bullhorn"></i> Digital
-                            Marketing</a>
-                        <a href="genai.html" class="dropdown-item"><i class="fas fa-robot"></i> Generative AI</a>
-                        <a href="java.html" class="dropdown-item"><i class="fas fa-coffee"></i> Java Basics</a>
-                        <a href="c.html" class="dropdown-item"><i class="fas fa-code"></i> C Basics</a>
-                        <a href="python.html" class="dropdown-item"><i class="fas fa-snake"></i> Python Basics</a>
-                        <a href="cpp.html" class="dropdown-item"><i class="fas fa-code"></i> C++ Basics</a>
-                        <a href="dsa.html" class="dropdown-item"><i class="fas fa-sitemap"></i> Data Structures &
-                            Algorithms</a>
-                    </div>
-                </li>
-                <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link" tabindex="0">Instructors <i class="fas fa-chevron-down"
-                            style="font-size: 0.8rem;"></i></a>
-                    <div class="dropdown">
-                        <a href="MeetOurTeam.html" class="dropdown-item"><i class="fas fa-users"></i> Meet Our Team</a>
-                        <a href="ExpertProfile.html" class="dropdown-item"><i class="fas fa-user-tie"></i> Expert
-                            Profiles</a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link" tabindex="0">Resources <i class="fas fa-chevron-down"
-                            style="font-size: 0.8rem;"></i></a>
-                    <div class="dropdown">
-                        <a href="StudyMaterials.html" class="dropdown-item"><i class="fas fa-file-alt"></i> Study
-                            Materials</a>
-                        <a href="PracticeProject.html" class="dropdown-item"><i class="fas fa-project-diagram"></i>
-                            Practice Projects</a>
-                        <a href="CodingChallenge.html" class="dropdown-item"><i class="fas fa-trophy"></i> Coding
-                            Challenges</a>
-                        <a href="#" class="dropdown-item"><i class="fas fa-route"></i> Career Guidance</a>
-                    </div>
-                </li>
-                <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
-                <li><a href="signup.html" class="btm btm-primary"><i class="fas fa-user"></i> Login</a></li>
-            </ul>
-            <div class="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-    </nav>
+    <%- include('../partials/navbar') %>
 
     <!-- Courses Hero Section -->
     <section class="courses-hero">

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skillshastra - Login & Signup</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/signup.css">
+</head>
+<body>
+    <div class="hover-grid"></div>
+    <div class="auth-container" id="authContainer">
+        <button class="close-btn" onclick="closePage()"><i class="fas fa-times"></i></button>
+        <div class="auth-form">
+            <h2>Welcome to <span class="gradient-text">Skillshastra</span></h2>
+            <p>Join our community to master future-ready skills!</p>
+
+            <div class="form-toggle">
+                <button class="active" onclick="showLogin()">Login</button>
+                <button onclick="showSignup()">Signup</button>
+            </div>
+
+            <div id="errorMessage" class="error-message" style="display: none;"></div>
+            <div id="successMessage" class="success-message" style="display: none;"></div>
+
+            <form id="loginForm">
+                <h3>Login</h3>
+                <div class="form-group">
+                    <input type="email" id="loginEmail" placeholder="Email Address" required>
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="loginPassword" placeholder="Password" required>
+                    <i class="fas fa-lock"></i>
+                </div>
+                <div class="forgot-password">
+                    <a onclick="showForgotPassword()">Forgot Password?</a>
+                </div>
+                <button type="submit" class="auth-btn" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Login</button>
+            </form>
+
+            <form id="signupForm">
+                <h3>Signup</h3>
+                <div class="form-group">
+                    <input type="text" id="signupName" placeholder="Full Name" required>
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="signupEmail" placeholder="Email Address" required>
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="signupPassword" placeholder="Password" required>
+                    <i class="fas fa-lock"></i>
+                </div>
+                <div class="password-strength" id="passwordStrength"></div>
+                <div class="form-group">
+                    <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+                    <i class="fas fa-lock"></i>
+                </div>
+                <button type="submit" class="auth-btn" id="submitSignup"><i class="fas fa-user-plus"></i> Signup</button>
+            </form>
+
+            <form id="otpForm">
+                <h3>Verify OTP</h3>
+                <div class="form-group">
+                    <input type="text" id="otpInput" placeholder="Enter OTP" maxlength="6" required>
+                    <i class="fas fa-key"></i>
+                </div>
+                <button type="submit" class="auth-btn" id="otpBtn"><i class="fas fa-check"></i> Verify OTP</button>
+                <div class="forgot-password">
+                    <a onclick="resendOTP()">Resend OTP</a>
+                </div>
+                <div class="back-link">
+                    <a onclick="showSignup()">Back to Signup</a>
+                </div>
+            </form>
+
+            <form id="forgotPasswordForm">
+    <h3 id="forgotTitle">Reset Password</h3>
+    <div class="form-group" id="forgotEmailGroup">
+        <input type="email" id="forgotEmail" name="forgotEmail" placeholder="Email Address" required>
+        <i class="fas fa-envelope"></i>
+    </div>
+    <div class="form-group" id="resetOtpGroup" style="display: none;">
+        <input type="text" id="resetOtp" name="resetOtp" placeholder="Enter OTP" maxlength="6">
+        <i class="fas fa-key"></i>
+    </div>
+    <div class="form-group" id="newPasswordGroup" style="display: none;">
+        <input type="password" id="newPassword" name="newPassword" placeholder="New Password">
+        <i class="fas fa-lock"></i>
+    </div>
+    <div class="password-strength" id="newPasswordStrength" style="display: none;"></div>
+    <div class="form-group" id="confirmNewPasswordGroup" style="display: none;">
+        <input type="password" id="confirmNewPassword" name="confirmNewPassword" placeholder="Confirm New Password">
+        <i class="fas fa-lock"></i>
+    </div>
+    <button type="submit" class="auth-btn" id="forgotBtn"><i class="fas fa-paper-plane"></i> Send OTP</button>
+    <div class="back-link">
+        <a onclick="showLogin()">Back to Login</a>
+    </div>
+</form>
+
+            <div class="social-login">
+                <p>Or continue with</p>
+                <div class="social-icons">
+                    <a href="#" title="Google"><i class="fab fa-google"></i></a>
+                    <a href="#" title="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="#" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="auth-visual">
+            <h2 class="gradient-text">Empower Your Future</h2>
+            <p>Learn cutting-edge skills with Skillshastra’s expert-led courses.</p>
+            <div class="code-window">
+                <div class="window-header">
+                    <div class="window-dot dot-red"></div>
+                    <div class="window-dot dot-yellow"></div>
+                    <div class="window-dot dot-green"></div>
+                </div>
+                <div class="code-content">
+                    <div class="code-line"><span>const</span> user = {</div>
+                    <div class="code-line">  name: <span>'Future Coder'</span>,</div>
+                    <div class="code-line">  skills: <span>['Tech', 'AI', 'Web']</span></div>
+                    <div class="code-line">};</div>
+                    <div class="code-line">console.log(<span>'Ready to learn! 🚀'</span>);</div>
+                </div>
+            </div>
+            <div class="floating-elements">
+                <div class="float-element code-bracket">{</div>
+                <div class="float-element code-bracket">}</div>
+                <div class="float-element code-symbol"></></div>
+                <div class="float-element code-word">AI</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/signup.js"></script>
+</body>
+</html>

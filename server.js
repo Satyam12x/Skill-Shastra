@@ -313,13 +313,18 @@ app.get("/api/auth/admin-panel", protect, admin, async (req, res) => {
   }
 });
 
+app.set('view engine', 'ejs');
+app.set('views', path.resolve('./views'));
+
+app.use(express.urlencoded({ extended: false }));
+
 // Serve HTML files
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "views", "index.html"));
+  res.render('index');
 });
 
 app.get("/signup", (req, res) => {
-  res.sendFile(path.join(__dirname, "views", "signup.html"));
+  res.render('signup')
 });
 
 app.get("/admin", protect, admin, (req, res) => {
@@ -332,7 +337,7 @@ app.get("/about", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "about.html"));
 });
 app.get("/digital-marketing", (req, res) => {
-  res.sendFile(path.join(__dirname, "views/courses", "digitalMarketing.html"));
+  res.render('courses/digitalMarketing')
 });
 app.get("/details-digital-marketing", (req, res) => {
   res.sendFile(path.join(__dirname, "views/courses/course-details", "digital-marketing.html"));
