@@ -357,6 +357,21 @@ app.get("/programming", (req, res) => {
 app.get("/genai", (req, res) => {
   res.render("genai");
 });
+app.get("/codingChallenge", (req, res) => {
+  res.render("resources/CodingChallenge");
+});
+app.get("/practiceProject", (req, res) => {
+  res.render("resources/PracticeProject");
+});
+app.get("/studyMaterials", (req, res) => {
+  res.render("resources/StudyMaterials");
+});
+app.get("/expertProfiles", (req, res) => {
+  res.render("team/ExpertProfiles");
+});
+app.get("/meetTeam", (req, res) => {
+  res.render("team/MeetOurTeam");
+});
 
 // Start Server
 connectDB().then(() => {
