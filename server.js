@@ -9,9 +9,17 @@ const path = require("path");
 const multer = require("multer");
 const cookieParser = require("cookie-parser");
 const crypto = require("crypto");
+const fs = require("fs");
 
 dotenv.config();
 const app = express();
+
+// Ensure uploads directory exists
+const uploadsDir = path.join(__dirname, "public/uploads");
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+  console.log("Created uploads directory");
+}
 
 // Middleware
 app.use(cors({ origin: "http://localhost:5000", credentials: true }));
@@ -19,6 +27,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+app.use("/uploads", express.static(uploadsDir));
 
 // MongoDB Connection
 const connectDB = async () => {
@@ -113,7 +122,7 @@ const Enrollment = mongoose.model("Enrollment", enrollmentSchema);
 
 // Multer Setup
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, "uploads/"),
+  destination: (req, file, cb) => cb(null, uploadsDir),
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname);
     cb(null, `${Date.now()}-${file.originalname.replace(ext, "")}${ext}`);
@@ -132,6 +141,16 @@ const upload = multer({
   },
   limits: { fileSize: 5 * 1024 * 1024 },
 });
+
+// Multer Error Handling Middleware
+const multerErrorHandler = (err, req, res, next) => {
+  if (err instanceof multer.MulterError) {
+    return res.status(400).json({ message: `Multer error: ${err.message}` });
+  } else if (err) {
+    return res.status(400).json({ message: err.message });
+  }
+  next();
+};
 
 // Nodemailer Setup
 const transporter = nodemailer.createTransport({
@@ -176,9 +195,7 @@ const sendEmail = async (to, subject, html, retries = 3) => {
 const protect = async (req, res, next) => {
   const token = req.cookies.token;
   if (!token) {
-    return res.redirect(
-      `/signup?redirect=${encodeURIComponent(req.originalUrl)}`
-    );
+    return res.status(401).json({ message: "No token provided" });
   }
 
   try {
@@ -188,18 +205,14 @@ const protect = async (req, res, next) => {
     );
     if (!user || !user.isVerified) {
       res.clearCookie("token");
-      return res.redirect(
-        `/signup?redirect=${encodeURIComponent(req.originalUrl)}`
-      );
+      return res.status(401).json({ message: "Unauthorized" });
     }
     req.user = user;
     next();
   } catch (error) {
     console.error("JWT Verification Error:", error);
     res.clearCookie("token");
-    return res.redirect(
-      `/signup?redirect=${encodeURIComponent(req.originalUrl)}`
-    );
+    return res.status(401).json({ message: "Invalid token" });
   }
 };
 
@@ -470,13 +483,22 @@ app.post(
   "/api/enroll",
   protect,
   upload.single("paymentProof"),
+  multerErrorHandler,
   async (req, res) => {
     try {
       if (!req.file) {
-        return res.status(400).json({ message: "Payment proof is required" });
+        return res
+          .status(400)
+          .json({ message: "Payment proof file is required" });
       }
 
-      const studentData = JSON.parse(req.body.studentData);
+      let studentData;
+      try {
+        studentData = JSON.parse(req.body.studentData || "{}");
+      } catch (error) {
+        return res.status(400).json({ message: "Invalid student data format" });
+      }
+
       const { transactionId, paymentDate } = req.body;
 
       const requiredFields = [
@@ -527,13 +549,13 @@ app.post(
       await enrollment.save();
 
       const confirmationEmail = `
-      <h2>Enrollment Confirmation</h2>
-      <p>Dear ${studentData.fullName},</p>
-      <p>Your enrollment for <strong>${studentData.course}</strong> has been received.</p>
-      <p>Transaction ID: ${transactionId}</p>
-      <p>We will verify your payment and confirm your enrollment soon.</p>
-      <p>Thank you for choosing Skillshastra!</p>
-    `;
+        <h2>Enrollment Confirmation</h2>
+        <p>Dear ${studentData.fullName},</p>
+        <p>Your enrollment for <strong>${studentData.course}</strong> has been received.</p>
+        <p>Transaction ID: ${transactionId}</p>
+        <p>We will verify your payment and confirm your enrollment soon.</p>
+        <p>Thank you for choosing Skillshastra!</p>
+      `;
       await sendEmail(
         studentData.email,
         "Skillshastra Enrollment Confirmation",
@@ -547,6 +569,22 @@ app.post(
     }
   }
 );
+
+// Get Enrollments Route
+app.get("/api/enrollments", protect, admin, async (req, res) => {
+  try {
+    const enrollments = await Enrollment.find().populate(
+      "userId",
+      "name email"
+    );
+    res
+      .status(200)
+      .json({ message: "Enrollments fetched successfully", enrollments });
+  } catch (error) {
+    console.error("Fetch Enrollments Error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
 
 // EJS Setup
 app.set("view engine", "ejs");

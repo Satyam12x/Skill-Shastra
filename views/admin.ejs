@@ -52,7 +52,7 @@
         .admin-container {
             position: relative;
             width: 100%;
-            max-width: 900px;
+            max-width: 1200px;
             display: flex;
             background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(10px);
@@ -156,29 +156,40 @@
 
         .logout-btn i { margin-right: 8px; }
 
-        .users-table {
+        .users-table, .enrollments-table {
             width: 100%;
             border-collapse: collapse;
             background: rgba(255, 255, 255, 0.7);
             border-radius: 8px;
             overflow: hidden;
+            margin-bottom: 20px;
         }
 
-        .users-table th, .users-table td {
+        .users-table th, .users-table td,
+        .enrollments-table th, .enrollments-table td {
             padding: 12px;
             text-align: left;
             border-bottom: 1px solid rgba(0, 0, 0, 0.1);
             color: #333;
         }
 
-        .users-table th {
+        .users-table th, .enrollments-table th {
             background: rgba(124, 58, 237, 0.1);
             color: #7c3aed;
             font-weight: 600;
         }
 
-        .users-table tr:hover {
+        .users-table tr:hover, .enrollments-table tr:hover {
             background: rgba(124, 58, 237, 0.05);
+        }
+
+        .payment-proof-link {
+            color: #7c3aed;
+            text-decoration: none;
+        }
+
+        .payment-proof-link:hover {
+            text-decoration: underline;
         }
 
         .error-message, .success-message {
@@ -232,11 +243,12 @@
 
             .admin-visual { display: none; }
 
-            .users-table {
+            .users-table, .enrollments-table {
                 font-size: 12px;
             }
 
-            .users-table th, .users-table td {
+            .users-table th, .users-table td,
+            .enrollments-table th, .enrollments-table td {
                 padding: 8px;
             }
         }
@@ -254,6 +266,7 @@
             <button class="logout-btn" onclick="logout()">
                 <i class="fas fa-sign-out-alt"></i> Logout
             </button>
+            <h3>Registered Users</h3>
             <table class="users-table">
                 <thead>
                     <tr>
@@ -263,6 +276,21 @@
                     </tr>
                 </thead>
                 <tbody id="usersTableBody"></tbody>
+            </table>
+            <h3>Enrollments</h3>
+            <table class="enrollments-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Course</th>
+                        <th>Transaction ID</th>
+                        <th>Payment Date</th>
+                        <th>Payment Proof</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="enrollmentsTableBody"></tbody>
             </table>
         </div>
         <div class="admin-visual">
@@ -292,15 +320,13 @@
     </div>
 
     <script>
-        
-        const API_URL = 'http://localhost:5000/api/auth';
+        const API_URL = '/api';
 
         async function loadUsers() {
             try {
-                const response = await fetch(`${API_URL}/admin-panel`, {
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
-                    }
+                const response = await fetch(`${API_URL}/auth/admin-panel`, {
+                    method: 'GET',
+                    credentials: 'include'
                 });
                 const data = await response.json();
                 if (response.ok) {
@@ -319,7 +345,7 @@
                 } else {
                     showError(data.message);
                     setTimeout(() => {
-                        window.location.href = 'signup.html';
+                        window.location.href = '/signup';
                     }, 1000);
                 }
             } catch (error) {
@@ -328,9 +354,50 @@
             }
         }
 
+        async function loadEnrollments() {
+            try {
+                const response = await fetch(`${API_URL}/enrollments`, {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    const tbody = document.getElementById('enrollmentsTableBody');
+                    tbody.innerHTML = '';
+                    data.enrollments.forEach(enrollment => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${enrollment.fullName}</td>
+                            <td>${enrollment.email}</td>
+                            <td>${enrollment.course}</td>
+                            <td>${enrollment.transactionId}</td>
+                            <td>${new Date(enrollment.paymentDate).toLocaleDateString()}</td>
+                            <td><a href="/uploads/${enrollment.paymentProof.split('uploads/')[1]}" class="payment-proof-link" target="_blank">View Proof</a></td>
+                            <td>${enrollment.status}</td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                    showSuccess('Enrollments loaded successfully');
+                } else {
+                    showError(data.message);
+                }
+            } catch (error) {
+                showError('Failed to load enrollments');
+                console.error('Error:', error);
+            }
+        }
+
         function logout() {
-            localStorage.removeItem('token');
-            window.location.href = 'signup.html';
+            fetch(`${API_URL}/auth/logout`, {
+                method: 'POST',
+                credentials: 'include'
+            }).then(() => {
+                localStorage.removeItem('user');
+                window.location.href = '/signup';
+            }).catch(error => {
+                console.error('Logout error:', error);
+                showError('Failed to logout');
+            });
         }
 
         function showError(message) {
@@ -347,7 +414,10 @@
             document.getElementById('errorMessage').style.display = 'none';
         }
 
-        window.onload = loadUsers;
+        window.onload = () => {
+            loadUsers();
+            loadEnrollments();
+        };
     </script>
 </body>
 </html>
