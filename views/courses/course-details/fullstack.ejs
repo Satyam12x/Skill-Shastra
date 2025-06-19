@@ -1,110 +1,210 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Full Stack Development Course Details - Skillshastra</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/fullstack.css">
-    <link rel="stylesheet" href="/css/navbar.css">
-</head>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="css/fullstack.css" />
+    <link rel="stylesheet" href="/css/navbar.css" />
+  </head>
 
-<body>
+  <body>
     <!-- Navigation -->
     <%- include('../../partials/navbar') %>
 
     <!-- Courses Hero Section -->
     <section class="courses-hero">
-        <div class="courses-hero-container">
-            <h1>Full Stack Development Course Details</h1>
-            <p>Dive deep into our comprehensive Full Stack Development course, designed to transform you into a
-                proficient full stack developer with hands-on projects and expert guidance.</p>
-        </div>
+      <div class="courses-hero-container">
+        <h1>Full Stack Development Course Details</h1>
+        <p>
+          Dive deep into our comprehensive Full Stack Development course,
+          designed to transform you into a proficient full stack developer with
+          hands-on projects and expert guidance.
+        </p>
+      </div>
     </section>
 
     <!-- Course Details Section -->
     <section class="course-details-section">
-        <div class="course-details-container">
-            <div class="course-details">
-                <h2>Full Stack Development</h2>
-                <div class="course-meta">
-                    <span><i class="fas fa-clock"></i> Duration: 24 Weeks</span>
-                    <span><i class="fas fa-rupee-sign"></i> Fees: ₹45,000</span>
-                    <span><i class="fas fa-level-up-alt"></i> Level: Beginner to Advanced</span>
-                    <span class="rating"><i class="fas fa-star"></i> 4.9 (2,000 reviews)</span>
-                </div>
-                <div class="course-description">
-                    <p>This course is meticulously crafted to take you from the basics of web development to building
-                        complex, scalable full stack applications. You'll master both frontend and backend technologies,
-                        along with DevOps practices, through real-world projects and mentorship from industry experts.
-                    </p>
-                </div>
-                <div class="instructors">
-                    <h3>Instructors</h3>
-                    <div class="instructor-list">
-                        <div class="instructor">
-                            <img src="https://via.placeholder.com/80" alt="Instructor">
-                            <h4>Sanjay Rao</h4>
-                            <p>Full Stack Developer, 8+ years experience</p>
-                        </div>
-                        <div class="instructor">
-                            <img src="https://via.placeholder.com/80" alt="Instructor">
-                            <h4>Meera Joshi</h4>
-                            <p>Senior Full Stack Developer, 10+ years experience</p>
-                        </div>
-                        <div class="instructor">
-                            <img src="https://via.placeholder.com/80" alt="Instructor">
-                            <h4>Rohit Sharma</h4>
-                            <p>Tech Lead, 15+ years experience</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="syllabus">
-                    <h3>Detailed Course Syllabus</h3>
-                    <ul>
-                        <li><i class="fas fa-check-circle"></i> Module 1: Web Fundamentals</li>
-                        <li><i class="fas fa-check-circle"></i> HTML5: Structure and Semantics</li>
-                        <li><i class="fas fa-check-circle"></i> CSS3: Styling, Flexbox, and Grid</li>
-                        <li><i class="fas fa-check-circle"></i> JavaScript: ES6+, DOM Manipulation</li>
-                        <li><i class="fas fa-check-circle"></i> Module 2: Frontend Development</li>
-                        <li><i class="fas fa-check-circle"></i> React: Components, Hooks, State Management</li>
-                        <li><i class="fas fa-check-circle"></i> Redux for State Management</li>
-                        <li><i class="fas fa-check-circle"></i> Tailwind CSS for Rapid Styling</li>
-                        <li><i class="fas fa-check-circle"></i> Module 3: Backend Development</li>
-                        <li><i class="fas fa-check-circle"></i> Node.js: Environment and Async Programming</li>
-                        <li><i class="fas fa-check-circle"></i> Express.js: RESTful APIs and Middleware</li>
-                        <li><i class="fas fa-check-circle"></i> MongoDB: CRUD Operations and Mongoose</li>
-                        <li><i class="fas fa-check-circle"></i> Authentication: JWT, OAuth</li>
-                        <li><i class="fas fa-check-circle"></i> Module 4: Advanced Full Stack</li>
-                        <li><i class="fas fa-check-circle"></i> Next.js: Server-Side Rendering, API Routes</li>
-                        <li><i class="fas fa-check-circle"></i> GraphQL with Apollo Client and Server</li>
-                        <li><i class="fas fa-check-circle"></i> Microservices Architecture</li>
-                        <li><i class="fas fa-check-circle"></i> Module 5: DevOps and Deployment</li>
-                        <li><i class="fas fa-check-circle"></i> CI/CD with GitHub Actions</li>
-                        <li><i class="fas fa-check-circle"></i> Docker: Containerization</li>
-                        <li><i class="fas fa-check-circle"></i> AWS: Cloud Deployment and Scaling</li>
-                        <li><i class="fas fa-check-circle"></i> Module 6: Projects and Portfolio</li>
-                        <li><i class="fas fa-check-circle"></i> Project 1: Task Management App</li>
-                        <li><i class="fas fa-check-circle"></i> Project 2: Social Media Platform</li>
-                        <li><i class="fas fa-check-circle"></i> Capstone Project: Full Stack E-Commerce Platform</li>
-                    </ul>
-                </div>
-                <div class="benefits">
-                    <h3>Course Benefits</h3>
-                    <ul>
-                        <li><i class="fas fa-check-circle"></i> Hands-on projects to build a strong portfolio</li>
-                        <li><i class="fas fa-check-circle"></i> 1:1 mentorship from industry experts</li>
-                        <li><i class="fas fa-check-circle"></i> Lifetime access to course materials</li>
-                        <li><i class="fas fa-check-circle"></i> Career guidance and job placement support</li>
-                        <li><i class="fas fa-check-circle"></i> Certificate of completion</li>
-                    </ul>
-                </div>
-                <a href="/payment" class="enroll-btn"><i class="fas fa-arrow-right"></i> Enroll Now</a>
+      <div class="course-details-container">
+        <div class="course-details">
+          <h2>Full Stack Development</h2>
+          <div class="course-meta">
+            <span><i class="fas fa-clock"></i> Duration: 24 Weeks</span>
+            <span><i class="fas fa-rupee-sign"></i> Fees: ₹45,000</span>
+            <span
+              ><i class="fas fa-level-up-alt"></i> Level: Beginner to
+              Advanced</span
+            >
+            <span class="rating"
+              ><i class="fas fa-star"></i> 4.9 (2,000 reviews)</span
+            >
+          </div>
+          <div class="course-description">
+            <p>
+              This course is meticulously crafted to take you from the basics of
+              web development to building complex, scalable full stack
+              applications. You'll master both frontend and backend
+              technologies, along with DevOps practices, through real-world
+              projects and mentorship from industry experts.
+            </p>
+          </div>
+          <div class="instructors">
+            <h3>Instructors</h3>
+            <div class="instructor-list">
+              <div class="instructor">
+                <img src="https://via.placeholder.com/80" alt="Instructor" />
+                <h4>Sanjay Rao</h4>
+                <p>Full Stack Developer, 8+ years experience</p>
+              </div>
+              <div class="instructor">
+                <img src="https://via.placeholder.com/80" alt="Instructor" />
+                <h4>Meera Joshi</h4>
+                <p>Senior Full Stack Developer, 10+ years experience</p>
+              </div>
+              <div class="instructor">
+                <img src="https://via.placeholder.com/80" alt="Instructor" />
+                <h4>Rohit Sharma</h4>
+                <p>Tech Lead, 15+ years experience</p>
+              </div>
             </div>
+          </div>
+          <div class="syllabus">
+            <h3>Detailed Course Syllabus</h3>
+            <ul>
+              <li>
+                <i class="fas fa-check-circle"></i> Module 1: Web Fundamentals
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> HTML5: Structure and
+                Semantics
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> CSS3: Styling, Flexbox, and
+                Grid
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> JavaScript: ES6+, DOM
+                Manipulation
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Module 2: Frontend
+                Development
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> React: Components, Hooks,
+                State Management
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Redux for State Management
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Tailwind CSS for Rapid
+                Styling
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Module 3: Backend
+                Development
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Node.js: Environment and
+                Async Programming
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Express.js: RESTful APIs and
+                Middleware
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> MongoDB: CRUD Operations and
+                Mongoose
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Authentication: JWT, OAuth
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Module 4: Advanced Full
+                Stack
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Next.js: Server-Side
+                Rendering, API Routes
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> GraphQL with Apollo Client
+                and Server
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Microservices Architecture
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Module 5: DevOps and
+                Deployment
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> CI/CD with GitHub Actions
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Docker: Containerization
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> AWS: Cloud Deployment and
+                Scaling
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Module 6: Projects and
+                Portfolio
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Project 1: Task Management
+                App
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Project 2: Social Media
+                Platform
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Capstone Project: Full Stack
+                E-Commerce Platform
+              </li>
+            </ul>
+          </div>
+          <div class="benefits">
+            <h3>Course Benefits</h3>
+            <ul>
+              <li>
+                <i class="fas fa-check-circle"></i> Hands-on projects to build a
+                strong portfolio
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> 1:1 mentorship from industry
+                experts
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Lifetime access to course
+                materials
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Career guidance and job
+                placement support
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Certificate of completion
+              </li>
+            </ul>
+          </div>
+          <button class="enroll-btn" onclick="handleEnroll()">
+            <i class="fas fa-arrow-right"></i> Enroll Now
+          </button>
         </div>
+      </div>
     </section>
 
     <!-- Footer -->
@@ -114,47 +214,57 @@
     <button class="back-to-top"><i class="fas fa-arrow-up"></i></button>
 
     <script>
+      function handleEnroll() {
+        const user = localStorage.getItem("user");
+        if (user) {
+          window.location.href = "/payment";
+        } else {
+          window.location.href = "/signup?redirect=/payment";
+        }
+      }
 
-        // Scroll Animations
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, { threshold: 0.2 });
-
-        document.querySelectorAll('.course-details').forEach(section => {
-            section.style.opacity = '0';
-            section.style.transform = 'translateY(30px)';
-            section.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-            observer.observe(section);
-        });
-
-        // Newsletter Form
-        const newsletterForm = document.querySelector('.newsletter-form');
-        newsletterForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const emailInput = newsletterForm.querySelector('.newsletter-input');
-            if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value.trim())) {
-                alert('Thank you for subscribing!');
-                emailInput.value = '';
-            } else {
-                emailInput.style.border = '2px solid #ef4444';
+      // Scroll Animations
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.style.opacity = "1";
+              entry.target.style.transform = "translateY(0)";
             }
-        });
+          });
+        },
+        { threshold: 0.2 }
+      );
 
-        // Back to Top
-        const backToTop = document.querySelector('.back-to-top');
-        window.addEventListener('scroll', () => {
-            backToTop.style.display = window.scrollY > 300 ? 'block' : 'none';
-        });
-        backToTop.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
+      document.querySelectorAll(".course-details").forEach((section) => {
+        section.style.opacity = "0";
+        section.style.transform = "translateY(30px)";
+        section.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+        observer.observe(section);
+      });
+
+      // Newsletter Form
+      const newsletterForm = document.querySelector(".newsletter-form");
+      newsletterForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const emailInput = newsletterForm.querySelector(".newsletter-input");
+        if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value.trim())) {
+          alert("Thank you for subscribing!");
+          emailInput.value = "";
+        } else {
+          emailInput.style.border = "2px solid #ef4444";
+        }
+      });
+
+      // Back to Top
+      const backToTop = document.querySelector(".back-to-top");
+      window.addEventListener("scroll", () => {
+        backToTop.style.display = window.scrollY > 300 ? "block" : "none";
+      });
+      backToTop.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
     </script>
     <script src="/js/navbar.js"></script>
-</body>
-
+  </body>
 </html>

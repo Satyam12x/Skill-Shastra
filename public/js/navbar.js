@@ -20,7 +20,9 @@ document.addEventListener("DOMContentLoaded", () => {
       profileSection.classList.add("active");
       loginSection.classList.add("active");
       profileImg.src =
-        userData.profileImage || "https://www.gravatar.com/avatar/?d=identicon";
+        userData.profileImage ||
+        "https://www.gravatar.com/avatar/?d=identicon" ||
+        "/images/default-avatar.jpg";
       profileName.textContent = userData.name || "User";
       profileEmail.textContent = userData.email || "";
       if (userData.role === "admin") {
@@ -66,6 +68,30 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
     }
+
+    document.querySelectorAll(" .nav-link").forEach((link) => {
+      link.addEventListener("click", (e) => {
+        const href = link.getAttribute("href");
+        if (href && href.startsWith("#")) {
+          e.preventDefault();
+          const targetElement = document.querySelector(href);
+          if (targetElement) {
+            targetElement.scrollIntoView({ behavior: "smooth" });
+            const ripple = document.createElement("span");
+            ripple.style.position = "absolute";
+            ripple.style.borderRadius = "50%";
+            ripple.style.background = "rgba(255, 255, 255, 0.6)";
+            ripple.style.transform = "scale(0)";
+            ripple.style.animation = "ripple 0.6s linear";
+            const rect = link.getBoundingClientRect();
+            ripple.style.left = `${e.clientX - rect.left}px`;
+            ripple.style.top = `${e.clientY - rect.top}px`;
+            link.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 600);
+          }
+        }
+      });
+    });
 
     const subDropdownItems = item.querySelectorAll(".has-sub-dropdown");
     subDropdownItems.forEach((subItem) => {

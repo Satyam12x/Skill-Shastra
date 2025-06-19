@@ -677,39 +677,6 @@ body {
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .nav-menu {
-        position: fixed;
-        top: 80px;
-        left: 0;
-        width: 100%;
-        background: white;
-        flex-direction: column;
-        gap: 0;
-        padding: 2rem;
-        transform: translateY(-100%);
-        opacity: 0;
-        visibility: hidden;
-        transition: all 0.3s ease;
-        border-top: 1px solid rgba(124, 58, 237, 0.1);
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    }
-
-    .nav-menu.active {
-        transform: translateY(0);
-        opacity: 1;
-        visibility: visible;
-    }
-
-    .dropdown {
-        position: static;
-        box-shadow: none;
-        border: none;
-        padding: 0.5rem 0;
-    }
-
-    .hamburger {
-        display: flex;
-    }
 
     .courses-hero {
         padding: 4rem 1rem 3rem;

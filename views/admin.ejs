@@ -1,423 +1,660 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Skillshastra - Admin Panel</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Skill Shastra - Admin Panel</title>
+    <meta
+      name="description"
+      content="Manage users, enrollments, feedback, and analytics."
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="stylesheet" href="/css/footer.css" />
+    <link rel="stylesheet" href="/css/sidebar.css" />
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(135deg, #f8f9ff 0%, #e8f0ff 100%);
+        color: #1f2937;
+        margin-left: 280px;
+        transition: margin-left 0.3s ease;
+        position: relative;
+      }
+      .main-content.full {
+        margin-left: 0;
+      }
+      .admin-section {
+        padding: 4rem 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .section-title {
+        font-size: 1.8rem;
+        color: #7c3aed;
+        margin-bottom: 1.5rem;
+        font-weight: 600;
+        position: relative;
+      }
+      .section-title::after {
+        content: "";
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 60px;
+        height: 4px;
+        background: linear-gradient(90deg, #7c3aed, #a855f7);
+        border-radius: 2px;
+      }
+      .admin-card {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        margin-bottom: 2rem;
+      }
+      .users-grid,
+      .feedback-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+      }
+      .user-card,
+      .feedback-card {
+        background: #f8f9ff;
+        border-radius: 12px;
+        padding: 1.5rem;
+        border: 1px solid #e5e7eb;
+        transition: all 0.3s ease;
+      }
+      .user-card:hover,
+      .feedback-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(124, 58, 237, 0.2);
+      }
+      .user-card img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 0.5rem;
+      }
+      .user-card h4,
+      .feedback-card h4 {
+        font-size: 1.2rem;
+        color: #1f2937;
+        margin-bottom: 0.5rem;
+      }
+      .user-card p,
+      .feedback-card p {
+        color: #6b7280;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+      }
+      .status-pending {
+        color: #f59e0b;
+        font-weight: 600;
+      }
+      .status-approved {
+        color: #10b981;
+        font-weight: 600;
+      }
+      .status-rejected {
+        color: #ef4444;
+        font-weight: 600;
+      }
+      .action-btn {
+        background: linear-gradient(135deg, #7c3aed, #a855f7);
+        color: white;
+        padding: 0.6rem 1.2rem;
+        border: none;
+        border-radius: 10px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        margin-right: 0.5rem;
+        margin-bottom: 0.5rem;
+        transition: all 0.3s ease;
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+      }
+      .action-btn.reject {
+        background: #ef4444;
+      }
+      .action-btn.details {
+        background: #3b82f6;
+      }
+      .action-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(124, 58, 237, 0.3);
+      }
+      .action-btn.reject:hover {
+        box-shadow: 0 5px 15px rgba(239, 68, 68, 0.3);
+      }
+      .action-btn.details:hover {
+        box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
+      }
+      .action-btn.disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+      }
+      .analytics-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1.5rem;
+      }
+      .analytics-card {
+        background: #f8f9ff;
+        border-radius: 12px;
+        padding: 1.5rem;
+        text-align: center;
+        border: 1px solid #e5e7eb;
+      }
+      .analytics-card i {
+        font-size: 2rem;
+        color: #7c3aed;
+        margin-bottom: 0.5rem;
+      }
+      .analytics-card h3 {
+        font-size: 1.5rem;
+        color: #1f2937;
+        margin-bottom: 0.5rem;
+      }
+      .analytics-card p {
+        color: #6b7280;
+        font-size: 0.9rem;
+      }
+      .placeholder-card {
+        background: #f8f9ff;
+        border-radius: 12px;
+        padding: 2rem;
+        text-align: center;
+        border: 1px solid #e5e7eb;
+        opacity: 0.7;
+      }
+      .placeholder-card p {
+        color: #6b7280;
+        font-size: 1rem;
+        font-weight: 500;
+      }
+      .rating-stars {
+        color: #f59e0b;
+        margin-bottom: 0.5rem;
+      }
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 2000;
+        align-items: center;
+        justify-content: center;
+      }
+      .modal-content {
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 2rem;
+        max-width: 600px;
+        width: 90%;
+        max-height: 80vh;
+        overflow-y: auto;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        position: relative;
+      }
+      .modal-content h3 {
+        font-size: 1.5rem;
+        color: #7c3aed;
+        margin-bottom: 1rem;
+      }
+      .modal-content p {
+        font-size: 0.9rem;
+        color: #1f2937;
+        margin-bottom: 0.5rem;
+      }
+      .modal-content img {
+        max-width: 100%;
+        border-radius: 8px;
+        margin: 1rem 0;
+      }
+      .modal-content a {
+        color: #7c3aed;
+        text-decoration: underline;
+      }
+      .close-btn {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        font-size: 1.5rem;
+        color: #6b7280;
+        cursor: pointer;
+        background: none;
+        border: none;
+      }
+      .close-btn:hover {
+        color: #1f2937;
+      }
+      .spinner {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #7c3aed;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        animation: spin 1s linear infinite;
+        margin-left: 0.5rem;
+      }
+      .modal-spinner {
+        display: none;
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #7c3aed;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        animation: spin 1s linear infinite;
+        margin: 1rem auto;
+      }
+      .loading-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.8);
+        z-index: 3000;
+        align-items: center;
+        justify-content: center;
+      }
+      .loading-overlay .spinner {
+        width: 40px;
+        height: 40px;
+      }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
         }
-
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      @media (max-width: 768px) {
         body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            position: relative;
+          margin-left: 0;
         }
-
-        .gradient-text {
-            background: linear-gradient(135deg, #7c3aed, #a855f7, #ec4899);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: gradient-shift 3s ease-in-out infinite;
+        .admin-section {
+          padding: 3rem 1rem;
         }
-
-        @keyframes gradient-shift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
+        .users-grid,
+        .feedback-grid,
+        .analytics-grid {
+          grid-template-columns: 1fr;
         }
-
-        .hover-grid {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50"><path d="M0 25H50M25 0V50" stroke="rgba(0,0,0,0.05)" stroke-width="1"/></svg>');
-            opacity: 0.3;
-            pointer-events: none;
-            z-index: 1;
+        .modal-content {
+          width: 95%;
+          padding: 1.5rem;
         }
-
-        .admin-container {
-            position: relative;
-            width: 100%;
-            max-width: 1200px;
-            display: flex;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            z-index: 2;
-            animation: slideIn 0.5s ease-out forwards;
-        }
-
-        @keyframes slideIn {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: none;
-            border: none;
-            color: #666;
-            font-size: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            z-index: 3;
-        }
-
-        .close-btn:hover {
-            background: linear-gradient(135deg, #7c3aed, #a855f7, #ec4899);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            transform: rotate(90deg);
-        }
-
-        .admin-content, .admin-visual {
-            width: 50%;
-            padding: 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .admin-visual {
-            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3a 50%, #2d1b69 100%);
-            color: white;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .admin-visual .code-window {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-            padding: 20px;
-            margin-top: 20px;
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
-        }
-
-        .admin-visual .window-header {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 15px;
-        }
-
-        .window-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
-
-        .dot-red { background: #ff5f56; }
-        .dot-yellow { background: #ffbd2e; }
-        .dot-green { background: #27c93f; }
-
-        .code-line { color: #e0e0e0; margin-bottom: 5px; }
-        .code-line span { color: #ff79c6; }
-
-        .admin-content h2 { color: #333; font-size: 28px; margin-bottom: 10px; }
-        .admin-content p { color: #666; font-size: 14px; margin-bottom: 20px; }
-
-        .logout-btn {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(135deg, #7c3aed, #a855f7);
-            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.3);
-            border: none;
-            border-radius: 8px;
-            color: white;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-bottom: 20px;
-        }
-
-        .logout-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(124, 58, 237, 0.4);
-        }
-
-        .logout-btn i { margin-right: 8px; }
-
-        .users-table, .enrollments-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 8px;
-            overflow: hidden;
-            margin-bottom: 20px;
-        }
-
-        .users-table th, .users-table td,
-        .enrollments-table th, .enrollments-table td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-            color: #333;
-        }
-
-        .users-table th, .enrollments-table th {
-            background: rgba(124, 58, 237, 0.1);
-            color: #7c3aed;
-            font-weight: 600;
-        }
-
-        .users-table tr:hover, .enrollments-table tr:hover {
-            background: rgba(124, 58, 237, 0.05);
-        }
-
-        .payment-proof-link {
-            color: #7c3aed;
-            text-decoration: none;
-        }
-
-        .payment-proof-link:hover {
-            text-decoration: underline;
-        }
-
-        .error-message, .success-message {
-            font-size: 13px;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-
-        .error-message { background: #fee2e2; color: #dc2626; }
-        .success-message { background: #d1fae5; color: #059669; }
-
-        .floating-elements {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-
-        .float-element {
-            position: absolute;
-            color: rgba(0, 0, 0, 0.1);
-            font-size: 24px;
-            animation: float 10s infinite ease-in-out;
-        }
-
-        .float-element:nth-child(1) { top: 10%; left: 20%; }
-        .float-element:nth-child(2) { top: 60%; right: 15%; }
-        .float-element:nth-child(3) { bottom: 20%; left: 30%; }
-        .float-element:nth-child(4) { top: 30%; right: 25%; }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
-
-        @media (max-width: 768px) {
-            .admin-container {
-                flex-direction: column;
-                max-width: 90%;
-                margin: 20px;
-            }
-
-            .admin-content, .admin-visual {
-                width: 100%;
-                padding: 20px;
-            }
-
-            .admin-visual { display: none; }
-
-            .users-table, .enrollments-table {
-                font-size: 12px;
-            }
-
-            .users-table th, .users-table td,
-            .enrollments-table th, .enrollments-table td {
-                padding: 8px;
-            }
-        }
+      }
     </style>
-</head>
-<body>
-    <div class="hover-grid"></div>
-    <div class="admin-container">
-        <button class="close-btn" onclick="logout()"><i class="fas fa-times"></i></button>
-        <div class="admin-content">
-            <h2>Admin Panel - <span class="gradient-text">Skillshastra</span></h2>
-            <p>Manage users and oversee platform activities.</p>
-            <div id="errorMessage" class="error-message" style="display: none;"></div>
-            <div id="successMessage" class="success-message" style="display: none;"></div>
-            <button class="logout-btn" onclick="logout()">
-                <i class="fas fa-sign-out-alt"></i> Logout
-            </button>
-            <h3>Registered Users</h3>
-            <table class="users-table">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                    </tr>
-                </thead>
-                <tbody id="usersTableBody"></tbody>
-            </table>
-            <h3>Enrollments</h3>
-            <table class="enrollments-table">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Course</th>
-                        <th>Transaction ID</th>
-                        <th>Payment Date</th>
-                        <th>Payment Proof</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody id="enrollmentsTableBody"></tbody>
-            </table>
-        </div>
-        <div class="admin-visual">
-            <h2 class="gradient-text">Manage with Precision</h2>
-            <p>Control user access and monitor platform growth with ease.</p>
-            <div class="code-window">
-                <div class="window-header">
-                    <div class="window-dot dot-red"></div>
-                    <div class="window-dot dot-yellow"></div>
-                    <div class="window-dot dot-green"></div>
-                </div>
-                <div class="code-content">
-                    <div class="code-line"><span>const</span> admin = {</div>
-                    <div class="code-line">  role: <span>'Admin'</span>,</div>
-                    <div class="code-line">  access: <span>['Users', 'Courses', 'Analytics']</span></div>
-                    <div class="code-line">};</div>
-                    <div class="code-line">console.log(<span>'Admin panel ready! 🚀'</span>);</div>
-                </div>
-            </div>
-            <div class="floating-elements">
-                <div class="float-element code-bracket">{</div>
-                <div class="float-element code-bracket">}</div>
-                <div class="float-element code-symbol"></></div>
-                <div class="float-element code-word">Admin</div>
-            </div>
-        </div>
+  </head>
+  <body>
+    <%- include('partials/sidebar') %>
+    <div class="loading-overlay" id="loading-overlay">
+      <div class="spinner"></div>
     </div>
-
+    <main class="main-content" id="main-content">
+      <section class="admin-section">
+        <% if (user && user.role === 'admin') { %>
+        <h1 class="section-title">Admin Panel</h1>
+        <div class="admin-card">
+          <h2 class="section-title">Analytics Dashboard</h2>
+          <div class="analytics-grid" id="analytics-grid">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+        <div class="admin-card">
+          <h2 class="section-title">Manage Users & Enrollments</h2>
+          <div class="users-grid" id="users-grid">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+        <div class="admin-card">
+          <h2 class="section-title">User Feedback</h2>
+          <div class="feedback-grid" id="feedback-grid">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+        <div class="admin-card">
+          <h2 class="section-title">Messages</h2>
+          <div class="placeholder-card">
+            <p>Messaging feature is under development.</p>
+          </div>
+        </div>
+        <div class="admin-card">
+          <h2 class="section-title">Post Announcements</h2>
+          <div class="placeholder-card">
+            <p>Content posting feature is under development.</p>
+          </div>
+        </div>
+        <!-- Modal for Enrollment Details -->
+        <div class="modal" id="enrollment-modal">
+          <div class="modal-content">
+            <button class="close-btn" onclick="closeModal()">
+              <i class="fas fa-times"></i>
+            </button>
+            <h3>Enrollment Details</h3>
+            <div id="modal-body">
+              <div class="modal-spinner" id="modal-spinner"></div>
+            </div>
+          </div>
+        </div>
+        <% } else { %>
+        <p>
+          You do not have permission to access this page.
+          <a href="/signup?redirect=/dashboard">Log in</a> as an admin.
+        </p>
+        <% } %>
+      </section>
+      <%- include('partials/footer') %>
+    </main>
     <script>
-        const API_URL = '/api';
+      document.addEventListener("DOMContentLoaded", async () => {
+        const user = JSON.parse(localStorage.getItem("user") || "{}");
+        if (!user.email || user.role !== "admin") {
+          alert("Access denied. Admin login required.");
+          window.location.href = "/signup?redirect=/dashboard";
+          return;
+        }
 
-        async function loadUsers() {
-            try {
-                const response = await fetch(`${API_URL}/auth/admin-panel`, {
-                    method: 'GET',
-                    credentials: 'include'
-                });
-                const data = await response.json();
-                if (response.ok) {
-                    const tbody = document.getElementById('usersTableBody');
-                    tbody.innerHTML = '';
-                    data.users.forEach(user => {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${user.name}</td>
-                            <td>${user.email}</td>
-                            <td>${user.role}</td>
-                        `;
-                        tbody.appendChild(row);
-                    });
-                    showSuccess(data.message);
-                } else {
-                    showError(data.message);
-                    setTimeout(() => {
-                        window.location.href = '/signup';
-                    }, 1000);
-                }
-            } catch (error) {
-                showError('Failed to load users');
-                console.error('Error:', error);
+        const loadingOverlay = document.getElementById("loading-overlay");
+        if (loadingOverlay) loadingOverlay.style.display = "flex";
+
+        // Update main content margin
+        const sidebar = document.querySelector(".sidebar");
+        const mainContent = document.querySelector(".main-content");
+        if (sidebar && mainContent) {
+          if (sidebar.classList.contains("hidden")) {
+            mainContent.classList.add("full");
+          }
+          sidebar.addEventListener("transitionend", () => {
+            mainContent.classList.toggle(
+              "full",
+              sidebar.classList.contains("hidden")
+            );
+          });
+        }
+
+        try {
+          // Fetch all data concurrently
+          const [analyticsRes, usersRes, feedbackRes] = await Promise.all([
+            fetch("/api/admin/analytics", { credentials: "include" }),
+            fetch("/api/admin/users", { credentials: "include" }),
+            fetch("/api/admin/feedback", { credentials: "include" }),
+          ]);
+
+          // Analytics
+          if (!analyticsRes.ok) throw new Error("Failed to load analytics");
+          const { analytics } = await analyticsRes.json();
+          const analyticsGrid = document.getElementById("analytics-grid");
+          if (analyticsGrid) {
+            analyticsGrid.innerHTML = `
+            <div class="analytics-card">
+              <i class="fas fa-users"></i>
+              <h3>${analytics.totalUsers}</h3>
+              <p>Total Users</p>
+            </div>
+            <div class="analytics-card">
+              <i class="fas fa-book"></i>
+              <h3>${analytics.totalEnrollments}</h3>
+              <p>Total Enrollments</p>
+            </div>
+            <div class="analytics-card">
+              <i class="fas fa-check-circle"></i>
+              <h3>${analytics.enrollmentsByStatus.approved || 0}</h3>
+              <p>Approved Enrollments</p>
+            </div>
+            <div class="analytics-card">
+              <i class="fas fa-star"></i>
+              <h3>${analytics.avgFeedbackRating.toFixed(1)}</h3>
+              <p>Average Feedback Rating</p>
+            </div>
+          `;
+          }
+
+          // Users and enrollments
+          if (!usersRes.ok) {
+            if (usersRes.status === 401) {
+              localStorage.removeItem("user");
+              window.location.href = "/signup?redirect=/admin";
             }
-        }
+            throw new Error("Failed to load users");
+          }
+          const { users } = await usersRes.json();
+          const usersGrid = document.getElementById("users-grid");
+          if (usersGrid) {
+            usersGrid.innerHTML = users.length
+              ? users
+                  .map(
+                    (user) => `
+            <div class="user-card">
+              <img src="${
+                user.profileImage || "/images/default-user.png"
+              }" alt="${user.name}">
+              <h4>${user.name}</h4>
+              <p>Email: ${user.email}</p>
+              <p>Courses:</p>
+              ${
+                user.enrollments.length
+                  ? user.enrollments
+                      .map(
+                        (e) => `
+                <div>
+                  ${e.course} (<span class="status-${e.status.toLowerCase()}">${
+                          e.status
+                        }</span>)
+                  <div>
+                    <button class="action-btn" onclick="updateEnrollment('${
+                      e._id
+                    }', 'approved', this)">
+                      Approve
+                      <span class="spinner" style="display: none;"></span>
+                    </button>
+                    <button class="action-btn reject" onclick="updateEnrollment('${
+                      e._id
+                    }', 'rejected', this)">
+                      Reject
+                      <span class="spinner" style="display: none;"></span>
+                    </button>
+                    <button class="action-btn details" onclick="showEnrollmentDetails('${
+                      e._id
+                    }')">Details</button>
+                  </div>
+                </div>
+              `
+                      )
+                      .join("")
+                  : "<p>No enrollments</p>"
+              }
+            </div>
+          `
+                  )
+                  .join("")
+              : "<p>No users found.</p>";
+          }
 
-        async function loadEnrollments() {
-            try {
-                const response = await fetch(`${API_URL}/enrollments`, {
-                    method: 'GET',
-                    credentials: 'include'
-                });
-                const data = await response.json();
-                if (response.ok) {
-                    const tbody = document.getElementById('enrollmentsTableBody');
-                    tbody.innerHTML = '';
-                    data.enrollments.forEach(enrollment => {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${enrollment.fullName}</td>
-                            <td>${enrollment.email}</td>
-                            <td>${enrollment.course}</td>
-                            <td>${enrollment.transactionId}</td>
-                            <td>${new Date(enrollment.paymentDate).toLocaleDateString()}</td>
-                            <td><a href="/uploads/${enrollment.paymentProof.split('uploads/')[1]}" class="payment-proof-link" target="_blank">View Proof</a></td>
-                            <td>${enrollment.status}</td>
-                        `;
-                        tbody.appendChild(row);
-                    });
-                    showSuccess('Enrollments loaded successfully');
-                } else {
-                    showError(data.message);
-                }
-            } catch (error) {
-                showError('Failed to load enrollments');
-                console.error('Error:', error);
+          // Feedback
+          if (!feedbackRes.ok) throw new Error("Failed to load feedback");
+          const { feedback } = await feedbackRes.json();
+          const feedbackGrid = document.getElementById("feedback-grid");
+          if (feedbackGrid) {
+            feedbackGrid.innerHTML = feedback.length
+              ? feedback
+                  .map(
+                    (f) => `
+            <div class="feedback-card">
+              <h4>${f.userName}</h4>
+              <p>Email: ${f.userEmail}</p>
+              <div class="rating-stars">
+                ${"★".repeat(f.rating)}${"☆".repeat(5 - f.rating)}
+              </div>
+              <p>${f.text}</p>
+              <p><small>${new Date(f.createdAt).toLocaleString()}</small></p>
+            </div>
+          `
+                  )
+                  .join("")
+              : "<p>No feedback received.</p>";
+          }
+        } catch (error) {
+          console.error("Error loading data:", error);
+          alert("Failed to load data. Check console for details.");
+        } finally {
+          if (loadingOverlay) loadingOverlay.style.display = "none";
+        }
+      });
+
+      async function updateEnrollment(enrollmentId, status, button) {
+        try {
+          const spinner = button.querySelector(".spinner");
+          if (spinner) spinner.style.display = "inline-block";
+          button.classList.add("disabled");
+          button.disabled = true;
+
+          const response = await fetch(
+            `/api/admin/enrollments/${enrollmentId}`,
+            {
+              method: "PATCH",
+              credentials: "include",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ status }),
             }
+          );
+          const result = await response.json();
+          if (response.ok) {
+            alert(`Enrollment ${status} successfully!`);
+            window.location.reload();
+          } else {
+            alert(result.message || `Error updating enrollment to ${status}.`);
+          }
+        } catch (error) {
+          console.error("Error updating enrollment:", error);
+          alert("Error updating enrollment.");
+        } finally {
+          if (button) {
+            const spinner = button.querySelector(".spinner");
+            if (spinner) spinner.style.display = "none";
+            button.classList.remove("disabled");
+            button.disabled = false;
+          }
+        }
+      }
+
+      async function showEnrollmentDetails(enrollmentId) {
+        const modal = document.getElementById("enrollment-modal");
+        const modalBody = document.getElementById("modal-body");
+        const spinner = document.getElementById("modal-spinner");
+
+        if (!modal || !modalBody || !spinner) {
+          console.error("Modal elements not found");
+          alert("Error: Modal not found. Please refresh the page.");
+          return;
         }
 
-        function logout() {
-            fetch(`${API_URL}/auth/logout`, {
-                method: 'POST',
-                credentials: 'include'
-            }).then(() => {
-                localStorage.removeItem('user');
-                window.location.href = '/signup';
-            }).catch(error => {
-                console.error('Logout error:', error);
-                showError('Failed to logout');
-            });
-        }
+        try {
+          spinner.style.display = "block";
+          modalBody.innerHTML = '<div class="modal-spinner"></div>';
+          modal.style.display = "flex";
 
-        function showError(message) {
-            const errorDiv = document.getElementById('errorMessage');
-            errorDiv.textContent = message;
-            errorDiv.style.display = 'block';
-            document.getElementById('successMessage').style.display = 'none';
-        }
+          const response = await fetch(
+            `/api/admin/enrollments/${enrollmentId}`,
+            {
+              method: "GET",
+              credentials: "include",
+            }
+          );
+          if (!response.ok) {
+            throw new Error(
+              `Failed to fetch enrollment: ${response.statusText}`
+            );
+          }
+          const { enrollment } = await response.json();
 
-        function showSuccess(message) {
-            const successDiv = document.getElementById('successMessage');
-            successDiv.textContent = message;
-            successDiv.style.display = 'block';
-            document.getElementById('errorMessage').style.display = 'none';
-        }
+          console.log("Enrollment data:", enrollment);
 
-        window.onload = () => {
-            loadUsers();
-            loadEnrollments();
-        };
+          const isImage = enrollment.paymentProof.match(/\.(png|jpg|jpeg)$/i);
+          const paymentProofUrl = `/${enrollment.paymentProof}`;
+          console.log("Payment proof URL:", paymentProofUrl);
+
+          modalBody.innerHTML = `
+          <p><strong>Course:</strong> ${enrollment.course}</p>
+          <p><strong>Full Name:</strong> ${enrollment.fullName}</p>
+          <p><strong>Email:</strong> ${enrollment.email}</p>
+          <p><strong>Phone:</strong> ${enrollment.phone}</p>
+          <p><strong>Age:</strong> ${enrollment.age}</p>
+          <p><strong>Gender:</strong> ${enrollment.gender}</p>
+          <p><strong>Education:</strong> ${enrollment.education}</p>
+          <p><strong>Institution:</strong> ${enrollment.institution}</p>
+          <p><strong>Guardian Name:</strong> ${enrollment.guardianName}</p>
+          <p><strong>Guardian Phone:</strong> ${enrollment.guardianPhone}</p>
+          <p><strong>Country:</strong> ${enrollment.country}</p>
+          <p><strong>Address:</strong> ${enrollment.address}</p>
+          <p><strong>Transaction ID:</strong> ${enrollment.transactionId}</p>
+          <p><strong>Payment Date:</strong> ${new Date(
+            enrollment.paymentDate
+          ).toLocaleString()}</p>
+          <p><strong>Status:</strong> <span class="status-${enrollment.status.toLowerCase()}">${
+            enrollment.status
+          }</span></p>
+          <p><strong>Payment Proof:</strong></p>
+          ${
+            isImage
+              ? `<img src="${paymentProofUrl}" alt="Payment Proof" onerror="this.src='/images/default-proof.png'; console.error('Failed to load image:', '${paymentProofUrl}')">`
+              : `<a href="${paymentProofUrl}" target="_blank">View PDF</a>`
+          }
+        `;
+        } catch (error) {
+          console.error("Error loading enrollment details:", error);
+          modalBody.innerHTML =
+            '<p style="color: #ff0000;">Failed to load enrollment details. Please try again.</p>';
+          alert(
+            "Failed to load enrollment details. Check console for details."
+          );
+        } finally {
+          spinner.style.display = "none";
+        }
+      }
+
+      function closeModal() {
+        const modal = document.getElementById("enrollment-modal");
+        const spinner = document.getElementById("modal-spinner");
+        if (modal) modal.style.display = "none";
+        if (spinner) spinner.style.display = "none";
+      }
+
+      // Close modal when clicking outside
+      document
+        .getElementById("enrollment-modal")
+        ?.addEventListener("click", (e) => {
+          if (e.target === document.getElementById("enrollment-modal")) {
+            closeModal();
+          }
+        });
     </script>
-</body>
+    <script src="/js/sidebar.js"></script>
+  </body>
 </html>

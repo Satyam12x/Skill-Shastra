@@ -1,325 +1,306 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Skillshastra - Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .gradient-text {
-            background: linear-gradient(135deg, #7c3aed, #a855f7, #ec4899);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: gradient-shift 3s ease-in-out infinite;
-        }
-
-        @keyframes gradient-shift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        .hover-grid {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50"><path d="M0 25H50M25 0V50" stroke="rgba(0,0,0,0.05)" stroke-width="1"/></svg>');
-            opacity: 0.3;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .dashboard-container {
-            position: relative;
-            width: 100%;
-            max-width: 900px;
-            display: flex;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            z-index: 2;
-            animation: slideIn 0.5s ease-out forwards;
-        }
-
-        @keyframes slideIn {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: none;
-            border: none;
-            color: #666;
-            font-size: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            z-index: 3;
-        }
-
-        .close-btn:hover {
-            background: linear-gradient(135deg, #7c3aed, #a855f7, #ec4899);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            transform: rotate(90deg);
-        }
-
-        .dashboard-content, .dashboard-visual {
-            width: 50%;
-            padding: 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .dashboard-visual {
-            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3a 50%, #2d1b69 100%);
-            color: white;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .dashboard-visual .code-window {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-            padding: 20px;
-            margin-top: 20px;
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
-        }
-
-        .dashboard-visual .window-header {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 15px;
-        }
-
-        .window-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
-
-        .dot-red { background: #ff5f56; }
-        .dot-yellow { background: #ffbd2e; }
-        .dot-green { background: #27c93f; }
-
-        .code-line { color: #e0e0e0; margin-bottom: 5px; }
-        .code-line span { color: #ff79c6; }
-
-        .dashboard-content h2 { color: #333; font-size: 28px; margin-bottom: 10px; }
-        .dashboard-content p { color: #666; font-size: 14px; margin-bottom: 20px; }
-
-        .logout-btn {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(135deg, #7c3aed, #a855f7);
-            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.3);
-            border: none;
-            border-radius: 8px;
-            color: white;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-bottom: 20px;
-        }
-
-        .logout-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(124, 58, 237, 0.4);
-        }
-
-        .logout-btn i { margin-right: 8px; }
-
-        .user-info {
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 8px;
-            padding: 20px;
-        }
-
-        .user-info p {
-            margin-bottom: 10px;
-            color: #333;
-            font-size: 14px;
-        }
-
-        .user-info span {
-            color: #7c3aed;
-            font-weight: 500;
-        }
-
-        .error-message, .success-message {
-            font-size: 13px;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-
-        .error-message { background: #fee2e2; color: #dc2626; }
-        .success-message { background: #d1fae5; color: #059669; }
-
-        .floating-elements {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-
-        .float-element {
-            position: absolute;
-            color: rgba(0, 0, 0, 0.1);
-            font-size: 24px;
-            animation: float 10s infinite ease-in-out;
-        }
-
-        .float-element:nth-child(1) { top: 10%; left: 20%; }
-        .float-element:nth-child(2) { top: 60%; right: 15%; }
-        .float-element:nth-child(3) { bottom: 20%; left: 30%; }
-        .float-element:nth-child(4) { top: 30%; right: 25%; }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
-
-        @media (max-width: 768px) {
-            .dashboard-container {
-                flex-direction: column;
-                max-width: 90%;
-                margin: 20px;
-            }
-
-            .dashboard-content, .dashboard-visual {
-                width: 100%;
-                padding: 20px;
-            }
-
-            .dashboard-visual { display: none; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skill Shastra - Dashboard</title>
+  <meta name="description" content="Manage your Skill Shastra courses, track progress, and explore resources.">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/sidebar.css">
+  <link rel="stylesheet" href="/css/footer.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f8f9ff 0%, #e8f0ff 100%);
+      color: #1f2937;
+      margin-left: 280px;
+      transition: margin-left 0.3s ease;
+    }
+    .main-content.full {
+      margin-left: 0;
+    }
+    .dashboard-section {
+      padding: 4rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .welcome-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .welcome-header img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .welcome-header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #7c3aed;
+    }
+    .section-title {
+      font-size: 1.8rem;
+      color: #7c3aed;
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+      position: relative;
+    }
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 60px;
+      height: 4px;
+      background: linear-gradient(90deg, #7c3aed, #a855f7);
+      border-radius: 2px;
+    }
+    .courses-card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    .courses-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .course-card {
+      background: #f8f9ff;
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: all 0.3s ease;
+      border: 1px solid #e5e7eb;
+    }
+    .course-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(124, 58, 237, 0.2);
+    }
+    .course-card h4 {
+      font-size: 1.2rem;
+      color: #1f2937;
+      margin-bottom: 0.5rem;
+    }
+    .course-card p {
+      color: #6b7280;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+    .course-card .progress-bar {
+      height: 6px;
+      background: #e5e7eb;
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+    .course-card .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #7c3aed, #a855f7);
+      transition: width 0.3s ease;
+    }
+    .course-card .status-pending {
+      color: #f59e0b;
+      font-weight: 600;
+    }
+    .course-card .status-approved {
+      color: #10b981;
+      font-weight: 600;
+    }
+    .course-card .course-btn {
+      background: linear-gradient(135deg, #7c3aed, #a855f7);
+      color: white;
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.3s ease;
+    }
+    .course-card .course-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(124, 58, 237, 0.3);
+    }
+    .info-card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .info-item {
+      flex: 1;
+      min-width: 200px;
+      text-align: center;
+    }
+    .info-item i {
+      font-size: 2rem;
+      color: #7c3aed;
+      margin-bottom: 0.5rem;
+    }
+    .info-item h3 {
+      font-size: 1.2rem;
+      color: #1f2937;
+      margin-bottom: 0.5rem;
+    }
+    .info-item p {
+      color: #6b7280;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 768px) {
+      body {
+        margin-left: 0;
+      }
+      .dashboard-section {
+        padding: 3rem 1rem;
+      }
+      .welcome-header h1 {
+        font-size: 1.5rem;
+      }
+      .courses-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="hover-grid"></div>
-    <div class="dashboard-container">
-        <button class="close-btn" onclick="logout()"><i class="fas fa-times"></i></button>
-        <div class="dashboard-content">
-            <h2>Dashboard - <span class="gradient-text">Skillshastra</span></h2>
-            <p>Welcome back! Explore your learning journey.</p>
-            <div id="errorMessage" class="error-message" style="display: none;"></div>
-            <div id="successMessage" class="success-message" style="display: none;"></div>
-            <button class="logout-btn" onclick="logout()">
-                <i class="fas fa-sign-out-alt"></i> Logout
-            </button>
-            <div class="user-info" id="userInfo">
-                <p>Name: <span id="userName"></span></p>
-                <p>Email: <span id="userEmail"></span></p>
-                <p>Role: <span id="userRole"></span></p>
-                <p>Signup OTP: <span id="userOtp"></span></p>
-            </div>
+  <%- include('./partials/sidebar') %>
+  <main class="main-content" id="main-content">
+    <section class="dashboard-section">
+      <% if (user) { %>
+        <div class="welcome-header">
+          <img src="<%= user.profileImage || '/images/default-avatar.jpg' %>" alt="User Avatar">
+          <h1>Welcome, <%= user.name %>!</h1>
         </div>
-        <div class="dashboard-visual">
-            <h2 class="gradient-text">Your Learning Hub</h2>
-            <p>Track progress and master new skills with ease.</p>
-            <div class="code-window">
-                <div class="window-header">
-                    <div class="window-dot dot-red"></div>
-                    <div class="window-dot dot-yellow"></div>
-                    <div class="window-dot dot-green"></div>
-                </div>
-                <div class="code-content">
-                    <div class="code-line"><span>const</span> dashboard = {</div>
-                    <div class="code-line">  user: <span>'You'</span>,</div>
-                    <div class="code-line">  progress: <span>['Courses', 'Skills']</span></div>
-                    <div class="code-line">};</div>
-                    <div class="code-line">console.log(<span>'Learning in progress! 🚀'</span>);</div>
-                </div>
-            </div>
-            <div class="floating-elements">
-                <div class="float-element code-bracket">{</div>
-                <div class="float-element code-bracket">}</div>
-                <div class="float-element code-symbol"></></div>
-                <div class="float-element code-word">Skills</div>
-            </div>
+        <div class="info-card">
+          <div class="info-item">
+            <i class="fas fa-book"></i>
+            <h3>Active Courses</h3>
+            <p id="active-courses">0</p>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-code"></i>
+            <h3>Challenges Completed</h3>
+            <p id="challenges">0</p>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-envelope"></i>
+            <h3>New Messages</h3>
+            <p id="new-messages">0</p>
+          </div>
         </div>
-    </div>
+        <div class="courses-card">
+          <h2 class="section-title">Your Courses</h2>
+          <div class="courses-grid" id="purchased-courses">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+        <div class="courses-card">
+          <h2 class="section-title">Recommended Courses</h2>
+          <div class="courses-grid" id="recommended-courses">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+      <% } else { %>
+        <p>Please <a href="/signup?redirect=/dashboard">log in</a> to access the dashboard.</p>
+      <% } %>
+    </section>
+    <%- include('./partials/footer') %>
+  </main>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      if (!user.name || !user.email) {
+        alert('Please log in to access the dashboard.');
+        window.location.href = '/signup?redirect=/dashboard';
+        return;
+      }
 
-    <script>
-        const API_URL = 'http://localhost:5000/api/auth';
-
-        function showError(message) {
-            const errorDiv = document.getElementById('errorMessage');
-            errorDiv.textContent = message;
-            errorDiv.style.display = 'block';
-            document.getElementById('successMessage').style.display = 'none';
+      // Update main content margin
+      const sidebar = document.querySelector('.sidebar');
+      const mainContent = document.querySelector('.main-content');
+      if (sidebar && mainContent) {
+        if (sidebar.classList.contains('hidden')) {
+          mainContent.classList.add('full');
         }
+        sidebar.addEventListener('transitionend', () => {
+          mainContent.classList.toggle('full', sidebar.classList.contains('hidden'));
+        });
+      }
 
-        function showSuccess(message) {
-            const successDiv = document.getElementById('successMessage');
-            successDiv.textContent = message;
-            successDiv.style.display = 'block';
-            document.getElementById('errorMessage').style.display = 'none';
-        }
-
-        function logout() {
-            localStorage.removeItem('token');
-            window.location.href = '/signup';
-        }
-
-        async function loadUserInfo() {
-            try {
-                const token = localStorage.getItem('token');
-                if (!token) {
-                    showError('Please log in to access the dashboard.');
-                    setTimeout(() => window.location.href = '/signup', 1000);
-                    return;
-                }
-
-                // Decode JWT to get user info (client-side for simplicity)
-                const payload = JSON.parse(atob(token.split('.')[1]));
-                const otp = localStorage.getItem('otp') || 'N/A';
-
-                document.getElementById('userName').textContent = payload.name || 'Unknown';
-                document.getElementById('userEmail').textContent = payload.email || 'Unknown';
-                document.getElementById('userRole').textContent = payload.role || 'User';
-                document.getElementById('userOtp').textContent = otp;
-
-                showSuccess('Welcome to your dashboard!');
-            } catch (error) {
-                showError('Failed to load user information.');
-                console.error('Error:', error);
-                setTimeout(() => window.location.href = '/signup', 1000);
+      // Fetch purchased courses
+      fetch('/api/enrollments', {
+        credentials: 'include'
+      })
+        .then(response => {
+          if (!response.ok) {
+            if (response.status === 401) {
+              localStorage.removeItem('user');
+              window.location.href = '/signup?redirect=/dashboard';
             }
-        }
+            throw new Error('Failed to load courses');
+          }
+          return response.json();
+        })
+        .then(data => {
+          const purchasedCourses = document.getElementById('purchased-courses');
+          const activeCourses = document.querySelector('#active-courses');
+          if (data.enrollments && data.enrollments.length) {
+            purchasedCourses.innerHTML = data.enrollments.map(enrollment => `
+              <div class="course-card">
+                <h4>${enrollment.course}</h4>
+                <p>Status: <span class="status-${enrollment.status.toLowerCase()}">${enrollment.status}</span></p>
+                <div class="progress-bar">
+                  <div class="progress-fill" style="width: ${Math.floor(Math.random() * 50)}%"></div>
+                </div>
+                <a href="/dashboard/courses?course=${enrollment.course}" class="course-btn">View Course</a>
+              </div>
+            `).join('');
+            activeCourses.textContent = data.enrollments.filter(e => e.status === 'approved').length;
+          } else {
+            purchasedCourses.innerHTML = '<p>No courses enrolled yet.</p>';
+            activeCourses.textContent = '0';
+          }
+        })
+        .catch(error => {
+          console.error('Error loading purchased courses:', error);
+          document.getElementById('purchased-courses').innerHTML = '<p>Failed to load courses.</p>';
+        });
 
-        window.onload = loadUserInfo;
-    </script>
+      // Mock recommended courses (replace with real API later)
+      const mockRecommendedCourses = [
+        { id: 1, title: 'Frontend Development', description: 'Learn React, HTML, CSS.', duration: '6 weeks' },
+        { id: 2, title: 'Digital Marketing', description: 'Master SEO, PPC, and social media.', duration: '4 weeks' },
+        { id: 3, title: 'Data Science', description: 'Explore Python, Pandas, and ML.', duration: '8 weeks' }
+      ];
+      const recommendedCourses = document.getElementById('recommended-courses');
+      recommendedCourses.innerHTML = mockRecommendedCourses.map(course => `
+        <div class="course-card">
+          <h4>${course.title}</h4>
+          <p>${course.description}</p>
+          <p>Duration: ${course.duration}</p>
+          <a href="/payment?course=${course.title}" class="course-btn">Enroll Now</a>
+        </div>
+      `).join('');
+    });
+  </script>
+  <script src="/js/sidebar.js"></script>
 </body>
 </html>

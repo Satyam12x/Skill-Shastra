@@ -15,6 +15,7 @@ dotenv.config();
 const app = express();
 
 // Ensure uploads directory exists
+const imagesDir = path.join(__dirname, "public/images");
 const uploadsDir = path.join(__dirname, "public/uploads");
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
@@ -28,6 +29,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/uploads", express.static(uploadsDir));
+app.use("/images", express.static(imagesDir));
 
 // MongoDB Connection
 const connectDB = async () => {
@@ -120,12 +122,53 @@ const enrollmentSchema = new mongoose.Schema({
 
 const Enrollment = mongoose.model("Enrollment", enrollmentSchema);
 
+// Feedback Schema
+const feedbackSchema = new mongoose.Schema({
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  userName: { type: String, required: true },
+  userEmail: { type: String, required: true },
+  rating: { type: Number, required: true, min: 1, max: 5 },
+  text: { type: String, required: true, maxlength: 500 },
+  createdAt: { type: Date, default: Date.now },
+});
+
+const Feedback = mongoose.model("Feedback", feedbackSchema);
+
+// Message Schema (Placeholder)
+const messageSchema = new mongoose.Schema({
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  userName: { type: String, required: true },
+  userEmail: { type: String, required: true },
+  content: { type: String, required: true, maxlength: 1000 },
+  createdAt: { type: Date, default: Date.now },
+});
+
+const Message = mongoose.model("Message", messageSchema);
+
+// Announcement Schema (Placeholder)
+const announcementSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  content: { type: String, required: true },
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  createdAt: { type: Date, default: Date.now },
+});
+
+const Announcement = mongoose.model("Announcement", announcementSchema);
+
 // Multer Setup
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, uploadsDir),
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname);
-    cb(null, `${Date.now()}-${file.originalname.replace(ext, "")}${ext}`);
+    const filename = `${Date.now()}-${file.originalname.replace(
+      ext,
+      ""
+    )}${ext}`;
+    cb(null, filename);
   },
 });
 
@@ -216,12 +259,13 @@ const protect = async (req, res, next) => {
   }
 };
 
-const admin = (req, res, next) => {
-  if (req.user && req.user.role === "admin") {
-    next();
-  } else {
-    res.status(403).json({ message: "Not authorized as admin" });
+const restrictToAdmin = async (req, res, next) => {
+  const adminEmails = process.env.ADMIN_EMAILS?.split(",") || [];
+  if (!req.user || !adminEmails.includes(req.user.email)) {
+    return res.status(403).json({ message: "Access denied. Admin only." });
   }
+  req.user.role = "admin"; // Ensure role is set for client-side checks
+  next();
 };
 
 // Helper Function
@@ -258,11 +302,11 @@ app.post("/api/auth/signup", async (req, res) => {
     await user.save();
 
     const otpEmail = `
-      <h2>Welcome to Skillshastra!</h2>
+      <h2>Welcome to Skill Shastra!</h2>
       <p>Your OTP for email verification is: <strong>${otp}</strong></p>
       <p>This OTP is valid for 10 minutes.</p>
     `;
-    await sendEmail(email, "Verify Your Skillshastra Account", otpEmail);
+    await sendEmail(email, "Verify Your Skill Shastra Account", otpEmail);
 
     res.status(201).json({ message: "OTP sent to your email", redirect });
   } catch (error) {
@@ -308,11 +352,11 @@ app.post("/api/auth/verify-otp", async (req, res) => {
     });
 
     const welcomeEmail = `
-      <h2>Welcome to Skillshastra, ${user.name}!</h2>
+      <h2>Welcome to Skill Shastra, ${user.name}!</h2>
       <p>Your account has been successfully verified.</p>
       <p>Start exploring our courses and master future-ready skills!</p>
     `;
-    await sendEmail(user.email, "Welcome to Skillshastra!", welcomeEmail);
+    await sendEmail(user.email, "Welcome to Skill Shastra!", welcomeEmail);
 
     res.status(200).json({
       user: {
@@ -429,7 +473,7 @@ app.post("/api/auth/forgot-password", async (req, res) => {
       <p>Your OTP for password reset is: <strong>${otp}</strong></p>
       <p>This OTP is valid for 10 minutes.</p>
     `;
-    await sendEmail(email, "Skillshastra Password Reset", resetEmail);
+    await sendEmail(email, "Skill Shastra Password Reset", resetEmail);
 
     res
       .status(200)
@@ -468,7 +512,8 @@ app.post("/api/auth/reset-password", async (req, res) => {
   }
 });
 
-app.get("/api/auth/admin-panel", protect, admin, async (req, res) => {
+// Admin Middleware (Replacing previous admin middleware)
+app.get("/api/auth/admin-panel", protect, restrictToAdmin, async (req, res) => {
   try {
     const users = await User.find().select("-password -otp -otpExpires");
     res.status(200).json({ message: "Welcome to Admin Panel", users });
@@ -477,6 +522,170 @@ app.get("/api/auth/admin-panel", protect, admin, async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+
+// Admin Routes
+app.get("/api/admin/users", protect, restrictToAdmin, async (req, res) => {
+  try {
+    const users = await User.find().select("name email profileImage").lean();
+    const enrollments = await Enrollment.find().lean();
+    const usersWithEnrollments = users.map((user) => ({
+      ...user,
+      enrollments: enrollments.filter(
+        (e) => e.userId.toString() === user._id.toString()
+      ),
+    }));
+    res.status(200).json({
+      message: "Users fetched successfully",
+      users: usersWithEnrollments,
+    });
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+app.patch(
+  "/api/admin/enrollments/:id",
+  protect,
+  restrictToAdmin,
+  async (req, res) => {
+    try {
+      const { status } = req.body;
+      if (!["approved", "rejected"].includes(status)) {
+        return res.status(400).json({ message: "Invalid status" });
+      }
+      const enrollment = await Enrollment.findByIdAndUpdate(
+        req.params.id,
+        { status },
+        { new: true }
+      );
+      if (!enrollment) {
+        return res.status(404).json({ message: "Enrollment not found" });
+      }
+      // Send email notification to user
+      const user = await User.findById(enrollment.userId);
+      const statusEmail = `
+        <h2>Enrollment Status Update</h2>
+        <p>Dear ${enrollment.fullName},</p>
+        <p>Your enrollment for <strong>${enrollment.course}</strong> has been <strong>${status}</strong>.</p>
+        <p>Thank you for choosing Skill Shastra!</p>
+      `;
+      await sendEmail(
+        enrollment.email,
+        `Skill Shastra Enrollment ${
+          status.charAt(0).toUpperCase() + status.slice(1)
+        }`,
+        statusEmail
+      );
+      res
+        .status(200)
+        .json({ message: `Enrollment ${status} successfully`, enrollment });
+    } catch (error) {
+      console.error("Error updating enrollment:", error);
+      res.status(500).json({ message: "Server error" });
+    }
+  }
+);
+
+app.get("/api/admin/feedback", protect, restrictToAdmin, async (req, res) => {
+  try {
+    const feedback = await Feedback.find().lean();
+    res
+      .status(200)
+      .json({ message: "Feedback fetched successfully", feedback });
+  } catch (error) {
+    console.error("Error fetching feedback:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+app.get("/api/admin/analytics", protect, restrictToAdmin, async (req, res) => {
+  try {
+    const totalUsers = await User.countDocuments();
+    const totalEnrollments = await Enrollment.countDocuments();
+    const enrollmentsByStatus = await Enrollment.aggregate([
+      { $group: { _id: "$status", count: { $sum: 1 } } },
+    ]);
+    const avgFeedbackRating = await Feedback.aggregate([
+      { $group: { _id: null, avgRating: { $avg: "$rating" } } },
+    ]);
+    const analytics = {
+      totalUsers,
+      totalEnrollments,
+      enrollmentsByStatus: enrollmentsByStatus.reduce(
+        (acc, curr) => ({ ...acc, [curr._id]: curr.count }),
+        {}
+      ),
+      avgFeedbackRating: avgFeedbackRating[0]?.avgRating || 0,
+    };
+    res
+      .status(200)
+      .json({ message: "Analytics fetched successfully", analytics });
+  } catch (error) {
+    console.error("Error fetching analytics:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+app.get(
+  "/api/admin/enrollments/:id",
+  protect,
+  restrictToAdmin,
+  async (req, res) => {
+    try {
+      const enrollment = await Enrollment.findById(req.params.id).lean();
+      if (!enrollment) {
+        return res.status(404).json({ message: "Enrollment not found" });
+      }
+      res
+        .status(200)
+        .json({ message: "Enrollment fetched successfully", enrollment });
+    } catch (error) {
+      console.error("Error fetching enrollment:", error);
+      res.status(500).json({ message: "Server error" });
+    }
+  }
+);
+
+// Placeholder APIs for Messages and Announcements
+app.get("/api/admin/messages", protect, restrictToAdmin, async (req, res) => {
+  try {
+    const messages = await Message.find().lean();
+    res
+      .status(200)
+      .json({ message: "Messages fetched successfully", messages });
+  } catch (error) {
+    console.error("Error fetching messages:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+app.post(
+  "/api/admin/announcements",
+  protect,
+  restrictToAdmin,
+  async (req, res) => {
+    try {
+      const { title, content } = req.body;
+      if (!title || !content) {
+        return res
+          .status(400)
+          .json({ message: "Title and content are required" });
+      }
+      const announcement = await Announcement.create({
+        title,
+        content,
+        createdBy: req.user._id,
+      });
+      res
+        .status(201)
+        .json({ message: "Announcement posted successfully", announcement });
+    } catch (error) {
+      console.error("Error posting announcement:", error);
+      res.status(500).json({ message: "Server error" });
+    }
+  }
+);
 
 // Enrollment Route
 app.post(
@@ -526,6 +735,10 @@ app.post(
           .json({ message: "Transaction ID and payment date are required" });
       }
 
+      // Store relative path: uploads/filename
+      const paymentProofPath = `uploads/${req.file.filename}`;
+      console.log("Stored payment proof path:", paymentProofPath); // Debug log
+
       const enrollment = new Enrollment({
         userId: req.user._id,
         course: studentData.course,
@@ -542,7 +755,7 @@ app.post(
         address: studentData.address,
         transactionId,
         paymentDate: new Date(paymentDate),
-        paymentProof: req.file.path,
+        paymentProof: paymentProofPath,
         status: "pending",
       });
 
@@ -554,11 +767,11 @@ app.post(
         <p>Your enrollment for <strong>${studentData.course}</strong> has been received.</p>
         <p>Transaction ID: ${transactionId}</p>
         <p>We will verify your payment and confirm your enrollment soon.</p>
-        <p>Thank you for choosing Skillshastra!</p>
+        <p>Thank you for choosing Skill Shastra!</p>
       `;
       await sendEmail(
         studentData.email,
-        "Skillshastra Enrollment Confirmation",
+        "Skill Shastra Enrollment Confirmation",
         confirmationEmail
       );
 
@@ -571,17 +784,16 @@ app.post(
 );
 
 // Get Enrollments Route
-app.get("/api/enrollments", protect, admin, async (req, res) => {
+app.get("/api/enrollments", protect, async (req, res) => {
   try {
-    const enrollments = await Enrollment.find().populate(
-      "userId",
-      "name email"
+    const enrollments = await Enrollment.find({ userId: req.user._id }).select(
+      "course status"
     );
     res
       .status(200)
       .json({ message: "Enrollments fetched successfully", enrollments });
   } catch (error) {
-    console.error("Fetch Enrollments Error:", error);
+    console.error("Error fetching enrollments:", error);
     res.status(500).json({ message: "Server error" });
   }
 });
@@ -596,8 +808,15 @@ const renderPage = (page) => (req, res) =>
 
 app.get("/", renderPage("index"));
 app.get("/signup", renderPage("signup"));
-app.get("/admin", protect, admin, renderPage("admin"));
+app.get("/admin", protect, restrictToAdmin, renderPage("admin"));
 app.get("/dashboard", protect, renderPage("dashboard"));
+app.get("/dashboard/courses", protect, renderPage("dashboard/courses"));
+app.get("/dashboard/codingChallenge", protect, renderPage("codingChallenge"));
+app.get("/dashboard/practiceProject", protect, renderPage("practiceProject"));
+app.get("/dashboard/studyMaterials", protect, renderPage("studyMaterials"));
+app.get("/dashboard/messages", protect, renderPage("dashboard/messages"));
+app.get("/dashboard/feedback", protect, renderPage("dashboard/feedback"));
+app.get("/dashboard/feed", protect, renderPage("dashboard/feed"));
 app.get("/digital-marketing", renderPage("courses/digitalMarketing"));
 app.get(
   "/details-digital-marketing",
