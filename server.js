@@ -587,12 +587,46 @@ app.patch(
   }
 );
 
+// POST Feedback Route
+app.post("/api/feedback", protect, async (req, res) => {
+  try {
+    const { rating, text } = req.body;
+    if (!rating || !text) {
+      return res
+        .status(400)
+        .json({ message: "Rating and feedback text are required" });
+    }
+    if (rating < 1 || rating > 5) {
+      return res
+        .status(400)
+        .json({ message: "Rating must be between 1 and 5" });
+    }
+    if (text.length > 500) {
+      return res
+        .status(400)
+        .json({ message: "Feedback text must be 500 characters or less" });
+    }
+
+    const feedback = new Feedback({
+      userId: req.user._id,
+      userName: req.user.name,
+      userEmail: req.user.email,
+      rating,
+      text,
+    });
+
+    await feedback.save();
+    res.status(201).json({ message: "Feedback submitted successfully" });
+  } catch (error) {
+    console.error("Error submitting feedback:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 app.get("/api/admin/feedback", protect, restrictToAdmin, async (req, res) => {
   try {
     const feedback = await Feedback.find().lean();
-    res
-      .status(200)
-      .json({ message: "Feedback fetched successfully", feedback });
+    res.status(200).json({ feedback });
   } catch (error) {
     console.error("Error fetching feedback:", error);
     res.status(500).json({ message: "Server error" });
@@ -657,6 +691,34 @@ app.get("/api/admin/messages", protect, restrictToAdmin, async (req, res) => {
   } catch (error) {
     console.error("Error fetching messages:", error);
     res.status(500).json({ message: "Server error" });
+  }
+});
+
+const courseSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  description: { type: String, required: true },
+  duration: { type: String, required: true },
+  slug: { type: String, required: true, unique: true } // e.g., 'frontend', 'backend'
+});
+
+const Course = mongoose.model('Course', courseSchema);
+
+// Recommended Courses Route
+app.get('/api/courses/recommended', protect, async (req, res) => {
+  try {
+    // Mock data for now; replace with Course.find() if using MongoDB
+    const recommendedCourses = [
+      { title: 'Frontend Development', description: 'Learn React, HTML, CSS.', duration: '6 weeks', slug: 'frontend' },
+      { title: 'Backend Development', description: 'Master Node.js, Express, MongoDB.', duration: '6 weeks', slug: 'backend' },
+      { title: 'Full Stack Development', description: 'Build full-stack apps with MERN.', duration: '8 weeks', slug: 'full-stack' },
+      { title: 'Digital Marketing', description: 'Master SEO, PPC, and social media.', duration: '4 weeks', slug: 'digital-marketing' },
+      { title: 'Data Science', description: 'Explore Python, Pandas, and ML.', duration: '8 weeks', slug: 'data-science' }
+    ];
+    // const recommendedCourses = await Course.find().lean();
+    res.status(200).json({ courses: recommendedCourses });
+  } catch (error) {
+    console.error('Error fetching recommended courses:', error);
+    res.status(500).json({ message: 'Server error' });
   }
 });
 
@@ -809,11 +871,15 @@ const renderPage = (page) => (req, res) =>
 app.get("/", renderPage("index"));
 app.get("/signup", renderPage("signup"));
 app.get("/admin", protect, restrictToAdmin, renderPage("admin"));
+app.get("/admin/feedback", protect, restrictToAdmin, renderPage("admin/feedback"));
+app.get("/admin/analytics", protect, restrictToAdmin, renderPage("admin/analytics"));
+app.get("/admin/messages", protect, restrictToAdmin, renderPage("admin/messages"));
+app.get("/admin/announcements", protect, restrictToAdmin, renderPage("admin/announcements"));
 app.get("/dashboard", protect, renderPage("dashboard"));
 app.get("/dashboard/courses", protect, renderPage("dashboard/courses"));
-app.get("/dashboard/codingChallenge", protect, renderPage("codingChallenge"));
-app.get("/dashboard/practiceProject", protect, renderPage("practiceProject"));
-app.get("/dashboard/studyMaterials", protect, renderPage("studyMaterials"));
+app.get("/dashboard/coding-Challenge", protect, renderPage("dashboard/coding-Challenge"));
+app.get("/dashboard/practiceProject", protect, renderPage("dashboard/practiceProject"));
+app.get("/dashboard/studyMaterials", protect, renderPage("dashboard/studyMaterials"));
 app.get("/dashboard/messages", protect, renderPage("dashboard/messages"));
 app.get("/dashboard/feedback", protect, renderPage("dashboard/feedback"));
 app.get("/dashboard/feed", protect, renderPage("dashboard/feed"));
