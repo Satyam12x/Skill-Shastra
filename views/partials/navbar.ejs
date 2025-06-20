@@ -1,4 +1,3 @@
-
 <nav class="navbar" aria-label="Main navigation">
   <div class="nav-container">
     <a href="/" class="logo"
@@ -31,16 +30,16 @@
               class="sub-dropdown"
               aria-label="Programming Languages submenu"
             >
-              <a href="/courses/python" class="sub-dropdown-item"
+              <a href="/python" class="sub-dropdown-item"
                 ><i class="fab fa-python"></i> Python</a
               >
-              <a href="/courses/java" class="sub-dropdown-item"
+              <a href="/java" class="sub-dropdown-item"
                 ><i class="fab fa-java"></i> Java</a
               >
-              <a href="/courses/cpp" class="sub-dropdown-item"
+              <a href="/cpp" class="sub-dropdown-item"
                 ><i class="fas fa-code"></i> C++</a
               >
-              <a href="/courses/javascript" class="sub-dropdown-item"
+              <a href="/javaScript" class="sub-dropdown-item"
                 ><i class="fab fa-js"></i> JavaScript</a
               >
             </div>
@@ -71,17 +70,8 @@
             >
             <i class="fas fa-chevron-right sub-dropdown-toggle"></i>
             <div class="sub-dropdown" aria-label="Digital Marketing submenu">
-              <a href="/courses/seo" class="sub-dropdown-item"
-                ><i class="fas fa-search"></i> SEO</a
-              >
-              <a href="/courses/social-media" class="sub-dropdown-item"
-                ><i class="fab fa-share"></i> Social Media Marketing</a
-              >
-              <a href="/courses/content-marketing" class="sub-dropdown-item"
-                ><i class="fas fa-pen"></i> Content Marketing</a
-              >
-              <a href="/courses/ppc" class="sub-dropdown-item"
-                ><i class="fas fa-ad"></i> PPC Advertising</a
+              <a href="/details-digital-marketing" class="sub-dropdown-item"
+                ><i class="fas fa-search"></i> Digital Marketing</a
               >
             </div>
           </div>
@@ -91,19 +81,18 @@
             >
             <i class="fas fa-chevron-right sub-dropdown-toggle"></i>
             <div class="sub-dropdown" aria-label="Generative AI submenu">
-              <a href="/courses/ai-fundamentals" class="sub-dropdown-item"
+              <a href="/ai-fundamentals" class="sub-dropdown-item"
                 ><i class="fas fa-brain"></i> AI Fundamentals</a
               >
-              <a href="/courses/neural-networks" class="sub-dropdown-item"
-                ><i class="fas fa-network-wired"></i> Neural Networks</a
-              >
-              <a href="/courses/gans" class="sub-dropdown-item"
-                ><i class="fas fa-image"></i> GANs</a
-              >
-              <a href="/courses/nlp" class="sub-dropdown-item"
-                ><i class="fas fa-language"></i> NLP</a
-              >
             </div>
+          </div>
+          <div class="has-sub-dropdown">
+            <a
+              href="/fundamentals"
+              class="dropdown-item"
+              aria-haspopup="true"
+              ><i class="fas fa-bullhorn"></i> Fundamentals of Computers</a
+            >
           </div>
         </div>
       </li>
@@ -151,20 +140,40 @@
       </li>
       <li class="profile-wrapper" id="profile-section">
         <div class="profile-container">
-          <img id="profile-img" src="" alt="User Profile" class="profile-img" aria-label="Toggle profile menu">
+          <img
+            id="profile-img"
+            src=""
+            alt="User Profile"
+            class="profile-img"
+            aria-label="Toggle profile menu"
+          />
           <div class="profile-dropdown" aria-label="Profile dropdown">
             <div class="profile-info">
               <p><strong>Name:</strong> <span id="profile-name"></span></p>
               <p><strong>Email:</strong> <span id="profile-email"></span></p>
             </div>
-            <a href="/dashboard" class="profile-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-            <a id="admin-link" href="/admin" class="profile-link" style="display: none;"><i class="fas fa-user-shield"></i> Admin Panel</a>
-            <a href="#" class="profile-link" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            <a href="/dashboard" class="profile-link"
+              ><i class="fas fa-tachometer-alt"></i> Dashboard</a
+            >
+            <a
+              id="admin-link"
+              href="/admin"
+              class="profile-link"
+              style="display: none"
+              ><i class="fas fa-user-shield"></i> Admin Panel</a
+            >
+            <a href="#" class="profile-link" onclick="logout()"
+              ><i class="fas fa-sign-out-alt"></i> Logout</a
+            >
           </div>
         </div>
       </li>
       <li class="profile-wrapper" id="login-section">
-        <a href="/signup" class="btm btm-primary" onclick="handleLoginRedirect()">
+        <a
+          href="/signup"
+          class="btm btm-primary"
+          onclick="handleLoginRedirect()"
+        >
           <i class="fas fa-user"></i> Login
         </a>
       </li>

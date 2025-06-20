@@ -237,15 +237,19 @@ body {
 .toggle-password {
   position: absolute;
   top: 50%;
-  right: 10px;
+  right: 30px;
   transform: translateY(-50%);
   background: none;
   border: none;
-  color: #666;
+  color: #696969;
   cursor: pointer;
   font-size: 14px;
   padding: 5px;
   transition: color 0.3s ease;
+}
+
+.toggle-password i{
+  color: #7c3aed;
 }
 
 .toggle-password:hover {

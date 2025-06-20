@@ -892,6 +892,12 @@ app.get("/web-dev", renderPage("courses/webdev"));
 app.get("/frontend", renderPage("courses/course-details/frontend"));
 app.get("/backend", renderPage("courses/course-details/backend"));
 app.get("/fullstack", renderPage("courses/course-details/fullstack"));
+app.get("/ai-fundamentals", renderPage("courses/course-details/details-genai"));
+app.get("/java", renderPage("courses/course-details/java"));
+app.get("/cpp", renderPage("courses/course-details/cpp"));
+app.get("/python", renderPage("courses/course-details/python"));
+app.get("/fundamentals", renderPage("courses/course-details/fundamentals"));
+app.get("/javaScript", renderPage("courses/course-details/javaScript"));
 app.get("/programming", renderPage("courses/Programming"));
 app.get("/genai", renderPage("genai"));
 app.get("/codingChallenge", renderPage("resources/CodingChallenge"));
@@ -901,7 +907,7 @@ app.get("/expertProfiles", renderPage("team/ExpertProfiles"));
 app.get("/meetTeam", renderPage("team/MeetOurTeam"));
 
 app.get("/payment", protect, (req, res) => {
-  res.render("courses/payment", {
+  res.render("courses/payment2", {
     user: {
       name: req.user.name,
       email: req.user.email,

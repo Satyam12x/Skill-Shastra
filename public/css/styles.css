@@ -1062,6 +1062,10 @@ body {
   gap: 100px;
 }
 
+.overlay-content a{
+  text-decoration: none;
+}
+
 .explore-btn {
   padding: 1rem 2.5rem;
   background: rgba(255, 255, 255, 0.2);
