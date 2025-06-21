@@ -40,6 +40,8 @@ body {
   height: 40px;
   border: 1px solid transparent;
   transition: all 0.3s ease;
+  border-color: rgba(143, 127, 170, 0.055);
+  background: rgba(67, 51, 94, 0.05);
   cursor: pointer;
 }
 
@@ -927,6 +929,27 @@ body {
   transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.bubble {
+  position: absolute;
+  bottom: -50px;
+  border-radius: 50%;
+  opacity: 0.8;
+  filter: drop-shadow(0 0 6px rgba(128, 0, 128, 0.4));
+  animation: floatUp linear forwards;
+  pointer-events: none;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-120vh) scale(1.5);
+    opacity: 0;
+  }
+}
+
 .card-content {
   position: relative;
   z-index: 2;
@@ -1062,7 +1085,7 @@ body {
   gap: 100px;
 }
 
-.overlay-content a{
+.overlay-content a {
   text-decoration: none;
 }
 
@@ -1557,12 +1580,12 @@ body {
   z-index: 120;
 }
 
-.overlay-content .social-icon{
-    font-size: 1.5rem;
-    color: rgba(255, 255, 255, 0.7) !important;
+.overlay-content .social-icon {
+  font-size: 1.5rem;
+  color: rgba(255, 255, 255, 0.7) !important;
 }
-.overlay-content .social-icon:hover{
-    color: rgba(255, 255, 255) !important;
+.overlay-content .social-icon:hover {
+  color: rgba(255, 255, 255) !important;
 }
 
 .social-icon {

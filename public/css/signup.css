@@ -309,7 +309,7 @@ body {
   margin-right: 8px;
 }
 
-.auth-btn[aria-busy="true"]::before {
+/* .auth-btn[aria-busy="true"]::before {
   content: "";
   display: inline-block;
   width: 16px;
@@ -320,7 +320,7 @@ body {
   animation: spin 0.8s linear infinite;
   margin-right: 8px;
   vertical-align: middle;
-}
+} */
 
 @keyframes spin {
   to {

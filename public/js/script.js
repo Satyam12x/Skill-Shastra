@@ -1,6 +1,5 @@
 // Ensure DOM is fully loaded
 document.addEventListener("DOMContentLoaded", () => {
-
   // Create Hover Grid
   function createHoverGrid() {
     const grid = document.getElementById("hoverGrid");
@@ -240,6 +239,41 @@ document.addEventListener("DOMContentLoaded", () => {
       card.removeEventListener("mousemove", handleMouseMove);
     };
   });
+
+  const timelineSection =document.getElementById("timelineSection")
+  const purpleShades = [
+    "#d0b3ff",
+    "#a64ca6",
+    "#b266ff",
+    "#9933cc",
+    "#c299ff",
+    "#aa80ff",
+    "#e0ccff",
+  ];
+
+  function createBubble() {
+    const bubble = document.createElement("div");
+    const size = Math.random() * 3 + 3; // 10–40px
+    const left = Math.random() * window.innerWidth;
+    const duration = Math.random() * 10 + 10; // 3–7s
+
+    bubble.classList.add("bubble");
+    bubble.style.width = `${size}px`;
+    bubble.style.height = `${size}px`;
+    bubble.style.left = `${left}px`;
+    bubble.style.background =
+      purpleShades[Math.floor(Math.random() * purpleShades.length)];
+    bubble.style.animationDuration = `${duration}s`;
+
+    timelineSection.appendChild(bubble)
+
+    setTimeout(() => {
+      bubble.remove();
+    }, duration * 1000);
+  }
+
+  // Generate bubbles regularly
+  setInterval(createBubble, 120);
 
   // Mentor Card Interactions
   document.querySelectorAll(".mentor-card").forEach((card) => {
