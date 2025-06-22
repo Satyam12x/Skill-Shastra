@@ -78,6 +78,17 @@
         padding: 1.5rem;
         border: 1px solid #e5e7eb;
         transition: all 0.3s ease;
+        max-height: 400px;
+        overflow-y: auto;
+      }
+      .user-card::-webkit-scrollbar,
+      .feedback-card::-webkit-scrollbar {
+        width: 8px;
+      }
+      .user-card::-webkit-scrollbar-thumb,
+      .feedback-card::-webkit-scrollbar-thumb {
+        background: #a855f7;
+        border-radius: 4px;
       }
       .user-card:hover,
       .feedback-card:hover {
@@ -285,6 +296,131 @@
         width: 40px;
         height: 40px;
       }
+      .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 1.5rem;
+        gap: 0.5rem;
+      }
+      .pagination-btn {
+        background: #f8f9ff;
+        border: 1px solid #e5e7eb;
+        color: #1f2937;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+      }
+      .pagination-btn:hover {
+        background: #7c3aed;
+        color: white;
+        border-color: #7c3aed;
+      }
+      .pagination-btn.active {
+        background: #7c3aed;
+        color: white;
+        border-color: #7c3aed;
+      }
+      .pagination-btn.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .notification-container {
+        position: fixed;
+        top: 1rem;
+        right: 1rem;
+        z-index: 4000;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .notification {
+        background: #10b981;
+        color: white;
+        padding: 1rem;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        animation: slideIn 0.5s ease forwards;
+        max-width: 400px;
+        font-size: 0.9rem;
+      }
+      .notification.error {
+        background: #ef4444;
+      }
+      .notification .close-notification {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1rem;
+        cursor: pointer;
+      }
+      .notification .close-notification:hover {
+        color: #d1d5db;
+      }
+      .controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+      .search-bar {
+        flex: 1;
+        max-width: 300px;
+        position: relative;
+      }
+      .search-bar input {
+        width: 100%;
+        padding: 0.8rem 1rem 0.8rem 2.5rem;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        color: #1f2937;
+        outline: none;
+        transition: border-color 0.3s ease;
+      }
+      .search-bar input:focus {
+        border-color: #7c3aed;
+        box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+      }
+      .search-bar i {
+        position: absolute;
+        top: 50%;
+        left: 1rem;
+        transform: translateY(-50%);
+        color: #6b7280;
+        font-size: 1rem;
+      }
+      .sort-select {
+        padding: 0.8rem;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        color: #1f2937;
+        background: #f8f9ff;
+        cursor: pointer;
+        outline: none;
+        transition: border-color 0.3s ease;
+      }
+      .sort-select:focus {
+        border-color: #7c3aed;
+      }
+      @keyframes slideIn {
+        from {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
       @keyframes spin {
         0% {
           transform: rotate(0deg);
@@ -309,6 +445,16 @@
           width: 95%;
           padding: 1.5rem;
         }
+        .notification {
+          max-width: 90%;
+        }
+        .controls {
+          flex-direction: column;
+          align-items: stretch;
+        }
+        .search-bar {
+          max-width: 100%;
+        }
       }
     </style>
   </head>
@@ -317,6 +463,7 @@
     <div class="loading-overlay" id="loading-overlay">
       <div class="spinner"></div>
     </div>
+    <div class="notification-container" id="notification-container"></div>
     <main class="main-content" id="main-content">
       <section class="admin-section">
         <% if (user && user.role === 'admin') { %>
@@ -329,7 +476,26 @@
         </div>
         <div class="admin-card">
           <h2 class="section-title">Manage Users & Enrollments</h2>
+          <div class="controls">
+            <div class="search-bar">
+              <i class="fas fa-search"></i>
+              <input
+                type="text"
+                id="search-input"
+                placeholder="Search by email..."
+                oninput="searchUsers()"
+              />
+            </div>
+            <select class="sort-select" id="sort-select" onchange="sortUsers()">
+              <option value="courses-desc">Courses (High to Low)</option>
+              <option value="name-asc">Name (A-Z)</option>
+              <option value="email-asc">Email (A-Z)</option>
+            </select>
+          </div>
           <div class="users-grid" id="users-grid">
+            <!-- Populated by JS -->
+          </div>
+          <div class="pagination" id="pagination">
             <!-- Populated by JS -->
           </div>
         </div>
@@ -373,10 +539,136 @@
       <%- include('partials/footer') %>
     </main>
     <script>
+      let allUsers = [];
+      let filteredUsers = [];
+      const USERS_PER_PAGE = 6;
+      let currentPage = 1;
+
+      function renderUsers(page) {
+        const start = (page - 1) * USERS_PER_PAGE;
+        const end = start + USERS_PER_PAGE;
+        const paginatedUsers = filteredUsers.slice(start, end);
+        const usersGrid = document.getElementById("users-grid");
+        if (usersGrid) {
+          usersGrid.innerHTML = paginatedUsers.length
+            ? paginatedUsers
+                .map(
+                  (user) => `
+                    <div class="user-card">
+                      <img src="${user.profileImage}" alt="${user.name}">
+                      <h4>${user.name}</h4>
+                      <p>Email: ${user.email}</p>
+                      <p>Courses:</p>
+                      ${
+                        user.enrollments.length
+                          ? user.enrollments
+                              .map(
+                                (e) => `
+                                <div>
+                                  ${
+                                    e.course
+                                  } (<span class="status-${e.status.toLowerCase()}">${
+                                  e.status
+                                }</span>)
+                                  <div>
+                                    <button class="action-btn" onclick="updateEnrollment('${
+                                      e._id
+                                    }', 'approved', this)">
+                                      Approve
+                                      <span class="spinner" style="display: none;"></span>
+                                    </button>
+                                    <button class="action-btn reject" onclick="updateEnrollment('${
+                                      e._id
+                                    }', 'rejected', this)">
+                                      Reject
+                                      <span class="spinner" style="display: none;"></span>
+                                    </button>
+                                    <button class="action-btn details" onclick="showEnrollmentDetails('${
+                                      e._id
+                                    }')">Details</button>
+                                  </div>
+                                </div>
+                              `
+                              )
+                              .join("")
+                          : "<p>No enrollments</p>"
+                      }
+                    </div>
+                  `
+                )
+                .join("")
+            : "<p>No users found.</p>";
+
+          // Render pagination
+          const totalPages = Math.ceil(filteredUsers.length / USERS_PER_PAGE);
+          const pagination = document.getElementById("pagination");
+          if (pagination) {
+            pagination.innerHTML = `
+              <button class="pagination-btn ${
+                currentPage === 1 ? "disabled" : ""
+              }" onclick="changePage(${currentPage - 1})" ${
+              currentPage === 1 ? "disabled" : ""
+            }>Previous</button>
+              ${Array.from({ length: totalPages }, (_, i) => i + 1)
+                .map(
+                  (p) =>
+                    `<button class="pagination-btn ${
+                      p === currentPage ? "active" : ""
+                    }" onclick="changePage(${p})">${p}</button>`
+                )
+                .join("")}
+              <button class="pagination-btn ${
+                currentPage === totalPages ? "disabled" : ""
+              }" onclick="changePage(${currentPage + 1})" ${
+              currentPage === totalPages ? "disabled" : ""
+            }>Next</button>
+            `;
+          }
+        }
+      }
+
+      function changePage(page) {
+        if (
+          page >= 1 &&
+          page <= Math.ceil(filteredUsers.length / USERS_PER_PAGE)
+        ) {
+          currentPage = page;
+          renderUsers(currentPage);
+        }
+      }
+
+      function sortUsers() {
+        const sortValue = document.getElementById("sort-select").value;
+        filteredUsers = [...allUsers].sort((a, b) => {
+          if (sortValue === "courses-desc") {
+            return b.enrollments.length - a.enrollments.length;
+          } else if (sortValue === "name-asc") {
+            return a.name.localeCompare(b.name);
+          } else if (sortValue === "email-asc") {
+            return a.email.localeCompare(b.email);
+          }
+          return 0;
+        });
+        currentPage = 1; // Reset to first page
+        renderUsers(currentPage);
+      }
+
+      function searchUsers() {
+        const searchValue = document
+          .getElementById("search-input")
+          .value.trim()
+          .toLowerCase();
+        filteredUsers = allUsers.filter((user) =>
+          user.email.toLowerCase().includes(searchValue)
+        );
+        currentPage = 1; // Reset to first page
+        renderUsers(currentPage);
+      }
+
       document.addEventListener("DOMContentLoaded", async () => {
         const user = JSON.parse(localStorage.getItem("user") || "{}");
         if (!user.email || user.role !== "admin") {
-          alert("Access denied. Admin login required.");
+          showNotification("Access denied. Admin login required.", "error");
           window.location.href = "/signup?redirect=/dashboard";
           return;
         }
@@ -413,27 +705,27 @@
           const analyticsGrid = document.getElementById("analytics-grid");
           if (analyticsGrid) {
             analyticsGrid.innerHTML = `
-            <div class="analytics-card">
-              <i class="fas fa-users"></i>
-              <h3>${analytics.totalUsers}</h3>
-              <p>Total Users</p>
-            </div>
-            <div class="analytics-card">
-              <i class="fas fa-book"></i>
-              <h3>${analytics.totalEnrollments}</h3>
-              <p>Total Enrollments</p>
-            </div>
-            <div class="analytics-card">
-              <i class="fas fa-check-circle"></i>
-              <h3>${analytics.enrollmentsByStatus.approved || 0}</h3>
-              <p>Approved Enrollments</p>
-            </div>
-            <div class="analytics-card">
-              <i class="fas fa-star"></i>
-              <h3>${analytics.avgFeedbackRating.toFixed(1)}</h3>
-              <p>Average Feedback Rating</p>
-            </div>
-          `;
+              <div class="analytics-card">
+                <i class="fas fa-users"></i>
+                <h3>${analytics.totalUsers}</h3>
+                <p>Total Users</p>
+              </div>
+              <div class="analytics-card">
+                <i class="fas fa-book"></i>
+                <h3>${analytics.totalEnrollments}</h3>
+                <p>Total Enrollments</p>
+              </div>
+              <div class="analytics-card">
+                <i class="fas fa-check-circle"></i>
+                <h3>${analytics.enrollmentsByStatus.approved || 0}</h3>
+                <p>Approved Enrollments</p>
+              </div>
+              <div class="analytics-card">
+                <i class="fas fa-star"></i>
+                <h3>${analytics.avgFeedbackRating.toFixed(1)}</h3>
+                <p>Average Feedback Rating</p>
+              </div>
+            `;
           }
 
           // Users and enrollments
@@ -445,57 +737,9 @@
             throw new Error("Failed to load users");
           }
           const { users } = await usersRes.json();
-          const usersGrid = document.getElementById("users-grid");
-          if (usersGrid) {
-            usersGrid.innerHTML = users.length
-              ? users
-                  .map(
-                    (user) => `
-            <div class="user-card">
-              <img src="${
-                user.profileImage || "/images/default-user.png"
-              }" alt="${user.name}">
-              <h4>${user.name}</h4>
-              <p>Email: ${user.email}</p>
-              <p>Courses:</p>
-              ${
-                user.enrollments.length
-                  ? user.enrollments
-                      .map(
-                        (e) => `
-                <div>
-                  ${e.course} (<span class="status-${e.status.toLowerCase()}">${
-                          e.status
-                        }</span>)
-                  <div>
-                    <button class="action-btn" onclick="updateEnrollment('${
-                      e._id
-                    }', 'approved', this)">
-                      Approve
-                      <span class="spinner" style="display: none;"></span>
-                    </button>
-                    <button class="action-btn reject" onclick="updateEnrollment('${
-                      e._id
-                    }', 'rejected', this)">
-                      Reject
-                      <span class="spinner" style="display: none;"></span>
-                    </button>
-                    <button class="action-btn details" onclick="showEnrollmentDetails('${
-                      e._id
-                    }')">Details</button>
-                  </div>
-                </div>
-              `
-                      )
-                      .join("")
-                  : "<p>No enrollments</p>"
-              }
-            </div>
-          `
-                  )
-                  .join("")
-              : "<p>No users found.</p>";
-          }
+          allUsers = users;
+          filteredUsers = [...allUsers]; // Initialize filteredUsers
+          sortUsers(); // Apply initial sort (Courses High to Low)
 
           // Feedback
           if (!feedbackRes.ok) throw new Error("Failed to load feedback");
@@ -506,27 +750,44 @@
               ? feedback
                   .map(
                     (f) => `
-            <div class="feedback-card">
-              <h4>${f.userName}</h4>
-              <p>Email: ${f.userEmail}</p>
-              <div class="rating-stars">
-                ${"★".repeat(f.rating)}${"☆".repeat(5 - f.rating)}
-              </div>
-              <p>${f.text}</p>
-              <p><small>${new Date(f.createdAt).toLocaleString()}</small></p>
-            </div>
-          `
+                        <div class="feedback-card">
+                          <h4>${f.userName}</h4>
+                          <p>Email: ${f.userEmail}</p>
+                          <div class="rating-stars">
+                            ${"★".repeat(f.rating)}${"☆".repeat(5 - f.rating)}
+                          </div>
+                          <p>${f.text}</p>
+                          <p><small>${new Date(
+                            f.createdAt
+                          ).toLocaleString()}</small></p>
+                        </div>
+                      `
                   )
                   .join("")
               : "<p>No feedback received.</p>";
           }
         } catch (error) {
           console.error("Error loading data:", error);
-          alert("Failed to load data. Check console for details.");
+          showNotification(
+            "Failed to load data. Check console for details.",
+            "error"
+          );
         } finally {
           if (loadingOverlay) loadingOverlay.style.display = "none";
         }
+
+        // Add modal click listener once
+        const modal = document.getElementById("enrollment-modal");
+        if (modal) {
+          modal.addEventListener("click", handleModalClick);
+        }
       });
+
+      function handleModalClick(e) {
+        if (e.target === document.getElementById("enrollment-modal")) {
+          closeModal();
+        }
+      }
 
       async function updateEnrollment(enrollmentId, status, button) {
         try {
@@ -546,14 +807,17 @@
           );
           const result = await response.json();
           if (response.ok) {
-            alert(`Enrollment ${status} successfully!`);
+            showNotification(`Enrollment ${status} successfully!`, "success");
             window.location.reload();
           } else {
-            alert(result.message || `Error updating enrollment to ${status}.`);
+            showNotification(
+              result.message || `Error updating enrollment to ${status}.`,
+              "error"
+            );
           }
         } catch (error) {
           console.error("Error updating enrollment:", error);
-          alert("Error updating enrollment.");
+          showNotification("Error updating enrollment.", "error");
         } finally {
           if (button) {
             const spinner = button.querySelector(".spinner");
@@ -571,14 +835,18 @@
 
         if (!modal || !modalBody || !spinner) {
           console.error("Modal elements not found");
-          alert("Error: Modal not found. Please refresh the page.");
+          showNotification(
+            "Error: Modal not found. Please refresh the page.",
+            "error"
+          );
           return;
         }
 
         try {
-          spinner.style.display = "block";
-          modalBody.innerHTML = '<div class="modal-spinner"></div>';
-          modal.style.display = "flex";
+          spinner.style.display = "block"; // Show spinner
+          modalBody.innerHTML =
+            '<div class="modal-spinner" style="display: block;"></div>'; // Clear content
+          modal.style.display = "flex"; // Show modal
 
           const response = await fetch(
             `/api/admin/enrollments/${enrollmentId}`,
@@ -597,63 +865,79 @@
           console.log("Enrollment data:", enrollment);
 
           const isImage = enrollment.paymentProof.match(/\.(png|jpg|jpeg)$/i);
-          const paymentProofUrl = `/${enrollment.paymentProof}`;
+          const paymentProofUrl = `${enrollment.paymentProof}`;
           console.log("Payment proof URL:", paymentProofUrl);
 
           modalBody.innerHTML = `
-          <p><strong>Course:</strong> ${enrollment.course}</p>
-          <p><strong>Full Name:</strong> ${enrollment.fullName}</p>
-          <p><strong>Email:</strong> ${enrollment.email}</p>
-          <p><strong>Phone:</strong> ${enrollment.phone}</p>
-          <p><strong>Age:</strong> ${enrollment.age}</p>
-          <p><strong>Gender:</strong> ${enrollment.gender}</p>
-          <p><strong>Education:</strong> ${enrollment.education}</p>
-          <p><strong>Institution:</strong> ${enrollment.institution}</p>
-          <p><strong>Guardian Name:</strong> ${enrollment.guardianName}</p>
-          <p><strong>Guardian Phone:</strong> ${enrollment.guardianPhone}</p>
-          <p><strong>Country:</strong> ${enrollment.country}</p>
-          <p><strong>Address:</strong> ${enrollment.address}</p>
-          <p><strong>Transaction ID:</strong> ${enrollment.transactionId}</p>
-          <p><strong>Payment Date:</strong> ${new Date(
-            enrollment.paymentDate
-          ).toLocaleString()}</p>
-          <p><strong>Status:</strong> <span class="status-${enrollment.status.toLowerCase()}">${
+            <p><strong>Course:</strong> ${enrollment.course}</p>
+            <p><strong>Full Name:</strong> ${enrollment.fullName}</p>
+            <p><strong>Email:</strong> ${enrollment.email}</p>
+            <p><strong>Phone:</strong> ${enrollment.phone}</p>
+            <p><strong>Age:</strong> ${enrollment.age}</p>
+            <p><strong>Gender:</strong> ${enrollment.gender}</p>
+            <p><strong>Education:</strong> ${enrollment.education}</p>
+            <p><strong>Institution:</strong> ${enrollment.institution}</p>
+            <p><strong>Guardian Name:</strong> ${enrollment.guardianName}</p>
+            <p><strong>Guardian Phone:</strong> ${enrollment.guardianPhone}</p>
+            <p><strong>Country:</strong> ${enrollment.country}</p>
+            <p><strong>Address:</strong> ${enrollment.address}</p>
+            <p><strong>Transaction ID:</strong> ${enrollment.transactionId}</p>
+            <p><strong>Payment Date:</strong> ${new Date(
+              enrollment.paymentDate
+            ).toLocaleString()}</p>
+            <p><strong>Status:</strong> <span class="status-${enrollment.status.toLowerCase()}">${
             enrollment.status
           }</span></p>
-          <p><strong>Payment Proof:</strong></p>
-          ${
-            isImage
-              ? `<img src="${paymentProofUrl}" alt="Payment Proof" onerror="this.src='/images/default-proof.png'; console.error('Failed to load image:', '${paymentProofUrl}')">`
-              : `<a href="${paymentProofUrl}" target="_blank">View PDF</a>`
-          }
-        `;
+            <p><strong>Payment Proof:</strong></p>
+            ${
+              isImage
+                ? `<img src="${paymentProofUrl}" alt="Payment Proof" onerror="this.src='/images/default-proof.png'; console.error('Failed to load image:', '${paymentProofUrl}')">`
+                : `<a href="${paymentProofUrl}" target="_blank">View PDF</a>`
+            }
+          `;
         } catch (error) {
           console.error("Error loading enrollment details:", error);
           modalBody.innerHTML =
             '<p style="color: #ff0000;">Failed to load enrollment details. Please try again.</p>';
-          alert(
-            "Failed to load enrollment details. Check console for details."
+          showNotification(
+            "Failed to load enrollment details. Check console for details.",
+            "error"
           );
         } finally {
-          spinner.style.display = "none";
+          spinner.style.display = "none"; // Hide spinner
         }
       }
 
       function closeModal() {
         const modal = document.getElementById("enrollment-modal");
+        const modalBody = document.getElementById("modal-body");
         const spinner = document.getElementById("modal-spinner");
         if (modal) modal.style.display = "none";
+        if (modalBody)
+          modalBody.innerHTML =
+            '<div class="modal-spinner" id="modal-spinner" style="display: none;"></div>';
         if (spinner) spinner.style.display = "none";
       }
 
-      // Close modal when clicking outside
-      document
-        .getElementById("enrollment-modal")
-        ?.addEventListener("click", (e) => {
-          if (e.target === document.getElementById("enrollment-modal")) {
-            closeModal();
-          }
-        });
+      function showNotification(message, type = "success") {
+        const container = document.getElementById("notification-container");
+        if (!container) return;
+
+        const notification = document.createElement("div");
+        notification.className = `notification ${type}`;
+        notification.innerHTML = `
+          <span>${message}</span>
+          <button class="close-notification" onclick="this.parentElement.remove()">
+            <i class="fas fa-times"></i>
+          </button>
+        `;
+        container.appendChild(notification);
+
+        setTimeout(() => {
+          notification.style.animation = "slideIn 0.5s ease reverse";
+          setTimeout(() => notification.remove(), 500);
+        }, 5000);
+      }
     </script>
     <script src="/js/sidebar.js"></script>
   </body>

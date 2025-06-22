@@ -9,18 +9,17 @@ const path = require("path");
 const multer = require("multer");
 const cookieParser = require("cookie-parser");
 const crypto = require("crypto");
-const fs = require("fs");
+const { v2: cloudinary } = require("cloudinary");
 
 dotenv.config();
 const app = express();
 
-// Ensure uploads directory exists
-const imagesDir = path.join(__dirname, "public/images");
-const uploadsDir = path.join(__dirname, "public/uploads");
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
-  console.log("Created uploads directory");
-}
+// Cloudinary Configuration
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 // Middleware
 app.use(cors({ origin: "http://localhost:5000", credentials: true }));
@@ -28,8 +27,19 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
-app.use("/uploads", express.static(uploadsDir));
-app.use("/images", express.static(imagesDir));
+
+cloudinary.uploader.upload(
+  './public/images/Logo.png',
+  {
+    folder: 'public/images',
+    public_id: 'logo',
+    resource_type: 'image',
+  },
+  (error, result) => {
+    if (error) console.error(error);
+    else console.log('Logo URL:', result.secure_url);
+  }
+);
 
 // MongoDB Connection
 const connectDB = async () => {
@@ -62,22 +72,19 @@ const userSchema = new mongoose.Schema(
     otp: { type: String },
     otpExpires: { type: Date },
     isVerified: { type: Boolean, default: false },
-    profileImage: { type: String },
+    profileImage: {
+      type: String,
+      default: function () {
+        const emailHash = crypto
+          .createHash("md5")
+          .update(this.email.trim().toLowerCase())
+          .digest("hex");
+        return `https://www.gravatar.com/avatar/${emailHash}?s=50&d=retro`;
+      },
+    },
   },
   { timestamps: true }
 );
-
-// Generate Gravatar URL
-userSchema.pre("save", function (next) {
-  if (!this.profileImage && this.email) {
-    const emailHash = crypto
-      .createHash("md5")
-      .update(this.email.trim().toLowerCase())
-      .digest("hex");
-    this.profileImage = `https://www.gravatar.com/avatar/${emailHash}?s=40&d=identicon`;
-  }
-  next();
-});
 
 // Hash password
 userSchema.pre("save", async function (next) {
@@ -111,7 +118,7 @@ const enrollmentSchema = new mongoose.Schema({
   address: { type: String, required: true },
   transactionId: { type: String, required: true },
   paymentDate: { type: Date, required: true },
-  paymentProof: { type: String, required: true },
+  paymentProof: { type: String, required: true }, // Stores Cloudinary URL
   status: {
     type: String,
     default: "pending",
@@ -134,7 +141,7 @@ const feedbackSchema = new mongoose.Schema({
 
 const Feedback = mongoose.model("Feedback", feedbackSchema);
 
-// Message Schema (Placeholder)
+// Message Schema
 const messageSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   userName: { type: String, required: true },
@@ -145,7 +152,7 @@ const messageSchema = new mongoose.Schema({
 
 const Message = mongoose.model("Message", messageSchema);
 
-// Announcement Schema (Placeholder)
+// Announcement Schema
 const announcementSchema = new mongoose.Schema({
   title: { type: String, required: true },
   content: { type: String, required: true },
@@ -159,19 +166,8 @@ const announcementSchema = new mongoose.Schema({
 
 const Announcement = mongoose.model("Announcement", announcementSchema);
 
-// Multer Setup
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, uploadsDir),
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    const filename = `${Date.now()}-${file.originalname.replace(
-      ext,
-      ""
-    )}${ext}`;
-    cb(null, filename);
-  },
-});
-
+// Multer Setup (Memory Storage for Cloudinary)
+const storage = multer.memoryStorage();
 const upload = multer({
   storage,
   fileFilter: (req, file, cb) => {
@@ -212,27 +208,167 @@ transporter.verify((error, success) => {
   else console.log("SMTP Server is ready to send emails");
 });
 
-const sendEmail = async (to, subject, html, retries = 3) => {
-  for (let attempt = 1; attempt <= retries; attempt++) {
-    try {
-      await transporter.sendMail({
-        from: `"Skillshastra" <${process.env.EMAIL_USER}>`,
-        to,
-        subject,
-        html,
-      });
-      console.log(`Email sent to ${to} on attempt ${attempt}`);
-      return;
-    } catch (error) {
-      console.error(`Email Error (Attempt ${attempt}/${retries}):`, error);
-      if (attempt < retries) {
-        await new Promise((resolve) => setTimeout(resolve, 1000 * attempt));
-      } else {
-        throw new Error(`Failed to send email to ${to}: ${error.message}`);
-      }
-    }
+// Email Queue
+const emailQueue = [];
+let isProcessingQueue = false;
+
+const processEmailQueue = async () => {
+  if (isProcessingQueue || emailQueue.length === 0) return;
+  isProcessingQueue = true;
+
+  const { to, subject, html } = emailQueue.shift();
+  const startTime = Date.now();
+
+  try {
+    await transporter.sendMail({
+      from: `"Skillshastra" <${process.env.EMAIL_USER}>`,
+      to,
+      subject,
+      html,
+    });
+    console.log(`Email sent to ${to} in ${Date.now() - startTime}ms`);
+  } catch (error) {
+    console.error(`Email Error to ${to}:`, error);
+    // Optionally re-queue or log for retry
+  } finally {
+    isProcessingQueue = false;
+    setImmediate(processEmailQueue); // Process next email
   }
 };
+
+const sendEmail = async (to, subject, html, retries = 3) => {
+  emailQueue.push({ to, subject, html });
+  setImmediate(processEmailQueue);
+};
+
+// Email Template Functions
+const getBaseEmailTemplate = (content) => `
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Skill Shastra</title>
+      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+      <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background-color: #f8f9ff; color: #1f2937; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background-color: #7c3aed; text-align: center; padding: 20px; border-radius: 8px 8px 0 0; }
+        .header img { max-width: 150px; height: auto; }
+        .content { background-color: #ffffff; padding: 30px; border-radius: 0 0 8px 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+        .content h1 { font-size: 24px; color: #7c3aed; margin-bottom: 20px; }
+        .content p { font-size: 16px; line-height: 1.6; margin-bottom: 15px; }
+        .otp { font-size: 28px; font-weight: 600; color: #1f2937; text-align: center; padding: 15px; background-color: #f8f9ff; border-radius: 8px; margin: 20px 0; }
+        .cta-button { display: inline-block; background-color: #7c3aed; color: #ffffff; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: 500; margin: 15px 0; }
+        .cta-button:hover { background-color: #a855f7; }
+        .table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        .table th, .table td { padding: 10px; text-align: left; border-bottom: 1px solid #e5e7eb; }
+        .table th { font-weight: 600; color: #7c3aed; }
+        .status-approved { color: #10b981; font-weight: 600; }
+        .status-rejected { color: #ef4444; font-weight: 600; }
+        .footer { text-align: center; padding: 20px; font-size: 14px; color: #6b7280; }
+        .footer a { color: #7c3aed; text-decoration: none; margin: 0 10px; }
+        .footer a:hover { text-decoration: underline; }
+        @media (max-width: 600px) {
+          .container { padding: 10px; }
+          .content { padding: 20px; }
+          .header img { max-width: 120px; }
+          .content h1 { font-size: 20px; }
+          .content p { font-size: 14px; }
+          .otp { font-size: 24px; }
+          .cta-button { padding: 10px 20px; }
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <img src="https://res.cloudinary.com/dsk80td7v/image/upload/v1750568168/public/images/logo.png" alt="Skill Shastra Logo" />
+        </div>
+        <div class="content">
+          ${content}
+        </div>
+        <div class="footer">
+          <p>© ${new Date().getFullYear()} Skill Shastra. All rights reserved.</p>
+          <p><a href="mailto:support@skillshastra.com">support@skillshastra.com</a> | <a href="https://skillshastra.com">skillshastra.com</a></p>
+          <p>
+            <a href="https://facebook.com/skillshastra"><img src="https://res.cloudinary.com/your_cloud_name/image/upload/skillshastra/assets/icons/facebook.png" alt="Facebook" style="width: 24px; height: 24px;" /></a>
+            <a href="https://linkedin.com/company/skillshastra"><img src="https://res.cloudinary.com/your_cloud_name/image/upload/skillshastra/assets/icons/linkedin.png" alt="LinkedIn" style="width: 24px; height: 24px;" /></a>
+            <a href="https://twitter.com/skillshastra"><img src="https://res.cloudinary.com/your_cloud_name/image/upload/skillshastra/assets/icons/twitter.png" alt="Twitter" style="width: 24px; height: 24px;" /></a>
+          </p>
+          <p><a href="#">Unsubscribe</a></p>
+        </div>
+      </div>
+    </body>
+  </html>
+`;
+
+const getOtpEmailTemplate = (otp, type = "verify") =>
+  getBaseEmailTemplate(`
+  <h1>${type === "verify" ? "Verify Your Account" : "Reset Your Password"}</h1>
+  <p>Welcome to Skill Shastra${
+    type === "verify"
+      ? ", we're excited to have you!"
+      : "! Let's get your password reset."
+  }</p>
+  <p>Your One-Time Password (OTP) for ${
+    type === "verify" ? "email verification" : "password reset"
+  } is:</p>
+  <div class="otp">${otp}</div>
+  <p>This OTP is valid for 10 minutes. Please use it to complete your ${
+    type === "verify" ? "verification" : "password reset"
+  }.</p>
+  <a href="http://localhost:5000/${
+    type === "verify" ? "signup" : "forgot-password"
+  }" class="cta-button">${
+    type === "verify" ? "Verify Now" : "Reset Password"
+  }</a>
+  <p>If you didn't request this, please ignore this email.</p>
+`);
+
+const getWelcomeEmailTemplate = (name) =>
+  getBaseEmailTemplate(`
+  <h1>Welcome, ${name}!</h1>
+  <p>Congratulations! Your Skill Shastra account has been successfully verified.</p>
+  <p>You're now part of our community dedicated to mastering future-ready skills. Start exploring our courses and take the first step towards your goals!</p>
+  <a href="http://localhost:5000/dashboard/courses" class="cta-button">Explore Courses</a>
+  <p>Have questions? Reach out to us at <a href="mailto:support@skillshastra.com">support@skillshastra.com</a>.</p>
+`);
+
+const getEnrollmentConfirmationEmailTemplate = (
+  fullName,
+  course,
+  transactionId,
+  paymentProofUrl
+) =>
+  getBaseEmailTemplate(`
+  <h1>Enrollment Confirmation</h1>
+  <p>Dear ${fullName},</p>
+  <p>Thank you for enrolling in <strong>${course}</strong> with Skill Shastra!</p>
+  <p>We have received your enrollment details and payment proof. Our team will verify your payment and update your enrollment status soon.</p>
+  <table class="table">
+    <tr><th>Course</th><td>${course}</td></tr>
+    <tr><th>Transaction ID</th><td>${transactionId}</td></tr>
+    <tr><th>Status</th><td>Pending</td></tr>
+  </table>
+  <p><a href="${paymentProofUrl}" class="cta-button" target="_blank">View Payment Proof</a></p>
+  <p>Check your dashboard for updates or contact us at <a href="mailto:support@skillshastra.com">support@skillshastra.com</a> if you have any questions.</p>
+`);
+
+const getEnrollmentStatusEmailTemplate = (fullName, course, status) =>
+  getBaseEmailTemplate(`
+  <h1>Enrollment Status Update</h1>
+  <p>Dear ${fullName},</p>
+  <p>Your enrollment for <strong>${course}</strong> has been <span class="status-${status.toLowerCase()}">${status}</span>.</p>
+  ${
+    status === "approved"
+      ? "<p>Congratulations! You can now access your course materials on the dashboard.</p>"
+      : "<p>We’re sorry, but your enrollment could not be approved. Please contact us for more details.</p>"
+  }
+  <a href="http://localhost:5000/dashboard" class="cta-button">View Dashboard</a>
+  <p>Thank you for choosing Skill Shastra! If you have any questions, reach out to <a href="mailto:support@skillshastra.com">support@skillshastra.com</a>.</p>
+`);
 
 // Authentication Middleware
 const protect = async (req, res, next) => {
@@ -264,7 +400,7 @@ const restrictToAdmin = async (req, res, next) => {
   if (!req.user || !adminEmails.includes(req.user.email)) {
     return res.status(403).json({ message: "Access denied. Admin only." });
   }
-  req.user.role = "admin"; // Ensure role is set for client-side checks
+  req.user.role = "admin";
   next();
 };
 
@@ -273,47 +409,50 @@ const generateOTP = () =>
   Math.floor(100000 + Math.random() * 900000).toString();
 
 // Authentication Routes
-app.post("/api/auth/signup", async (req, res) => {
-  const { name, email, password, redirect } = req.body;
-  if (!name || !email || !password) {
-    return res.status(400).json({ message: "All fields are required" });
-  }
-
-  try {
-    let user = await User.findOne({ email });
-    if (user) {
-      return res.status(400).json({ message: "User already exists" });
+app.post(
+  "/api/auth/signup",
+  upload.none(), // Remove profileImage upload
+  async (req, res) => {
+    const { name, email, password, redirect } = req.body;
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: "All fields are required" });
     }
 
-    const otp = generateOTP();
-    const otpExpires = new Date(Date.now() + 10 * 60 * 1000);
+    try {
+      let user = await User.findOne({ email });
+      if (user) {
+        return res.status(400).json({ message: "User already exists" });
+      }
 
-    user = new User({
-      name,
-      email,
-      password,
-      otp,
-      otpExpires,
-      role: process.env.ADMIN_EMAILS.split(",").includes(email)
-        ? "admin"
-        : "user",
-    });
+      const otp = generateOTP();
+      const otpExpires = new Date(Date.now() + 10 * 60 * 1000);
 
-    await user.save();
+      user = new User({
+        name,
+        email,
+        password,
+        otp,
+        otpExpires,
+        role: process.env.ADMIN_EMAILS.split(",").includes(email)
+          ? "admin"
+          : "user",
+      });
 
-    const otpEmail = `
-      <h2>Welcome to Skill Shastra!</h2>
-      <p>Your OTP for email verification is: <strong>${otp}</strong></p>
-      <p>This OTP is valid for 10 minutes.</p>
-    `;
-    await sendEmail(email, "Verify Your Skill Shastra Account", otpEmail);
+      await user.save();
 
-    res.status(201).json({ message: "OTP sent to your email", redirect });
-  } catch (error) {
-    console.error("Signup Error:", error);
-    res.status(500).json({ message: "Server error" });
+      await sendEmail(
+        email,
+        "Verify Your Skill Shastra Account",
+        getOtpEmailTemplate(otp, "verify")
+      );
+
+      res.status(201).json({ message: "OTP sent to your email", redirect });
+    } catch (error) {
+      console.error("Signup Error:", error);
+      res.status(500).json({ message: "Server error" });
+    }
   }
-});
+);
 
 app.post("/api/auth/verify-otp", async (req, res) => {
   const { email, otp, redirect } = req.body;
@@ -351,12 +490,11 @@ app.post("/api/auth/verify-otp", async (req, res) => {
       sameSite: "strict",
     });
 
-    const welcomeEmail = `
-      <h2>Welcome to Skill Shastra, ${user.name}!</h2>
-      <p>Your account has been successfully verified.</p>
-      <p>Start exploring our courses and master future-ready skills!</p>
-    `;
-    await sendEmail(user.email, "Welcome to Skill Shastra!", welcomeEmail);
+    await sendEmail(
+      user.email,
+      "Welcome to Skill Shastra!",
+      getWelcomeEmailTemplate(user.name)
+    );
 
     res.status(200).json({
       user: {
@@ -468,12 +606,11 @@ app.post("/api/auth/forgot-password", async (req, res) => {
     user.otpExpires = new Date(Date.now() + 10 * 60 * 1000);
     await user.save();
 
-    const resetEmail = `
-      <h2>Password Reset Request</h2>
-      <p>Your OTP for password reset is: <strong>${otp}</strong></p>
-      <p>This OTP is valid for 10 minutes.</p>
-    `;
-    await sendEmail(email, "Skill Shastra Password Reset", resetEmail);
+    await sendEmail(
+      email,
+      "Skill Shastra Password Reset",
+      getOtpEmailTemplate(otp, "reset")
+    );
 
     res
       .status(200)
@@ -512,7 +649,7 @@ app.post("/api/auth/reset-password", async (req, res) => {
   }
 });
 
-// Admin Middleware (Replacing previous admin middleware)
+// Admin Middleware
 app.get("/api/auth/admin-panel", protect, restrictToAdmin, async (req, res) => {
   try {
     const users = await User.find().select("-password -otp -otpExpires");
@@ -562,20 +699,17 @@ app.patch(
       if (!enrollment) {
         return res.status(404).json({ message: "Enrollment not found" });
       }
-      // Send email notification to user
       const user = await User.findById(enrollment.userId);
-      const statusEmail = `
-        <h2>Enrollment Status Update</h2>
-        <p>Dear ${enrollment.fullName},</p>
-        <p>Your enrollment for <strong>${enrollment.course}</strong> has been <strong>${status}</strong>.</p>
-        <p>Thank you for choosing Skill Shastra!</p>
-      `;
       await sendEmail(
         enrollment.email,
         `Skill Shastra Enrollment ${
           status.charAt(0).toUpperCase() + status.slice(1)
         }`,
-        statusEmail
+        getEnrollmentStatusEmailTemplate(
+          enrollment.fullName,
+          enrollment.course,
+          status
+        )
       );
       res
         .status(200)
@@ -698,27 +832,50 @@ const courseSchema = new mongoose.Schema({
   title: { type: String, required: true },
   description: { type: String, required: true },
   duration: { type: String, required: true },
-  slug: { type: String, required: true, unique: true } // e.g., 'frontend', 'backend'
+  slug: { type: String, required: true, unique: true },
 });
 
-const Course = mongoose.model('Course', courseSchema);
+const Course = mongoose.model("Course", courseSchema);
 
 // Recommended Courses Route
-app.get('/api/courses/recommended', protect, async (req, res) => {
+app.get("/api/courses/recommended", protect, async (req, res) => {
   try {
-    // Mock data for now; replace with Course.find() if using MongoDB
     const recommendedCourses = [
-      { title: 'Frontend Development', description: 'Learn React, HTML, CSS.', duration: '6 weeks', slug: 'frontend' },
-      { title: 'Backend Development', description: 'Master Node.js, Express, MongoDB.', duration: '6 weeks', slug: 'backend' },
-      { title: 'Full Stack Development', description: 'Build full-stack apps with MERN.', duration: '8 weeks', slug: 'full-stack' },
-      { title: 'Digital Marketing', description: 'Master SEO, PPC, and social media.', duration: '4 weeks', slug: 'digital-marketing' },
-      { title: 'Data Science', description: 'Explore Python, Pandas, and ML.', duration: '8 weeks', slug: 'data-science' }
+      {
+        title: "Frontend Development",
+        description: "Learn React, HTML, CSS.",
+        duration: "6 weeks",
+        slug: "frontend",
+      },
+      {
+        title: "Backend Development",
+        description: "Master Node.js, Express, MongoDB.",
+        duration: "6 weeks",
+        slug: "backend",
+      },
+      {
+        title: "Full Stack Development",
+        description: "Build full-stack apps with MERN.",
+        duration: "8 weeks",
+        slug: "full-stack",
+      },
+      {
+        title: "Digital Marketing",
+        description: "Master SEO, PPC, and social media.",
+        duration: "4 weeks",
+        slug: "digital-marketing",
+      },
+      {
+        title: "Data Science",
+        description: "Explore Python, Pandas, and ML.",
+        duration: "8 weeks",
+        slug: "data-science",
+      },
     ];
-    // const recommendedCourses = await Course.find().lean();
     res.status(200).json({ courses: recommendedCourses });
   } catch (error) {
-    console.error('Error fetching recommended courses:', error);
-    res.status(500).json({ message: 'Server error' });
+    console.error("Error fetching recommended courses:", error);
+    res.status(500).json({ message: "Server error" });
   }
 });
 
@@ -797,9 +954,25 @@ app.post(
           .json({ message: "Transaction ID and payment date are required" });
       }
 
-      // Store relative path: uploads/filename
-      const paymentProofPath = `uploads/${req.file.filename}`;
-      console.log("Stored payment proof path:", paymentProofPath); // Debug log
+      const uploadResult = await new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          {
+            folder: "skillshastra/enrollments",
+            public_id: `payment_proof_${studentData.email}_${Date.now()}`,
+            resource_type:
+              req.file.mimetype === "application/pdf" ? "raw" : "image",
+            format: req.file.mimetype.split("/")[1],
+          },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
+          }
+        );
+        stream.end(req.file.buffer);
+      });
+
+      const paymentProofUrl = uploadResult.secure_url;
+      console.log("Stored payment proof URL:", paymentProofUrl);
 
       const enrollment = new Enrollment({
         userId: req.user._id,
@@ -817,24 +990,21 @@ app.post(
         address: studentData.address,
         transactionId,
         paymentDate: new Date(paymentDate),
-        paymentProof: paymentProofPath,
+        paymentProof: paymentProofUrl,
         status: "pending",
       });
 
       await enrollment.save();
 
-      const confirmationEmail = `
-        <h2>Enrollment Confirmation</h2>
-        <p>Dear ${studentData.fullName},</p>
-        <p>Your enrollment for <strong>${studentData.course}</strong> has been received.</p>
-        <p>Transaction ID: ${transactionId}</p>
-        <p>We will verify your payment and confirm your enrollment soon.</p>
-        <p>Thank you for choosing Skill Shastra!</p>
-      `;
       await sendEmail(
         studentData.email,
         "Skill Shastra Enrollment Confirmation",
-        confirmationEmail
+        getEnrollmentConfirmationEmailTemplate(
+          studentData.fullName,
+          studentData.course,
+          transactionId,
+          paymentProofUrl
+        )
       );
 
       res.status(201).json({ message: "Enrollment submitted successfully" });
@@ -849,7 +1019,7 @@ app.post(
 app.get("/api/enrollments", protect, async (req, res) => {
   try {
     const enrollments = await Enrollment.find({ userId: req.user._id }).select(
-      "course status"
+      "course status paymentProof"
     );
     res
       .status(200)
@@ -871,15 +1041,47 @@ const renderPage = (page) => (req, res) =>
 app.get("/", renderPage("index"));
 app.get("/signup", renderPage("signup"));
 app.get("/admin", protect, restrictToAdmin, renderPage("admin"));
-app.get("/admin/feedback", protect, restrictToAdmin, renderPage("admin/feedback"));
-app.get("/admin/analytics", protect, restrictToAdmin, renderPage("admin/analytics"));
-app.get("/admin/messages", protect, restrictToAdmin, renderPage("admin/messages"));
-app.get("/admin/announcements", protect, restrictToAdmin, renderPage("admin/announcements"));
+app.get(
+  "/admin/feedback",
+  protect,
+  restrictToAdmin,
+  renderPage("admin/feedback")
+);
+app.get(
+  "/admin/analytics",
+  protect,
+  restrictToAdmin,
+  renderPage("admin/analytics")
+);
+app.get(
+  "/admin/messages",
+  protect,
+  restrictToAdmin,
+  renderPage("admin/messages")
+);
+app.get(
+  "/admin/announcements",
+  protect,
+  restrictToAdmin,
+  renderPage("admin/announcements")
+);
 app.get("/dashboard", protect, renderPage("dashboard"));
 app.get("/dashboard/courses", protect, renderPage("dashboard/courses"));
-app.get("/dashboard/coding-Challenge", protect, renderPage("dashboard/coding-Challenge"));
-app.get("/dashboard/practiceProject", protect, renderPage("dashboard/practiceProject"));
-app.get("/dashboard/studyMaterials", protect, renderPage("dashboard/studyMaterials"));
+app.get(
+  "/dashboard/coding-Challenge",
+  protect,
+  renderPage("dashboard/coding-Challenge")
+);
+app.get(
+  "/dashboard/practiceProject",
+  protect,
+  renderPage("dashboard/practiceProject")
+);
+app.get(
+  "/dashboard/studyMaterials",
+  protect,
+  renderPage("dashboard/studyMaterials")
+);
 app.get("/dashboard/messages", protect, renderPage("dashboard/messages"));
 app.get("/dashboard/feedback", protect, renderPage("dashboard/feedback"));
 app.get("/dashboard/feed", protect, renderPage("dashboard/feed"));

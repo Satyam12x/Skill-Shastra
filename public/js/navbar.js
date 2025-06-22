@@ -208,14 +208,14 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Logout Function
-  function logout() {
-    localStorage.removeItem("user");
-    fetch("/api/auth/logout", {
-      method: "POST",
-      credentials: "include",
-    }).then(() => {
-      window.location.href = "/";
-    });
-    updateNavbar(); // Update navbar immediately
-  }
 });
+function logout() {
+  localStorage.removeItem("user");
+  fetch("/api/auth/logout", {
+    method: "POST",
+    credentials: "include",
+  }).then(() => {
+    window.location.href = "/";
+  });
+  updateNavbar(); // Update navbar immediately
+}
