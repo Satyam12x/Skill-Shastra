@@ -1105,7 +1105,7 @@ app.get("/genai", renderPage("genai"));
 app.get("/codingChallenge", renderPage("resources/CodingChallenge"));
 app.get("/practiceProject", renderPage("resources/PracticeProject"));
 app.get("/studyMaterials", renderPage("resources/StudyMaterials"));
-app.get("/expertProfiles", renderPage("team/ExpertProfiles"));
+app.get("/expertProfiles", renderPage("team/ExpertProfile"));
 app.get("/meetTeam", renderPage("team/MeetOurTeam"));
 
 app.get("/payment", protect, (req, res) => {
