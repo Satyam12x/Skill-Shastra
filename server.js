@@ -329,11 +329,88 @@ const getOtpEmailTemplate = (otp, type = "verify") =>
 
 const getWelcomeEmailTemplate = (name) =>
   getBaseEmailTemplate(`
-  <h1>Welcome, ${name}!</h1>
-  <p>Congratulations! Your Skill Shastra account has been successfully verified.</p>
-  <p>You're now part of our community dedicated to mastering future-ready skills. Start exploring our courses and take the first step towards your goals!</p>
-  <a href="http://localhost:5000/dashboard/courses" class="cta-button">Explore Courses</a>
-  <p>Have questions? Reach out to us at <a href="mailto:support@skillshastra.com">support@skillshastra.com</a>.</p>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Welcome to Skill Shastra</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body style="margin: 0; padding: 0; font-family: 'Poppins', Arial, sans-serif; background-color: #f3f0ff;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #f3f0ff;">
+        <tr>
+            <td align="center">
+                <!-- Background Design -->
+                <div style="position: relative; width: 100%; max-width: 600px; margin: 0 auto;">
+                    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;">
+                        <!-- Gradient Circles -->
+                        <div style="position: absolute; top: -50px; left: -50px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(139, 92, 246, 0.1), transparent 70%); border-radius: 50%;"></div>
+                        <div style="position: absolute; bottom: -100px; right: -100px; width: 250px; height: 250px; background: radial-gradient(circle, rgba(167, 139, 250, 0.1), transparent 70%); border-radius: 50%;"></div>
+                        <!-- Lines -->
+                        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0, 0, 0, 0.02) 10px, rgba(0, 0, 0, 0.02) 20px);"></div>
+                        <!-- Dots -->
+                        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: radial-gradient(circle, #d1d5db, 1px, transparent 1px); background-size: 20px 20px; opacity: 0.3;"></div>
+                    </div>
+
+                    <!-- Email Content -->
+                    <table role="presentation" width="100%" style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); position: relative; z-index: 1;">
+                        <!-- Header with Logo -->
+                        <tr>
+                            <td style="padding: 30px; background: linear-gradient(90deg, #8b5cf6, #a78bfa); text-align: center; border-top-left-radius: 8px; border-top-right-radius: 8px;">
+                                <img src="../images/logo.png" alt="Skill Shastra Logo" style="max-width: 200px; height: auto; display: block; margin: 0 auto;">
+                                <h1 style="font-size: 24px; font-weight: 600; color: #ffffff; margin: 15px 0 0;">Welcome to Skill Shastra</h1>
+                            </td>
+                        </tr>
+                        <!-- Greeting Message -->
+                        <tr>
+                            <td style="padding: 20px 20px;">
+                                <h2 style="font-size: 20px; font-weight: 500; color: #8b5cf6; margin: 0 0 15px;">Hello, ${name}!</h2>
+                                <p style="font-size: 16px; line-height: 1.6; color: #4a4a4a; margin: 0 0 15px;">
+                                    We’re beyond excited to welcome you to <strong>Skill Shastra</strong>! Your account is now verified, and you’re ready to join our vibrant community of learners mastering skills for the future.
+                                </p>
+                                <p style="font-size: 16px; line-height: 1.6; color: #4a4a4a; margin: 0 0 20px;">
+                                    Dive into our curated courses, designed to empower you to achieve your personal and professional goals. Your journey to success starts today!
+                                </p>
+                            </td>
+                        </tr>
+                        <!-- Call to Action -->
+                        <tr>
+                            <td style="padding: 0 20px 20px; text-align: center;">
+                                <a href="https://www.skillshastra.com/dashboard/courses" style="display: inline-block; padding: 12px 24px; background: linear-gradient(90deg, #8b5cf6, #a78bfa); color: #ffffff; font-size: 16px; font-weight: 500; text-decoration: none; border-radius: 8px;">Start Learning Now</a>
+                            </td>
+                        </tr>
+                        <!-- Support Info -->
+                        <tr>
+                            <td style="padding: 0 20px 20px; text-align: center;">
+                                <p style="font-size: 14px; line-height: 1.6; color: #6b7280; margin: 0;">
+                                    Need help or have questions? Our support team is here for you at 
+                                    <a href="mailto:support@skillshastra.com" style="color: #8b5cf6; text-decoration: none; font-weight: 500;">support@skillshastra.com</a>.
+                                </p>
+                            </td>
+                        </tr>
+                        <!-- Footer -->
+                        <tr>
+                            <td style="padding: 20px; background-color: #f3f0ff; text-align: center; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">
+                                <p style="font-size: 12px; color: #6b7280; margin: 0 0 10px;">
+                                    Connect with us: 
+                                    <a href="#" style="color: #8b5cf6; text-decoration: none; margin: 0 5px;">Twitter</a> | 
+                                    <a href="#" style="color: #8b5cf6; text-decoration: none; margin: 0 5px;">LinkedIn</a> | 
+                                    <a href="#" style="color: #8b5cf6; text-decoration: none; margin: 0 5px;">Instagram</a>
+                                </p>
+                                <p style="font-size: 12px; color: #6b7280; margin: 0;">
+                                    © 2025 Skill Shastra. All rights reserved.
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
 `);
 
 const getEnrollmentConfirmationEmailTemplate = (
